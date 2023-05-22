@@ -6,11 +6,11 @@ The Coding Outreach Group (COG) weekly summer workshops focus on a specific rese
 Workshops are on Thursdays in June, July and August from 1:00pm to 3:00pm
 | Date        | Workshop                             | Presenter  |
 | :-----------: |:------------------------------------:| :-----------:|
-| 6/29    | [GIMME]                       | Matt Mattoni |
-| 7/6    | [Machine Learning]                           | Helen Schmidt |
-| 7/13    | [Intro to jPsych]      | Steven Martinez |
-| 7/20    | [Functions & Iterations in R] | Beth Smedley |                          
-| 7/27    | [Intro to Item Response Theory]                     | Rebekah Banerjee & Merve Tansan |
-| 8/3    | [Text Analysis in R]              | Camille Johnston |
-| 8/10    | [Dyadic Analysis in R]                 | Ginny Ulichney |
-| 8/17    | [Intro to SQL]              | Katie Jobson & Billy Mitchell |
+| 6/29    | GIMME                       | Matt Mattoni |
+| 7/6    | Machine Learning                           | Helen Schmidt |
+| 7/13    | Intro to jPsych      | Steven Martinez |
+| 7/20    | Functions & Iterations in R | Beth Smedley |                          
+| 7/27    | Intro to Item Response Theory                     | Rebekah Banerjee & Merve Tansan |
+| 8/3    | Text Analysis in R              | Camille Johnston |
+| 8/10    | Dyadic Analysis in R                 | Ginny Ulichney |
+| 8/17    | Intro to SQL              | Katie Jobson & Billy Mitchell |
