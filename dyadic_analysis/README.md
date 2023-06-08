@@ -1,5 +1,5 @@
 # UNDER CONSTRUCTION
-# Coding Outreach Group Summer Workshop
+# Coding Outreach Group Summer Workshop 2023
 # Dyadic Analysis in R
 08/10/2023
 
