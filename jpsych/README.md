@@ -1,7 +1,7 @@
 # UNDER CONSTRUCTION
 # Coding Outreach Group Summer Workshop 2023
 # Intro to jPsych
-07/06/2023
+07/13/2023
 
 __**Content creator:**__ Steven Martinez
 __**Content editor:**__ 
