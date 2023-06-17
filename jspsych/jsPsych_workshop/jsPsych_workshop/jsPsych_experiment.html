@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <script src="/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/jspsych/dist/jspsych.js"></script>
+    <script src="/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/jspsych/dist/plugin-html-keyboard-response.js"></script> 
+    <script src="/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/jspsych/dist/plugin-image-keyboard-response.js"></script>
+    <script src="/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/jspsych/dist/plugin-survey-text.js"></script>
+
+    <link href="/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/jspsych/dist/jspsych.css" rel="stylesheet" type="text/css" />
+  
+  </head>
+  <body></body>
+  <script>
+
+//First, we have to initialize jsPsych. We can do this by using the initJsPsych() function, and saving it to a variable called jsPsych
+//We are also adding the "jsPsych.data.displayData()" function, which will show us the raw data at the end of the experiment. 
+//Here, the "on_finish:" function is basically saying: at the end of the jsPsych experiment, run this function (i.e., the "jsPsych.data.displayData();" function), which will show us the raw data at the end of the experiment
+  var jsPsych = initJsPsych({
+    on_finish: function() {
+      jsPsych.data.displayData();
+    }
+  });
+
+
+//Define empty timeline array
+    var timeline = []
+
+
+
+//Create the first experimental trial called "welcome" and use the html-keyboard-response plugin to print a message.
+//Add in HTML formatting to customize the welcome message
+var welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "<p style = 'font-size: 40px; color: blue;'>Welcome to the experiment! Press the space bar to begin.</p>",
+    choices: [' '],
+};
+
+//Push the welcome trial to the experimental timeline
+timeline.push(welcome);
+
+
+
+//Compile all the stimuli that you will be using in your experiment
+var task_stimuli = [
+  { animal: "/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/stimuli/clownfish.jpg", name: 'Clownfish'},
+  { animal: "/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/stimuli/caterpillar.jpg", name: 'Caterpillar'},
+  { animal: "/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/stimuli/toucan.jpg", name: 'Toucan'},
+  { animal: "/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/stimuli/polarbear.jpg", name: 'Polar Bear'}
+];
+
+
+
+//Create trial that shows a fixation cross
+var fixation = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p style='font-size:100px;'>+</p>",
+  choices: "NO_KEYS",
+  trial_duration: 500,
+};
+
+
+
+//Create the stimuli presentation trial that you will iterate over
+var stimuli_presentation = {
+  type: jsPsychImageKeyboardResponse,
+  stimulus: jsPsych.timelineVariable('animal'),
+  prompt: '<p>Press a number 1-7 to indicate how much you like the image.</p>',
+  choices: ['1','2','3','4','5','6','7'],
+  stimulus_height: 500,
+  stimulus_width: 500,
+}
+
+
+
+//Organize phase 1 task procedure
+var phase1_procedure = {
+      timeline: [fixation, stimuli_presentation],
+      timeline_variables: task_stimuli,
+      randomize_order: true,
+    };
+
+//Push phase 1 procedure to experimental timeline
+timeline.push(phase1_procedure);
+
+
+
+//Create the memory test experimental trial that you will iterate over
+var memory_test = {
+  type: jsPsychSurveyText,
+  preamble: function() {
+        var stim = '<p style="font-size:40px;font-weight:bold;">'+jsPsych.timelineVariable('name')+'</p>';
+        return stim;
+    },
+  questions: [
+    {prompt: 'Please type everything you can remember about the image of the animal listed above.', 
+    rows: 15, 
+    columns: 70, 
+    required: true}
+  ]
+}
+
+
+//Organize phase 2 task procedure
+var phase2_procedure = {
+      timeline: [fixation, memory_test],
+      timeline_variables: task_stimuli,
+      randomize_order: true,
+    };
+
+//Push phase 2 procedure to experimental timeline
+timeline.push(phase2_procedure);
+
+
+
+//Experiment has finished: Use the html-keyboard-response plugin to print a thank you message.
+var experiment_finished = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: 'Thank you for participating! Press "a" to exit.',
+    choices: ['a'],
+};
+
+//Push experiment_finished trial to experimental timeline
+timeline.push(experiment_finished);
+
+
+//Run the experiment!
+  jsPsych.run(timeline);
+
+  </script>
+</html>
