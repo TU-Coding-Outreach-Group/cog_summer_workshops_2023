@@ -1,7 +1,7 @@
 ---
-title: "COG 2023: GIMME Workshop"
+title: "Using GIMME in R"
 author: "Matt Mattoni"
-date: "2023-06-05"
+date: "2023-06-29"
 output: 
   html_document: 
     number_sections: true
@@ -18,7 +18,6 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding, 
                         output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
-runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
