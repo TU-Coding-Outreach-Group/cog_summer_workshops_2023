@@ -5,7 +5,7 @@ body{
   line-height: 1.35; 
   font-size: 12pt;
   color: rgb(0, 0, 0);
-  opacity: 0.975;
+  opacity: 0.95;
   background-color: #dbdbdbc3;  
   background-image: url("COG_White.png");
   background-repeat: no-repeat;
@@ -24,6 +24,7 @@ body{
     background-clip: text;
     -webkit-background-clip: text; */
     background-color: #9D2235;
+    border-radius: 5px 20px 20px;
     opacity: 1.0;
     padding-top: 1em;
     padding-bottom: .5em;
@@ -47,7 +48,8 @@ body{
     opacity: .90;
     padding-top: .25em;
     padding-left: .5em;
-    box-shadow: 4px 4px 5px #888;  
+    box-shadow: 4px 4px 5px #888; 
+    border-radius: 10px; 
   }
   
   
@@ -59,6 +61,7 @@ body{
     padding-left: .5em;
     padding-top: .5em;
     box-shadow: 3px 3px 4px #888;
+    border-radius: 5px; 
   }
   
   h3 { 
@@ -120,8 +123,8 @@ body{
     float:right;
     width:20%;
     font-size: 9.5pt;
-    border: 15px solid #9D2235;
-    border-radius: 15;
+    border: 12.5px solid #9D2235;
+    border-radius: 15px;
     background: white;
     padding: .5em;
     overflow:hidden;
