@@ -4,7 +4,7 @@
 07/13/2023
 
 __**Content creator:**__ Steven Martinez
-__**Content editor:**__ 
+__**Content editor:**__ Billy Mitchell & Katie Jobson
 
 ## Description
 This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/jspsych/jsPsych/releases/tag/jspsych%407.3.3) to build psychological experiments. jsPsych is a free, open-source software that employs a JavaScript framework for creating behavioral experiments that run in a web browser. It's a popular alternative to PsychoPy and E-Prime for task development, can be used in both behavioral and neuroimaging tasks, and supports online study capabilities.  
@@ -27,15 +27,11 @@ This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/j
 
 ## Outline
 | Topic | Description | Time |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | Intro | Workshop Overview | 5 mins |
 | Setting up a jsPsych script | jsPsych and Visual Studio Code Set-up  | 10 mins |
 | Building an experimental trial | Learning how to integrate Javascript, HTML, and CSS | 15 mins |
 | Building a full experiment | Trials, Procedures, and Timelines | 25 mins  |
-| Conclusion & General Notes | Review, Pavlovia compaitability, turtorial suggestions, etc. | 5 mins |
+| Conclusion & General Notes | Review, Pavlovia compatibility, tutorial suggestions, etc. | 5 mins |
 
 ## Additional Resources
-Supplemental information can be found within the [supplements folder]
-
-### Packages
-
