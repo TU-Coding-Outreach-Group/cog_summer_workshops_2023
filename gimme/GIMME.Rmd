@@ -4,29 +4,43 @@ author: "Matt Mattoni"
 date: "2023-06-05"
 output: 
   html_document: 
+    number_sections: true
     toc: true
-    toc_float: true
+    toc_depth: 2
+    toc_float:
+      collapsed: false
     self_contained: yes
     mode: selfcontained
+    df_print: paged
+    css: !expr here::here("misc/style_bootcamp.css")
+knit: (function(inputFile, encoding) { 
+      out_dir <- './';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
-# COG Workshop Summer 2023: GIMME
 This R Markdown file was developed for Temple's Coding Outreach Group (COG) summer 2023 workshop series. It will walk through an applied usage of Group Iterative Multiple Model Estimation (GIMME). GIMME is a free to use R package and was developed by Dr. Kathleen Gates at UNC. Any users should first consult, at minimum, the [introductory GIMME manuscript](https://pubmed.ncbi.nlm.nih.gov/22732562/), the [subgroup manuscript](https://pubmed.ncbi.nlm.nih.gov/27925768/) (if using them), and the [GIMME website](https://tarheels.live/gimme/). The COG workshop also includes this brief conceptual introduction to GIMME that should provide a basic foundation for new users: [Slides](ENTER GITHUB LINK TO SLIDES) and [Recording](ENTER LINK TO RECORDING AFTER WORKSHOP).
 
-## Getting Started
+# Getting Started
 Installing GIMME is quite easy. It is also updated on a somewhat frequent basis so users should check and install the newest version when starting a new project. The installation includes all dependencies, mainly lavaan which is the SEM package GIMME is built on.
 We will also install other packages that we will use later. 
 ```{r, message = FALSE}
-#install.packages("gimme")
-#Remove the above # to run the code
-library(gimme)
+  # Installing pacman if it's not present
+  if (require("pacman") == FALSE){
+    install.packages("pacman")
+  }
+  
+  # Using pacman to load necessary packages
+  pacman::p_load(gimme, here)
 ```
 
-## Data Formatting
+# Data Formatting
 GIMME requires specific data formatting, detailed [here](https://tarheels.live/gimme/preparing-data-and-environment-for-gimme/). 
 
 * Each individual must contain 1 distinct datafile for all of their time series data. 
@@ -38,9 +52,9 @@ GIMME requires specific data formatting, detailed [here](https://tarheels.live/g
 * Data can be entered as either an R list, where each element is an individual's data table, or a local directory that contains .csv files, one for each individual. 
   + I personally recommend the latter, due to believing it is better data management and I have anecdotally run into issues with using GIMME via R lists. 
   
-Please download example data from [here](ENTER GITHUB LINK TO DATA) to continue with this walkthrough. This is fMRI BOLD data from 15 ROIs and 2 exogenous variables from Dr. Tom Olino's TADS study. I only included data from 20 individuals for timing purposes. 
+Please download example data from [here](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimmie/Data.zip) to continue with this walkthrough. This is fMRI BOLD data from 15 ROIs and 2 exogenous variables from Dr. Tom Olino's TADS study. I only included data from 20 individuals for timing purposes. 
 This is an example of what a single individual's datafile can look like. The first 15 columns are brain regions, the second two columns are task events (occuring or not occuring). Each individual's file will look exactly like this, just with different data. 
-![](C:/Users/mmatt/Desktop/COG-GIMME/Images/Data_ex.png)
+![](Images/Data_ex.png)
 
 The data downloaded above is formatted and ready to use. Most fMRI times series data is extracted in this format already so will require little-to-no additional data management. If you are using the example data or your own data is already formatted correctly, move on to the next sextion. 
 
@@ -54,7 +68,7 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 **(Live workshop) - Data formatting questions?**
 
 
-## GIMME Arguments
+# GIMME Arguments
 GIMME is quite easy to run. It has just a couple mandatory arguments, and several additional options. Use help(gimme) to see all of them, but here are some basic ones we can think about. There are some very interesting extensions that I recommend looking into yourself. Comments are below the relevant argument.
 
 ```{r, eval = FALSE}
@@ -85,13 +99,13 @@ gimmeSEM(data        = 'path/to/data/,
         )
 ```
 
-## Running GIMME
-Applying this to our data, it looks like this. Please note this will take about 1-2 hours to run, and this increases quickly with more data. To quickly move forward with the walkthrough, you can download the output [here](ENTER GITHUB LINK TO OUTPUT FILE). However, you should run this yourself so you get the output directory stored locally. It is good practice to save the output immediately so you do not have to end up re-running GIMME. 
+# Running GIMME
+Applying this to our data, it looks like this. Please note this will take about 1-2 hours to run, and this increases quickly with more data. To quickly move forward with the walkthrough, you can download the output [here](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimmie/gimme_output.rds). However, you should run this yourself so you get the output directory stored locally. It is good practice to save the output immediately so you do not have to end up re-running GIMME. 
 ```{r, message = FALSE, warning = FALSE, eval=FALSE}
-gimme_out <- gimmeSEM(data = 'C:/Users/mmatt/Desktop/COG-GIMME/Data',
+gimme_out <- gimmeSEM(data = paste0(here::here(), 'gimme/Data'),
                       sep = ",",
                       header = T,
-                      out = 'C:/Users/mmatt/Desktop/COG-GIMME/Output',
+                      out = paste0(here::here(), 'gimme/Output'),
                       ar = T,
                       plot = T,
                       subgroup = T,
@@ -102,7 +116,8 @@ gimme_out <- gimmeSEM(data = 'C:/Users/mmatt/Desktop/COG-GIMME/Data',
                       conv_interval = 2,
                       groupcutoff = .75,
                       subcutoff = .5)
-saveRDS(gimme_out,'C:/Users/mmatt/Desktop/Workshops/Hosted/GIMME/gimme_output.rds')
+saveRDS(gimme_out,
+        paste0(here::here(), 'gimme/gimme_output.rds'))
 
 ```
 
@@ -123,19 +138,19 @@ The green paths are subgroup-level paths. From this view, we can't see which pat
 
 
 
-## GIMME Output 
+# GIMME Output 
 GIMME outputs an R object that contains all relevant information, as well as plots and results in the ouput directory specified in the call. 
 
-### Output Directory
+## Output Directory
 Things are easier to look at manually in the directory. Here's what it looks like:
 
-![](C:/Users/mmatt/Desktop/COG-GIMME/Images/Direct.png)
+![](Images/Direct.png)
 
 
 
 The **indivPathEstimates** csv file is where most of the relevant information is.
 
-![](C:/Users/mmatt/Desktop/COG-GIMME/Images/IndPaths.png)
+![](Images/IndPaths.png)
 
 
 This file has all model results for GIMME models for each participant,including group, subgroup (if estimated), and individual-level paths. 
@@ -161,7 +176,7 @@ This file has all model results for GIMME models for each participant,including 
 
 If you go into the **subgroup subdirectory** we can get some nice plots showing us how our subgroups differ. Here, the second subgroup has a much denser network. 
 
-![](C:/Users/mmatt/Desktop/COG-GIMME/Images/Subs.png)
+![](Images/Subs.png)
 
 
 As another reminder, please see [this resource](https://gateslab.web.unc.edu/programs/perturbr/) for subgroup validation, or consider your own alternative procedures. 
@@ -169,12 +184,12 @@ As another reminder, please see [this resource](https://gateslab.web.unc.edu/pro
 * The individual subdirectory has individual path estimates in separate files. But, the **IndPathEstimates** file we first discussed in the main output directory is the most important file you will work with. 
   * There are also individual-specific plots here, which can be interesting for very person-centered work. 
 
-### R Object
+## R Object
 The GIMME R output object, here called gimme_out, contains **all of the information in the output directory**, so again it is an important object to save (saveRDS). If you have some proficiency with R, you can continue working on downstream analyses with this object (ideal). The gimme_out$path_se_est list has the same information as the indivPathEstimates file, making it your go-to. You can see that information here: 
 
-![](C:/Users/mmatt/Desktop/COG-GIMME/Images/R_Out.png)
+![](Images/R_Out.png)
 
-## Checkpoint
+# Checkpoint
 Thus far, we have loaded our formatted data into R, used various GIMME arguments to estimate group, subgroup, and individual-level network models, and explored the output format. 
 
 **(For live workshop) - Questions?**
@@ -190,7 +205,7 @@ Downstream analyses will largely depend on your research question. For the most 
 I'll briefly mention some options, but it would likely be useful to skim what other folks have done as well. You can search GIMME papers yourself on scholar or looking at papers citing the original GIMME manuscript, or look at this collection: https://tarheels.live/gimme/papers/
 
 
-### Examining Heterogeneity
+## Examining Heterogeneity
 
 One path that is at the heart of GIMME's purpose is characterizing heterogeneity. 
 
@@ -201,7 +216,7 @@ One path that is at the heart of GIMME's purpose is characterizing heterogeneity
   
 For any discussion of heterogeneity, you should also consider if the uncovered individual differences are actually heterogeneity, or just noise. See this paper for a useful discussion: https://pubmed.ncbi.nlm.nih.gov/36318496/
 
-### Subgroup Differences
+## Subgroup Differences
 
 * Again, if you estimated subgroups you should focus on validating them. This can include using the referenced [perturbr package](https://gateslab.web.unc.edu/programs/perturbr/), cross-validation approaches, or split sample replications. For fMRI, you should also consider if subgroups differ by head motion (e.g., are these subgroups distinct in signal or noise?) 
   + See my previous [publication](https://doi.org/10.1162/netn_a_00306) as an example and open code. 
@@ -213,7 +228,7 @@ For any discussion of heterogeneity, you should also consider if the uncovered i
     + What does this difference in *centrality* mean?
   + Is there a theoretical reason you can hypothesize for these subgroups? Can you test this in a follow-up study?
 
-### Path Estimates
+## Path Estimates
 
 In my mind, this is the most powerful use of GIMME. How do invidual differences in *person-centered* paths, rather than group-aggregate, relate to external outcomes?
 (To be clear, group-level GIMME paths are still person-centered, as they were present for a majority of the sample. The contrast I am making is to using more traditional, aggregation-based approaches).
@@ -247,7 +262,7 @@ The field has taken multiple approaches to do this, and there are many possibili
       + e.g., Do individuals with a stronger reward brain hub engage in more reward-seeking behaviors
       + I have not found examples, but I am doing this soon. Preregistration here: 
 
-## Ackowledgements
+# Ackowledgements
 
 Workshop and Markdown created by Matt Mattoni. Many thanks to the Pitt Methods Summer Workshop on GIMME, taught by Dr. Katie Gates. 
 Dr. Katie Gates is the developer of GIMME. Further resources can be found on her website: https://tarheels.live/gimme/

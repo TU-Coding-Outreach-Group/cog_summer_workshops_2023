@@ -1,0 +1,134 @@
+/* Whole document: */
+body{
+  font-family: 'Helvetica Neue', sans-serif;  
+  letter-spacing: -0.1px; 
+  line-height: 1.35; 
+  font-size: 12pt;
+  color: rgb(0, 0, 0);
+  opacity: 0.975;
+  background-color: #dbdbdbc3;  
+  background-image: url("COG_White.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 290px;
+  background-position: 5% 98%;
+  }
+  
+  /* Headers */
+  
+  h1.title {
+    font-size: 26pt;
+    font-weight: 800;
+    color: #ffffff;
+    /* background-image: radial-gradient(#8A8D8F, #ffffff);
+    background-clip: text;
+    -webkit-background-clip: text; */
+    background-color: #9D2235;
+    opacity: 1.0;
+    padding-top: 1em;
+    padding-bottom: .5em;
+    text-align: center;
+    /* border-left: 15px solid #8A8D8F;
+    border-right: 15px solid #8A8D8F; */
+    
+  }
+  
+  h1, .h1, h2, .h2, h3, .h3 {
+      margin-top: 15px;
+  }
+  
+  
+  h1 {
+    font-size: 23pt;
+    font-weight: bold;
+    color: 	 #FFFFFF;
+    background-color: #9D2235;
+    opacity: .90;
+    padding-top: .25em;
+    padding-left: .5em;  
+  }
+  
+  
+  h2 { 
+    font-size: 20pt;
+    color:  #FFFFFF;  
+    background-color: #8A8D8F;
+    opacity: .80;
+    padding-left: .5em;
+    padding-top: .5em;
+  }
+  
+  h3 { 
+    font-size: 16pt;
+    color: #000000;
+    padding-top:.5em;
+    padding-left: .5em;
+    font-style: italic;
+  }
+
+  h4 { 
+    font-size: 14pt;
+    color: #000000;
+    padding-top:.5em;
+  }
+  
+  
+  /* Code Chunks */
+  pre {
+    max-height: 350px;
+    background-color: #ffffff;
+    overflow-y: auto;
+  }
+  
+  pre[class] {
+    max-height: 250px;
+  }
+  
+  .r code {
+      white-space: pre;
+  }
+  
+  
+  /* LINKS */
+  
+  /* unvisited link */
+  a:link {
+    color: #374AD5;
+    text-decoration: none;
+  }
+  
+  
+  /* visited link */
+  a:visited {
+    color: #4B0082;
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a:hover { 
+    color: #4B0082;
+    background-color: #E4ECE7;
+    text-decoration: none;
+  }
+  
+  /* TOC */
+  
+  div #TOC {
+    float:right;
+    width:20%;
+    font-size: 10pt;
+    border: 30px solid #9D2235;
+    border-radius: 30;
+    background: white;
+    padding: .5em;
+    overflow:hidden;
+    overflow-y:inherit;
+    box-shadow: 4px 4px 5px #888;
+}
+  
+.tocify-subheader > .tocify-item {
+    text-indent: inherit;
+    padding-left: 2em;
+    }
+  
+  
