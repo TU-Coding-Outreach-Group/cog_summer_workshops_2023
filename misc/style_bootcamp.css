@@ -18,7 +18,7 @@ body{
   
   h1.title {
     font-size: 26pt;
-    font-weight: 800;
+    font-weight: 650;
     color: #ffffff;
     /* background-image: radial-gradient(#8A8D8F, #ffffff);
     background-clip: text;
@@ -56,7 +56,7 @@ body{
   h2 { 
     font-size: 20pt;
     color:  #FFFFFF;  
-    background-color: #8A8D8F;
+    background-color: #686868;
     opacity: .80;
     padding-left: .5em;
     padding-top: .5em;
