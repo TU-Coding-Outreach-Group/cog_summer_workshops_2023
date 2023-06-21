@@ -55,7 +55,7 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 
 
 ## Workshop materials:
-- [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/gimme/index.html)
+- [Notebook Viewer](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimme/index.html)
 
 
 ## What We Won't Cover:
