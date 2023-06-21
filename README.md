@@ -7,8 +7,8 @@ Workshops are on Thursdays in June, July and August from 1:00pm to 3:00pm
 | Date        | Workshop                             | Presenter  |
 | :-----------: |:------------------------------------:| :-----------:|
 | 6/29    | [GIMME](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/gimme)                       | Matt Mattoni |
-| 7/6    | Machine Learning                           | Helen Schmidt |
-| 7/13    | Intro to jPsych      | Steven Martinez |
+| 7/6    | Machine Learning                       | Helen Schmidt |
+| 7/13    | [Intro to jPsych](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/jspsych)      | Steven Martinez |
 | 7/20    | Functions & Iterations in R | Beth Smedley |                          
 | 7/27    | Intro to Item Response Theory                     | Rebekah Banerjee & Merve Tansan |
 | 8/3    | Text Analysis in R              | Camille Johnston |
