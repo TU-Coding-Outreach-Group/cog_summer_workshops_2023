@@ -49,7 +49,7 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 #data_list <- split(long_df,long$ID)
 #filenames <- paste0("C:/Users/.../",names(data_list), ".csv")
 #Map(write.csv,data_list,filenames)
-
+```
     
 ## Workshop objectives:
 
