@@ -4,7 +4,7 @@
 06/29/2023
 
 __**Content creator:**__ Matt Mattoni
-__**Content editor:**__ 
+__**Content editors:**__ Katie Jobson & Billy Mitchell
 
 ## Description
 This R Markdown file was developed for Temple's Coding Outreach Group (COG) summer 2023 workshop series. It will walk through an applied usage of Group Iterative Multiple Model Estimation (GIMME). GIMME is a free to use R package and was developed by Dr. Kathleen Gates at UNC. Any users should first consult, at minimum, the [introductory GIMME manuscript](https://pubmed.ncbi.nlm.nih.gov/22732562/), the [subgroup manuscript](https://pubmed.ncbi.nlm.nih.gov/27925768/) (if using them), and the [GIMME website](https://tarheels.live/gimme/). The COG workshop also includes this brief conceptual introduction to GIMME that should provide a basic foundation for new users: [Slides]() and [Recording] (to be available after workshop is done).
@@ -12,11 +12,10 @@ This R Markdown file was developed for Temple's Coding Outreach Group (COG) summ
 
 ## Prerequisites
 This workshop demands that users:
-1. Have R and RSTudio Downloaded
+1. Have R and RStudio Downloaded
 2. Download the GIMMIE package in R
 3. Download the example data from the cog_summer_workshops_2023/gimmie folder
 
-## Set Up (do before the workshop)
 ## Getting Started
 Installing GIMME is quite easy. It is also updated on a somewhat frequent basis so users should check and install the newest version when starting a new project. The installation includes all dependencies, mainly lavaan which is the SEM package GIMME is built on.
 We will also install other packages that we will use later. 
@@ -56,9 +55,6 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 
 ## Workshop materials:
 - [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/gimme/index.html)
-
-
-## What We Won't Cover:
 
 ## Outline
 | Section | Description | Time |
