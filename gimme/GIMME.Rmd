@@ -1,6 +1,8 @@
 ---
 title: "Using GIMME in R"
-author: "Matt Mattoni"
+author: 
+  - name: "**Content creator: Matt Mattoni**"
+  - name: "**Content editors: Katie Jobson & Billy Mitchell**"
 date: "2023-06-29"
 output: 
   html_document: 
@@ -21,7 +23,7 @@ knit: (function(inputFile, encoding) {
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 ```
 
 This R Markdown file was developed for Temple's Coding Outreach Group (COG) summer 2023 workshop series. It will walk through an applied usage of Group Iterative Multiple Model Estimation (GIMME). GIMME is a free to use R package and was developed by Dr. Kathleen Gates at UNC. Any users should first consult, at minimum, the [introductory GIMME manuscript](https://pubmed.ncbi.nlm.nih.gov/22732562/), the [subgroup manuscript](https://pubmed.ncbi.nlm.nih.gov/27925768/) (if using them), and the [GIMME website](https://tarheels.live/gimme/). The COG workshop also includes this brief conceptual introduction to GIMME that should provide a basic foundation for new users: [Slides](ENTER GITHUB LINK TO SLIDES) and [Recording](ENTER LINK TO RECORDING AFTER WORKSHOP).
@@ -29,7 +31,7 @@ This R Markdown file was developed for Temple's Coding Outreach Group (COG) summ
 # Getting Started
 Installing GIMME is quite easy. It is also updated on a somewhat frequent basis so users should check and install the newest version when starting a new project. The installation includes all dependencies, mainly lavaan which is the SEM package GIMME is built on.
 We will also install other packages that we will use later. 
-```{r, message = FALSE}
+```{r, message = FALSE, warning = FALSE, eval=FALSE}
   # Installing pacman if it's not present
   if (require("pacman") == FALSE){
     install.packages("pacman")
@@ -121,7 +123,7 @@ saveRDS(gimme_out,
 ```
 
 If you run this yourself, GIMME tells will tell you it finished running normally, and found two subgroups. What do things look like?
-```{r, message=FALSE}
+```{r, message=FALSE,warning = FALSE, eval=FALSE}
 gimme_out <- readRDS('gimme_output.rds')
 plot(gimme_out)
 ```

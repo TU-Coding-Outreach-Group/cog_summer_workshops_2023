@@ -3,7 +3,7 @@ title: "Temple University Coding Outreach Group Summer Workshop -- Intro to jsPs
 date: "05/13/2023"
 author: 
   - name: "**Content creator: Steven Martinez**"
-  - name: "**Content editor: Katie Jobson & Billy Mitchell**"
+  - name: "**Content editors: Katie Jobson & Billy Mitchell**"
 output:   
   html_document:
     toc: true
@@ -34,7 +34,7 @@ This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/j
 ## Outline
 
 | Topic | Description | Time |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | Intro | Workshop overview | 5 mins |
 | Setting up a jsPsych script | jsPsych and Visual Studio Code set-up | 10 mins |
 | Building an experimental trial | Learning how to integrate Javascript, HTML, and CSS | 15 mins |
@@ -42,8 +42,7 @@ This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/j
 | Conclusion & General Notes | Review, Pavlovia compatibility, tutorial suggestions, etc. | 5 mins | 
 
 
-
-# --- Intro: Workshop Overview --- #
+# --- Intro: Workshop Overview ---
 
 ## Set Up & Prerequisites
 
@@ -75,9 +74,7 @@ JavaScript is the programming language that is used to make interactive webpages
 
 
 
-# --- Setting up the jsPsych script | jsPsych and Visual Studio Code set-up --- ###
-
-
+# --- Setting up the jsPsych script | jsPsych and Visual Studio Code set-up --- 
 
 ## Getting Started in Visual Studio Code
 
@@ -98,7 +95,6 @@ Here's what your directory should look like with the "stimuli" folder, the "jsps
 
 
 ![](images/directory_structure.png){width=50%}
-
 
 
 
@@ -127,13 +123,7 @@ Now that we've added some code to our script, let's open up the script on a web 
 
 ![](images/run_task.png){width=100%}
 
-
-
-
-
 # --- Building an experimental trial | Learning how to integrate Javascript, HTML, and CSS --- #
-
-
 
 ## Step 3: Loading in jsPsych
 
@@ -174,7 +164,6 @@ In order to load the jsPsych stylesheet, we will need to add a \<link\> tag to t
   </head>
   <body></body>
 </html>
-
 ```
 
 ## Step 6: Create a script element and initialize jsPsych
@@ -202,7 +191,6 @@ var jsPsych = initJsPsych();
 
   </script>
 </html>
-
 ```
 
 
@@ -237,7 +225,6 @@ We'll add trials to this timeline array as we create them.
 
   </script>
 </html>
-
 ```
 
 ## Step 8: Loading a jsPsych plugin to display a welcome message.
@@ -264,10 +251,9 @@ Let's say we want to show a welcome message to the participant. To do this, we c
 
   </script>
 </html>
-
 ```
 
-# Step 9: Creating an experimental trial
+## Step 9: Creating an experimental trial
 
 Now that we've loaded the html-keyboard-response plugin, we can create the first experimental trial that uses the html-keyboard-response plugin and contains a simple string to show the subject. Let's greet the participant with a simple welcome message: "Welcome to the experiment. Press the space bar to begin".
 
@@ -298,7 +284,6 @@ For our purposes, let's use the following knobs of the html-keyboard response pl
       stimulus: 'Welcome to the experiment. Press the space bar to begin.'
       choices: [' '],
     }
-
 ```
 
 
@@ -319,7 +304,6 @@ In order to add the welcome trial to the experiment, we will need to push it to 
     
 //Push the welcome trial to the experimental timeline
   timeline.push(welcome);
-
 ```
 
 ## Step 11: Displaying the Data
@@ -337,7 +321,6 @@ We will be using jsPsych's "on_finish" function, which basically calls functions
       jsPsych.data.displayData();
     }
   });
-
 ```
 
 ## Step 12: Preparing to run the experiment
@@ -351,7 +334,6 @@ Again, the timeline is just an array containing the list of trials to run.
 ```
 //Run the experiment!
   jsPsych.run(timeline);
-
 ```
 
 
@@ -405,7 +387,6 @@ Just like we did when we tested the script earlier, let's open up the script on 
 
   </script>
 </html>
-
 ```
 
 
@@ -436,7 +417,6 @@ Now let's run the script again to see what the experimental trial looks like now
       stimulus: "<p style = 'font-size: 40px; color: blue;'>Welcome to the experiment! Press the space bar to begin.</p>", 
       choices: [' '],
     };
-
 ```
 
 
@@ -468,10 +448,7 @@ Before we start building the experimental task, we need to load in some extra pl
   </head>
   <body></body>
   <script>
-
 ```
-
-
 
 
 ## Step 16: Building a full experiment-- Organize all the stimuli that will make up our experimental trials
@@ -493,13 +470,7 @@ var task_stimuli = [
   { animal: "/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/stimuli/toucan.jpg", name: 'Toucan'},
   { animal: "/Users/tuh20985/Desktop/TU Cog 2023 Workshops/jsPsych_workshop/stimuli/polarbear.jpg", name: 'Polar Bear'}
 ];
-
 ```
-
-
-
-
-
 
 
 ## Step 17: Building a full experiment -- Create a trial that shows a fixation cross
@@ -522,7 +493,6 @@ var fixation = {
   choices: "NO_KEYS",
   trial_duration: 500,
 };
-
 ```
 
 
@@ -552,13 +522,7 @@ var stimuli_presentation = {
   stimulus_height: 500,
   stimulus_width: 500,
 }
-
 ```
-
-
-
-
-
 
 
 ## Step 19: Building a full experiment -- Organize phase 1 task procedure
@@ -589,7 +553,6 @@ Of note, there is more than one way to push a trial object to the experimental t
   
 //Push phase 1 procedure to experimental timeline  
 timeline.push(task_procedure);
-    
 ```
 
 
@@ -687,7 +650,6 @@ timeline.push(task_procedure);
 
   </script>
 </html>
-
 ```
 
 
@@ -721,7 +683,6 @@ var memory_test = {
     required: true}
   ]
 }
-
 ```
 
 ## Step 22: Building a full experiment -- Organize phase 2 task procedure
@@ -751,7 +712,6 @@ var phase2_procedure = {
 
 //Push phase 2 procedure to experimental timeline
 timeline.push(phase2_procedure);
-
 ```
 
 ## Step 23: Building a full experiment -- Concluding the experiment
@@ -914,13 +874,12 @@ timeline.push(experiment_finished);
 
   </script>
 </html>
-
 ```
 
 
 
 
-# --- Conclusion & General Notes | Review, Pavlovia compatibility, tutorial suggestions, etc. --- ###
+# --- Conclusion & General Notes | Review, Pavlovia compatibility, tutorial suggestions, etc. --- 
 ```
 Yael Niv’s lab has a super helpful task repository, which also includes tutorials: https://nivlab.github.io/jspsych-demos/
 
@@ -936,7 +895,6 @@ Super friendly forum for asking questions about jsPsych (I have asked some truly
 I included an online version of our experiment in a script titled "index.html" in the jsPsych_workshop folder. I also included a few slides in the Outro video that go through the minor coding tweaks you need to make in order for your script to run online.
 
 Hope this workshop has been helpful! :) 
-
 ```
 ```{r Conclusion Video, echo = FALSE}
 vembedr::embed_url("https://www.youtube.com/watch?v=n63bv-tKInk")
