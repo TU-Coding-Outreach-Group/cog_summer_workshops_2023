@@ -2,20 +2,53 @@
 title: "Intro to SQL"
 author: "Katie Jobson & William Mitchell"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  html_document: 
+    number_sections: true
+    toc: true
+    toc_depth: 2
+    toc_float:
+      collapsed: false
+    self_contained: yes
+    mode: selfcontained
+    df_print: paged
+    css: !expr here::here("misc/style_bootcamp.css")
+knit: (function(inputFile, encoding) { 
+      out_dir <- './';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 ```
 
-## R Markdown
+# Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## What is SQL?
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. This language is one of the most common used in "industry" jobs that people get after leaving academia, such as data scientist or data engineer. This tutorial will be a basic introduction to SQL so that individuals who are interested in jobs outside of academia will have some experience relevant to other jobs they may want to have. 
 
-```{r cars}
+![](images/sql_intro.png)
+
+## Getting Started
+
+
+## How to Use SQL in R
+
+SQL is compatible with R, and we can actually use it within RMarkdown. FOllow the steps below to get setup for that.
+
+1. First, follow the download instructions in this website for the ODBC Driver:https://www.sqlshack.com/how-to-configure-a-linked-server-using-the-odbc-driver/ This will allow you to access data stored in database management systems.
+
+2. Run the chunk of code below to load the SQL package in R
+
+```{r, echo = FALSE}
+install.packages("DBI")
+library(DBI)
+```
+3. Connect to an SQL server
+```{r sql}
 summary(cars)
 ```
 

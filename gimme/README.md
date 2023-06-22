@@ -58,7 +58,7 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 
 ## Outline
 | Section | Description | Time |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | Intro | Data formatting questions | 10 mins |
 | GIMMIE Arguments | Required arugements and running GIMMIE | 15 mins |
 | GIMMIE Outputs | Examing the output of GIMMIE, formatting as an R object | 15 mins |
