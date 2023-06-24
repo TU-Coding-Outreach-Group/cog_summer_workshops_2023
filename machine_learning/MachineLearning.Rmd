@@ -1,6 +1,8 @@
 ---
 title:    "Introduction to Machine Learning in R"
-author:   "Helen Schmidt"
+author:   
+  - name: "Content Creator: Helen Schmidt"
+  - name: "Content Editors: Katie Jobson & Billy Mitchell"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
@@ -36,7 +38,7 @@ knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 75), tidy = TRUE)
 ```
 
 ```{r Introduction Video, echo = FALSE}
-#vembedr::embed_url("INSERT URL TO INTRODUCTION VIDEO HERE")
+vembedr::embed_url("https://youtu.be/kN_sY1WiAjg")
 ```
 
 Machine learning (ML) broadly describes the process of teaching computers to learn information. It is widely used in computer science, neuroscience, and data science to train "machines" (e.g., algorithms, models) to learn about information and make predictions or classifications based on that learning. Machine learning is a subset of artificial intelligence (AI), and it has grown in popularity during the recent AI boom. While AI describes the general development of computers that can mimic cognitive function, machine learning is more specific, using algorithms and large amounts of data to make informed decisions for specific tasks. 
@@ -68,7 +70,7 @@ plot.format <- list(theme_classic(), scale_color_manual(values = colors),
 # Dataset
 
 ```{r Dataset Exploration Video, echo = FALSE}
-#vembedr::embed_url("INSERT URL TO DATASET EXPLORATION VIDEO HERE")
+vembedr::embed_url("https://youtu.be/XpQfJ41c8-w")
 ```
 
 The palmer penguins dataset was created by Allison Horst, and features data from penguins. The data from these penguins was originally collected by researchers at the Palmer Long-Term Ecological Research Station in Antarctica. There are three different species of penguin in this dataset collected from three islands in the Palmer Archipelago, Antarctica. For the sake of simplicity, we will be working with the `penguins` dataset, rather than the `penguins_raw` dataset.
@@ -161,7 +163,7 @@ A common area of investigation in psychology are individual difference measures.
 # Supervised Learning
 
 ```{r Supervised Learning Video, echo = FALSE}
-#vembedr::embed_url("INSERT URL TO SUPERVISED LEARNING VIDEO HERE")
+vembedr::embed_url("https://youtu.be/l-bcXqxUkM8")
 ```
 
 Supervised learning is a machine learning technique for data that contains labeled examples, such that each data point contains features and an associated label. The goal of supervised learning is to map features to labels based on example data and apply that mapping to classify new data. In the case of the palmer penguin data, our features include bill length, bill depth, flipper length, and body mass, and our labels are penguin species names. 
@@ -263,7 +265,7 @@ What happens to the decision tree if you remove **island name** and **flipper le
 # Unsupervised Learning
 
 ```{r Unsupervised Learning Video, echo = FALSE}
-#vembedr::embed_url("INSERT URL TO UNSUPERVISED LEARNING VIDEO HERE")
+vembedr::embed_url("https://youtu.be/UyZ83ra-lS4")
 ```
 
 Unsupervised machine learning is a technique for data that does not contained labeled examples. There are two goals to unsupervised machine learning: clustering and dimensionality reduction. You will learn how to use two techniques - K-means clustering will help you cluster data and Principal Components Analysis will help you reduce dimensionality within the data. 
@@ -395,7 +397,7 @@ Let's pretend that the penguin species variable is our only "label" variable. Tr
 # Conclusion
 
 ```{r Conclusion Video, echo = FALSE}
-#vembedr::embed_url("INSERT URL TO CONCLUSION VIDEO HERE")
+vembedr::embed_url("https://youtu.be/syW85OVTUaM")
 ```
 
 In this tutorial, you have learned how to apply both supervised and unsupervised machine learning models to an easily available dataset. These techniques include K-Nearest Neighbors clustering, Decision Trees, K-Means Clustering, and Principal Components Analysis. Using these relatively simple tools in a programming language that is popular among psychology and neuroscience researchers makes these machine learning techniques easily accessible and applicable to a variety of datasets, research projects, and topics. 
