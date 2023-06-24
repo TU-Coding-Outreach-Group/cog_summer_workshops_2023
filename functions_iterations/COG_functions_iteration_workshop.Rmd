@@ -1,0 +1,1097 @@
+---
+title: "Coding Outreach Group Summer Workshop - Functions and Iteration in R"
+date: "`r Sys.Date()`"
+author: 
+  - name: "Content creator: **Elizabeth Smedley**"
+  - name: "Content editor: Katie Jobson & Billy Mitchell"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: 
+      collapsed: false
+    toc_depth: 2
+    df_print: paged
+    css: !expr here::here("misc/style_bootcamp.css")
+    knit: (function(inputFile, encoding) { 
+      out_dir <- './';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = FALSE)
+options(yaml.eval.expr = TRUE)
+```
+
+```{r loading vembedr, eval = T, include=F, echo = FALSE}
+# Necessary to embed the youtube videos.
+library(vembedr)
+```
+
+**In this tutorial we will cover:**
+
+-   when to use functions, how to make custom functions
+
+-   function style and housekeeping
+
+-   when to use iteration, loops and their alternatives
+
+-   apply our knowledge of functions and iteration to load all files from a folder of data and perform quality assurance measures
+
+# Section 1: Intro - Why use functions and when to use iteration?
+
+embed_url("https://youtu.be/hH_HLv82Vf8")
+
+```{r Section 1 Video, echo = FALSE}
+#vembedr::embed_url("https://www.youtube.com/watch?v=Jc87nRBSPWQ")
+# 
+
+#' GO OVER CONTENT IN "COG_intro.mp4"
+#' 
+```
+
+### Workshop Setup
+
+I'm first going to load the couple of packages that we will need for this workshop. I've included a little bit of information about each of their uses in a comment below. Running the code chunk below will load the desired packages if you have already installed them, and the nice thing is, it will also automatically install any needed packages if you have not yet done so. Basically, this is possible through creating an object containing the names of the desired packages ("function_iteration_packages"), creating an object containing the names of your existing packages ("packages"), and using a function to install any package names that are listed among the desired packages, but not among existing packages.
+
+```{r Packages, message=FALSE, warning=FALSE}
+function_iteration_packages <- c("tidyverse", "gapminder", "glue", "datasets")
+
+## -- brief explanation of packages -- ##
+
+# tidyverse is for wrangling and contains ggplot2, tibble, purrr, dplyr, tidyr, stringr, readr, and forcats
+
+# gapminder is a dataset about global trends (life expectancy, gdp, population) by country and continent from years 1952 to 2007
+
+# glue is a package for working with strings, also accessible via tidyverse::stringr::str_glue()
+
+# datasets provides many example data sets for R
+
+packages <- rownames(installed.packages())
+p_to_install <- wrangling_packages[!(wrangling_packages %in% packages)]
+
+if(length(p_to_install) > 0){
+  install.packages(p_to_install)
+}
+
+lapply(wrangling_packages, library, character.only = TRUE)
+```
+
+Now let's clean our environment of the variables we won't need
+
+```{r Removing Unnecessary Variables}
+rm(p_to_install, packages, wrangling_packages)
+```
+
+We're next going to ***specify the working directory*** to wherever you have this workshop stored locally.
+
+Make sure the folder called 'opioid_data' is contained in the folder at the end of this path! We will use it in section 2!
+
+```{r Setwd, eval = FALSE, include = TRUE}
+#check current working directory
+getwd()
+
+#change the directory to where you have the COG2023_functions_and_iteration_in_R.csv saved
+wd <- "/Users/administrator/Desktop"
+setwd(wd)
+
+#we won't be using the variable wd any longer
+rm(wd)
+```
+
+# A basic function and faded examples
+
+Now that we're all set up, let's start with a basic function example.
+
+Let's make a function that adds 1 to our_input and returns the new_value.
+
+```{r Basic function example}
+
+our_input <- c(1,2,3,4,5)
+
+# we can name our new function called "add_one"
+add_one <- function(our_input){
+  new_value <- our_input + 1
+  return(new_value)
+}
+# once we run these lines of code, R will put add_one into our environment as a function
+
+# if we run add_one() on an input of 4, what would you expect as our new_value?
+
+add_one(4)
+```
+
+Following this basic format, let's work on completing some faded examples (partially complete examples) so that the function works and returns the answer we need.
+
+### Activity_01: Make some functions (faded examples)
+
+1.  Fill in the blanks in the code so that `my_square_root(16)` returns `4`.
+
+```{r Activity_01_01 my_square_root}
+my_square_root <- function(____){
+  return_value <- sqrt(____)
+  return(____)
+}
+
+my_square_root(16)
+```
+
+2.  Fill in the blanks in the code so that `my_max_minus_min(c(4,7,1,6,8))` returns `7`
+
+```{r Activity_01_02 my_max_minus_min}
+my_max_minus_min <- ____(____){
+  return_value <- ____(____) - ____(____)
+  ____(____)
+}
+
+my_max_minus_min(c(4,7,1,6,8))
+```
+
+#### Functions can take more than 1 argument
+
+Let's turn our homemade mean example from the intro video and turn it into a function. Notice that we used `sum()` on the second line. `Sum()` is its own function that can take a number of arguments - an important one is often using `na.rm = TRUE`.
+
+If we needed to use a function within our custom function, we can pass arguments from the nested function like this:
+
+```{r more than 1 argument example}
+homemade_mean <- function(sample_vector, ...){
+  sum_of_vector <- sum(sample_vector, ... ) # pass args from sum!
+  n <- length(sample_vector)
+  return(sum_of_vector/n)
+}
+
+#an example vector for us to test this on
+test_vector <- c(1,2,3,4,5,NA,8)
+
+homemade_mean(test_vector) # this breaks
+
+homemade_mean(test_vector, na.rm = TRUE) # this works because we've correctly passed the na.rm argument from sum() to our custom homemade_mean() function!
+
+```
+
+### Function Style Guide
+
+When writing new, homemade functions, its good practice to do the following:
+
+1.  Make a short (max 2 sentences) about what the function does.
+2.  List out inputs and arguments and any required packages
+3.  Describe the output
+4.  Make note of any dependent libraries ('requires:')
+5.  Use a descriptive, but short, name.
+6.  Comment what each line is doing
+
+Optionally, you may want to use a prefix (like your initials or a "." ) to denote in-house functions that way you can easily see what functions you have made when you type in the prefix and the auto generated drop down pops up.
+
+Here's an example from some code I wrote a while back.
+
+```{r Function Style Guide example}
+
+#function: trial_epoch_gen calls a data frame and uses event codes 1 and 2 to parse the start and end of a trial ("trial epoch generator")
+  #df: df with columns variable_id (required), time
+  #code1: first event 
+  #code2: second event
+  #returns: the time between events in df
+eb.trial_epoch_gen <- function(df, code1, code2) {
+    
+    start <- which(df$variable_id == code1) # find indices of start code
+    
+    end <- which(df$variable_id == code2) # find indices of end code
+    
+    return(df[c(start:end),]) # subset df to return the rows from start to end
+  } 
+```
+
+Another thing to note is that you can absolutely use pipes within your functions. Here's an example:
+
+```{r Pipes in functions example}
+
+#function: eb.mean_life_by_country calls a data frame and groups by country then outputs mean lifeExpectancy and standard deviation of lifeExpectancy
+  #df: df with columns country and lifeExp
+  #returns: tibble of countries, their mean life expectancies and sd of life expectancy
+  #requires: dplyr, magrittr, gapminder
+
+eb.mean_life_by_country <- function(df) {
+  df %>%
+    group_by(country) %>% # grouping by country
+    summarise(mean = mean(lifeExp), # returning values for mean life expectancy and
+              sd = sd(lifeExp)) %>% # standard deviation of life expectancy
+    return() 
+  
+}
+
+eb.mean_life_by_country(gapminder) # test it here
+
+```
+
+## Practice writing functions
+
+For all of the following examples, be sure to practice good housekeeping and follow the function style guide!
+
+### Activity_02: Practice writing functions
+
+Use these prompts to practice writing and testing functions. Use the [Function Style Guide] to properly comment your homemade functions. If you're feeling stuck, check out [Help, I don't even know where to start!](#help-i-dont-even-know-where-to-start)
+
+1.  Make a function that takes a vector and sums it up after it squares it.
+
+    **To test**: use `sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)`
+
+    such that `sum_squares(sample_vector)` should return `27361`
+
+    ```{r}
+    # description: 
+    # input: 
+    # output: 
+    # requires:
+
+    sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)
+
+    sum_squares(sample_vector)
+
+    ```
+
+2.  Make a function that takes a number, a string, and a separator and combines them.
+
+    **To test**: `num_hello(1, "hello", ".")` returns `"1.hello"`
+
+    ```{r}
+    # description: 
+    # input: 
+    # output: 
+    # requires: 
+
+    combine(1, "hello", ".")
+    ```
+
+3.  Write a function to convert farenheit to centegrade (Celcius = (Farenheit - 32) x 5/9). Get your function to print out your result in the following format: "Farenheit : *value of oF* is equivalent to *value oC* centigrade."
+
+    **To test:** `temp_conversion(23)` should return `"Farenheit: 23 is equivalent to -5 centigrade"`
+
+    ```{r}
+    # description: 
+    # input: 
+    # output: 
+    # requires:
+
+    temp_conversion(23)
+
+    ```
+
+## Iteration: Loops
+
+We've covered the basics and practiced writing some simple functions. Again, functions are great for performing the same series of steps to different objects or inputs.
+
+Sometimes, we may want to repeat code to achieve our end goal. That's where iteration comes in.
+
+There are two basic types of loops, loops that execute for a predetermined number of times (**for loops**) and loops that execute until a condition is met (**while and repeat loops**).
+
+I want to briefly talk about the most common loop types (while loops and for loops) and we will dissect them, make a few to get the gist, then probably rarely use them. Loops in R are computationally slow, and there are better alternatives but sometimes it is indeed your best option so it's good to know how to do it.
+
+And, many of the alternatives work on the same basic premise that loops operate on so it's important to understand how they work.
+
+### While loops
+
+If this is your first time seeing a loop of any kind, a while loop is a great place to start (in my opinion). The `while` operator is followed by a logical statement, if TRUE that allows the subsequent code to continue to run until the condition is met at which time the statement will return FALSE, and the loop will stop.
+
+Here is an example where we start with x having a value of 0 when it enters the loop. R sees the `while()` statement and checks the condition to see if it returns TRUE, since indeed 0 is smaller than 1000, it is TRUE. So, the loop continues and we add 17 to x (which remember is 0 right now) and x now becomes 17. This gets sent back to the top and `while()` evaluates again, is x less than 1000? TRUE, 17 is less than 1000 so we continue on and add 17 again... this continues until x is greater than 1000 and as soon as the evaluation returns FALSE, the loop stops.
+
+```{r}
+# initialize x to start at 0
+x <- 0
+# Condition: while x is less than 1000, add 17 to x
+# then x = 17, 17 is less than 1000, so add 17 to x again
+# then x = 34, 34 is less than 1000. so add 17 to x again...
+while(x < 1000) {
+  x <- x + 17
+ }
+print(x)
+
+# this will of course continue until x is greater than 1000 (17 * 59 = 1003) so it will go through 59 iterations until the loop stops because the x < 1000 condition is now false
+```
+
+#### Activity_03: while loop faded example
+
+Quick note, whenever I'm testing out a new loop, I will put i (or whatever variable I'm using, the above example uses x) = 1 in the console and then run each line and look at what is happening. This is better than replacing the i with 1 in your code. Guaranteed it keeps you from forgetting that you left a 1 in your loop and suddenly your code breaks and it takes you ages to figure out... definitely not speaking from experience or anything 🥴.
+
+*Here's a more involved example for us to fill in the blanks.*
+
+Students at University of Samhain that are working towards a bachelor's degree (120 credit hours) have to choose courses from a curriculum that offers 2, 3 or 4 credits courses. They also must take at least 4 courses per semester to be considered a "full time" student. **In this loop, we will simulate the course progression for one student to find out how many total credits they will actually take. Do they end up with exactly 120 credits or do they take more, if so, how many more?** *Fill in this faded example so we can see what one possible course progression could be for a student.*
+
+```{r}
+
+set.seed(2023)
+  
+grad.credits <- 0 # keep track of credits that count towards graduation, need 120 credit hours
+course_offerings <- c(2,2,3,3,4,4,4,4,4,4,4,4,4,4) # courses are between 2-4 credit hours each, only 4 courses allowed per semester
+semester_total <- 0 # keep track of credits per semester
+semester <- 0 # keep track of how many semesters it will take to finish
+
+
+while(_________ < ___){ 
+  semester <- _______ + 1 
+  semester_total <- ___(sample(_________, size = 4)) 
+  grad.credits <- sum(______ + ______)
+  
+  cat("semester", ______, ": credits", _______, "\n")
+  }
+
+# print the total semesters and credits at the end
+cat("total semesters", ________, "\n", "total credits earned", ________)
+
+
+# -- Need a hint? -- # 
+# written out loop:
+  # as long as grad.credits is less than the minimum 120 credits, continue looping
+    # add 1 to semester and keep in an object called 'semester' so that we can keep track of the number of iterations/semesters 
+    # take a sample of 4 classes from the vector of credits available from course_offerings and add them up to get the total number of credits that semester
+    # keep track of all total grad credits by adding the previous total of grad credits to the total from this iteration/semester ('semester_total')
+    # print each iteration for which semester it is, and how many credits they earned
+
+# at the end of the loop print the total semesters taken, and total number of credits earned
+
+# note: the "\n" notation is a line separator!
+
+```
+
+### For loops
+
+Unlike while statements that do not have a fixed, or predetermined number of iterations, with for loops you're repeating a certain block/lines of code a predetermined amount of times. This is the general format:
+
+1\. initialize our end result with it's starting value (if necessary)
+
+2\. for x in some vector y, do stuff.
+
+```{r}
+# for loop example: to add 1:10 (e.g., 1 + 2 + 3 + 4 + 5...) 
+
+# 1. make y an empty numeric/double vector in which to hold our final result 
+y <- 0
+
+# 2. make a for loop where y equals the sum of y plus x 
+
+# note, in this example the first time the loop runs, x = 1, the next time, x = 2 and so on until we get to 10
+
+for(x in 1:10){
+  y <- y + x
+}
+
+# on the very first pass through the loop, y = 0, and x = 1
+# then, we add y + x (which is 0 + 1)
+# and dump it into our empty vessel y, which now, will turn into a value of 1
+
+# on the second pass through the loop, y = 1, and x = 2
+# then we add y + x (which is 1 + 2)
+# and then overwrite y, which now will turn into a value of 3
+
+# on the third pass through the loop, y = 3, and x = 3
+# and then we add y + x (which is 3 + 3)
+# and then overwrite y, which now will turn into a value of 6
+
+#. 
+#.
+#.
+
+# on the tenth, and final pass through the loop, y = 45 , and x = 10
+# and then we add y + x (which is 45 + 10)
+# and then overwrite y, which now will turn into a value of 55
+
+# 3. see what we get
+y
+
+```
+
+Why does x = 10 after you run the loop? What is happening each time x passes through the loop? If you're not sure of the answer, go back and read the comments in the above chunk!
+
+#### Activity_04: for loop faded examples
+
+1.  Print "COG workshops are the best." three times
+
+    \#`[1] "COG workshops are the best."`
+
+    \#`[1] "COG workshops are the best."`
+
+    #\`[1] "COG workshops are the best."
+
+```{r}
+
+for(i in 1:___){
+  ______("COG workshops are the best!")
+}
+```
+
+2.  Evaluate the number of characters in each word in this string of words. **To test:** the first printed item will return `[1] "trade has 5 letters"`
+
+```{r}
+
+set.seed(2023)
+word_string <- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
+    
+# loop over the word_string and evaluate the number of characters in each word then print the results
+    for(_ in __________){
+      word.length <- nchar(_)
+      message <- paste(_, "has", ____________, "letters")
+      print(message)
+    }
+    
+```
+
+3.  What if we wanted to just return the number of characters from each word into a vector? This is really similar to #2, but instead of printing the number of letters per word, we're going to get them into a vector. **End result 'foo' should start like this:**
+
+    |           | word.length |
+    |-----------|-------------|
+    | trade     | 5           |
+    | learn     | 5           |
+    | introduce | 9           |
+    | god       | 3           |
+
+```{r}
+set.seed(2023)
+word_string <- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
+
+# loop over the word_string and evaluate the number of characters in each word then print the results
+
+
+# initialize an object to keep our results
+word.length <- c()
+
+for(_ in __________){
+  _________[_] <- nchar(i)
+}
+
+foo <- as.data.frame(word.length)
+
+foo
+
+```
+
+### Alternatives to loops
+
+#### the apply family
+
+The above loop totally works, and is a reasonable option and sometimes if that's the first tool you reach for and it works for the job - cool. Do it. However, there are alternatives that you should know about! `base::`'s the *apply family* (and `purrr::` which we'll talk about briefly too) can do what we just did in an even more elegant way.
+
+-   `base::apply(x = data_frame, margin = c(1,2), fun = function_to_apply)`
+
+    -   what it is good for: input df, output vector, list, or array
+
+        -   margin = 1 (apply function to rows)
+
+        -   margin = 2 apply function to columns
+
+        -   margin = c(1,2) apply function to rows and columns
+
+-   `base::lapply(x = list_vector_or_object, function = function_to_apply)`
+
+    -   pronounced "L" "Apply", not "lapp - ly" which imo would be more fun
+
+    -   what it is good for: function is applied to each element of x (can also be a df)
+
+    -   returns list of objects of same length of input - this is really the only difference between apply and lapply
+
+-   `base::sapply(x = list_vector_or_object, function = function_to_apply)`
+
+    -   pronounced "S" "Apply", not "sapp - ly" which again, way cuter but I didn't decide this
+    -   what it is good for: does the same as lapply but returns a vector
+
+**Let's look at some examples using the apply family.**
+
+`base::apply()` here we're taking this data frame we've created and we want to take the sum of the columns.
+
+```{r}
+# making the data frame
+df_x <- data.frame(v1 = c(1,2,NA), v2 = c(2,3,1))
+
+# initiating an empty list
+df_x_sum <- list()
+
+# we could take the sum of each column with a loop
+for(i in 1:ncol(df_x)){
+  temp_sum <- sum(df_x[,i], na.rm = TRUE)
+  df_x_sum[[i]] <- temp_sum
+}
+df_x_sum
+
+# or we could use apply() to apply the function sum() over the columns (specified with a 2) in df_x
+apply_example <- apply(df_x, 2, sum)
+apply_example
+
+# uh oh, this doesn't work because sum needs the argument na.rm = TRUE for this to work. Luckly we can just add arguments after the function like this.
+apply_example_columns <- apply(df_x, 2, sum, na.rm = TRUE)
+apply_example_columns
+
+typeof(apply_example_columns) # is a double (type of vector)
+
+# -- example summing over rows -- #
+apply_example_rows <- apply(df_x, 1, sum, na.rm = TRUE)
+apply_example_rows
+
+typeof(apply_example_rows) # is a double (type of vector)
+```
+
+`lapply()` is better for lists, since that's what it will return to you, but we can pop our data frame in there and see it will return our sums in a list. We just cant specify if we're summing over rows or columns like we can with `apply()` and it automatically assumes we're summing over columns.
+
+```{r}
+# -- lapply example that returns sums in a list of each column in df_x -- #
+lapply_example <- lapply(df_x, sum, na.rm = TRUE) 
+lapply_example
+typeof(lapply_example) # is a list
+
+```
+
+`sapply()` here is helping us achieve the same goal as above. The difference to using sapply here over lapply is that sapply will return a vector where as lapply returns a list. Same thing though, sapply is better for vectors as input rather than data frames because we can't specify rows or columns...
+
+```{r}
+
+# -- sapply example that returns sums in a list of each column in df_x -- #
+sapply_example <- sapply(df_x, sum, na.rm = TRUE) 
+sapply_example
+typeof(sapply_example) # is a double (type of vector)
+
+
+```
+
+# INSERT VIDEO 'COG_apply_family.mp4' HERE
+
+Here I'm demonstrating for you how we can use `sapply()` to do a quality control-like procedure to find the missing data per column. **Take note that here, when we use more than one function, in this case sum() and is.na() we have to use the function(x) notation and specify what we are operating on in this format!**
+
+```{r}
+
+# WILL GO OVER THIS AND BELOW CHUNK IN VIDEO 2
+
+
+# --- How we find missing data for one column --- #
+# find the total missing data by column of df_x with sapply 
+# on one column, true = 1
+is.na(df_x$v1) # will return FALSE FALSE TRUE
+
+# then we can sum the number of TRUEs (0 + 0 + 1)
+sum(is.na(df_x$v1))
+
+# --- How we can use sapply() to find missing data for all columns --- #
+
+# you put 'function' in there when you have more than 1 function 
+# (here we have sum() and is.na())
+# we put x inside function() and where we would put df_x to specify that this is the data frame we are operating on
+
+sapply(df_x, function(x) sum(is.na(x)))
+
+  sapply(df_x, function() sum(is.na())) # note that this WILL NOT work without the x!
+
+
+```
+
+Here is another example of the function(x) and multiple function passing with `sapply()` where we are finding the proportion of missing data for all columns
+
+```{r}
+# --- How we can use sapply() to find the proportion of missing data for all columns --- #
+
+sapply(df_x, function(x) sum(is.na(x))/length(x)) # {} around the inside of the function are optional!
+
+sapply(df_x, function(x) { # you can format it more function-like if you prefer!
+  sum(is.na(x))/length(x)
+})
+
+```
+
+### Example of a common use of apply: finding max per row
+
+Perhaps we want to find the **maximum number in each row** in a dataframe. We can use `apply()` to do this.
+
+```{r}
+# fake data of cell counts per replicate
+fake_data <- data.frame(rep_01 = seq(10, 100, 10),
+                        rep_02 = seq(10, 55, 5),
+                        rep_03 = seq(30, 75, 5),
+                        rep_04 = seq(1, 200, 20))
+
+
+# -- How we could do this row by row manually -- #
+max(fake_data[1,])
+max(fake_data[2,])
+max(fake_data[3,])
+.
+.
+.
+
+# -- How we could do this in a for loop -- #
+for(i in 1:10){
+  row <- fake_data[i,]
+  max <- max(row)
+  print(max)
+}
+
+# -- How we could use apply -- #
+apply(fake_data, 1, max) # takes each row as an input, and decides one by one which number is the max
+
+
+```
+
+What happens if within our data frame we don't have all numeric data (a common occurrence)? We could exclude the columns or rows we are not interested in.
+
+```{r}
+# sometimes we don't have all numeric input in a dataframe though...
+fake_data_factor <- data.frame(day = as.factor(c(1:10)), 
+                        rep_01 = seq(10, 100, 10),
+                        rep_02 = seq(10, 55, 5),
+                        rep_03 = seq(30, 75, 5),
+                        rep_04 = seq(1, 200, 20),
+                        quality= as.factor(c(1,6,2,4,7,8,NA,3,5,1)))
+
+# -- Finding the mean of each column -- # 
+
+apply(fake_data_factor, 1, mean)
+# wont work if there's non numeric input in there you can include only the items you want
+
+apply(fake_data_factor[,2:4], 1, mean) # we could only select the columns of interest (the rep columns)
+
+# or exclude the factor column(s) - "day" and "quality" since these numbers (factors) are not values we're interested in summarizing  
+apply(fake_data_factor[,-c(1,6)], 1, mean)
+
+# or if we have NAs... and want to remove NAs (pass an argument from mean())
+apply(fake_data_factor[,-c(1,6)], 1, mean, na.rm = TRUE)
+
+```
+
+#### Activity_05: translate the loop \--\> `base::apply family` statements
+
+1.  With this patient data we want to find the average value (from the three replicate values 1, 2, 3) for each patient. *Take this loop and turn it into an apply statement or statements (depends upon how you want to solve) that is a functional equivalent (it produces a very similar/the same result).*
+
+```{r}
+set.seed(2023)
+patient_data <- data.frame(patient_id = c(1:5),
+                           age = c(23,55,34,64,12),
+                           value1 = rnorm(5),
+                           value2 = rnorm(5),
+                           value3 = rnorm(5))
+
+patient_data
+
+
+# how to do it for just the first row
+mean(unlist(patient_data[1,3:5]))
+
+# -- How to find the mean values for each patient in a loop -- #
+means <- numeric()
+
+for(i in 1:nrow(patient_data)){
+  means[[i]] <- mean(unlist(patient_data[i,3:5]))
+}
+
+means
+
+# -- How to find the mean values for each patient with an apply statement -- #
+
+
+```
+
+2.  Finding the mean and standard deviation for each column in mtcars. *Take this loop and turn it into an apply statement or statements (depends upon how you want to solve) that is a functional equivalent (it produces a very similar/the same result).*
+
+```{r}
+#--- A loop to produce the mean and standard deviation for each column in mtcars ---#
+# output into 'combine' list
+
+combine <- list()
+
+#find the mean and sd for each column in mtcars
+for(i in 1:ncol(mtcars)){
+  m <- mean(mtcars[,i], na.rm = TRUE)
+  sd <- sd(mtcars[,i], na.rm = TRUE)
+  combine[[i]] <- rbind(m,sd) 
+}  
+ 
+combine
+
+# -- using an apply statement to find the mean and standard deviation for each column in mtcars -- #
+
+
+```
+
+#### purrr and "map" functions
+
+Map functions apply a function to each element of a list or vector and returns an object of the same length as the input list or vector.
+
+For the curious: this blog is a good resource on how `base::` compares to `purrr::` [*https://jtr13.github.io/spring19/ss5593&fq2150.html*](https://jtr13.github.io/spring19/ss5593&fq2150.html){.uri}
+
+I'm personally more of a fan of the apply family but I wanted to point these out to you - maybe you find you prefer `purrr::`.
+
+```{r}
+library(purrr)
+
+# let's look at an example
+# we've got a df which contains some columns (scores_a-d) and each column contains a list of scores on a questionnaire (hypothetically)
+
+df <-tibble(
+  scores_a = rnorm(10),
+  scores_b = rnorm(10),
+  scores_c = rnorm(10),
+  scores_d = rnorm(10)
+)
+
+df
+
+# what if we wanted to find the median score of every column of our df?
+# we could do this:
+med_a <- median(df$scores_a)
+med_b <- median(df$scores_b) # ... and so on
+
+# or, we could apply the median() function over the whole df with purrr::map()
+# .x specifies the object that we are applying the function over
+# .f specifies the function we're using
+purrr::map(.x = df, .f = median)
+
+map() # will always return a list
+
+# but what if we don't want a list?
+
+# map_lgl(df, median) # makes a logical vector (only works when .x is a logical)
+# map_int(df, median) # makes an integer (only works when .x is an integer)
+
+map_dbl(df, median) # makes a double
+map_chr(df, median) # makes a character
+map_df(df, median)  # makes a tibble or df
+
+# notably, any arguments you need for the .f function in your map() will need to be specified like this (if necessary for what you're doing)
+map_df(df, mean, na.rm = TRUE)
+```
+
+Map functions can also replace multi-step custom functions by using the .x notation. Let's say we want to take the sum of squares for each element in df (from the above chunk).
+
+```{r}
+df
+
+# essentially we want to apply the below line of code to each column
+sum((df$scores_a)^2) 
+sum((df$scores_b)^2) 
+.
+.
+## --- option 1. custom function --> map --- ##
+
+# -- Step 1. we could write a function -- #
+sumsq <- function(element){
+  sum(element^2)
+}
+
+# -- Step 2. then map that custom sumsq function onto our df -- #
+map_df(df, sumsq)
+sapply(df, sumsq) # works much like sapply!
+
+
+## --- option 2. use map to replace multi-step functions --- ##
+
+# the ~ says to evaluate everything that comes after
+# the .x is a placeholder/stand in for each element of df
+
+map_df(df, ~ sum(.x^2))
+
+sapply(df, function(x){sum(x^2)}) # alternative still using the apply family
+
+
+```
+
+An example of translating a loop to a map and how a map can be a bit more flexible. The goal is to make 3 lists of 10 numbers each sampled from a random distribution where the standard deviation is 1 (in list 1) and then 2 (in list 2) and then 3 (in list 3). This is rather easy to do with a loop:
+
+```{r}
+#-- a loop --#
+
+set.seed(2023)
+# initialize empty list
+my_list <- list()
+
+# make three lists of 10 numbers each from a random distribution where the sd is equal to 1, then 2, then 3
+for(i in 1:3){
+  my_list[[i]] <- rnorm(10, sd = i)
+}
+
+my_list
+
+
+#--the functional equivalent as a map--#
+# goal: generate three vectors of random numbers with standard dev of 1 to 3
+
+set.seed(2023)
+map(1:3, ~rnorm(10, sd = .x))
+
+```
+
+This example works only if our index (1:3) and what we want for sd (1:3) are the same. If we wanted something different (like 7, 14, 28) for our sds, this would be a more complex for loop solution or we could use maps.
+
+```{r}
+# we can easily change the sds to be whatever we want them to be and we pass them along to sd =.x where .x is 7, then 14 then 28 for each vector we generate
+map(c(7,14,28), ~rnorm(10, sd = .x))
+```
+
+### More resources
+
+<https://www.datacamp.com/tutorial/tutorial-on-loops-in-r>
+
+<https://learningstatisticswithr.com/lsr-0.6.pdf> (Section on implicit loops for summary of apply family)
+
+## Vectorization
+
+# INSERT VIDEO 'COG_vectorization.mp4'
+
+You might have noticed that R implicitly loops - functions will operate on all elements of a vector without having to explicitly loop through and act on each element. This saves a lot of computational time and effort on the part of the coder. Let's see that in practice:
+
+```{r}
+#(when you add 1 to vector you get [1] + 1, [2] + 1, etc)
+# vectorized
+vec <- c(1:20)
+kevin <- vec + 1
+kevin
+
+# compare to loop version
+for(i in 1:length(vec)){
+  kevin <- vec[i] + 1
+  print(kevin)
+}
+
+# if we compare the time it takes to run each, the for loop is slower
+system.time(kevin <- vec + 1)
+system.time(print(kevin)) # takes 0 seconds to create 'kevin' and 0 seconds to print it
+
+system.time(for(i in 1:length(vec)){ # takes 0.005 seconds to run the loop and print it
+  kevin <- vec[i] + 1
+  print(kevin)
+})
+
+```
+
+Logical comparisons are also vectorized. When we ask 'is x greater than 2?' it will compare along every element in x and return a logical (it is like asking [1] \> 2?, [2] \> 2?, [3] \> 2?, and so on...
+
+```{r}
+
+# vectorized
+x <- c(1,2,3,4)
+x > 2
+
+
+# compare to loop version
+for(i in 1:length(x)){
+  print(x[i] > 2)
+}
+
+# if we compare the time it takes to run each, the for loop is slower
+system.time(x > 2) # 0 seconds elapsed
+system.time(for(i in 1:length(x)){ # 0.005 seconds elapsed
+  print(x[i] > 2)
+})
+```
+
+For the curious - additional resources on vectorization:
+
+<https://bookdown.org/rdpeng/rprogdatascience/vectorized-operations.html>
+
+<https://dzone.com/articles/vector-based-languages>
+
+# Section 2: Applied knowledge - Folder of files
+
+A very common data science problem is when you have a collection of files that are all similarly formatted and you need to read them all in and combine them to do some sort of analysis or visualization.
+
+![*On the left is a folder containing many similarly formatted files. An arrow points right where those files appear combined into one long object.*](https://support.content.office.net/en-us/media/3286ef6d-051e-4404-b216-57835c922dcb.png){width="349"}
+
+### Step 1: import_date function
+
+We're going to start by making a function that we can supply a date to (the date that the data was collected) and it will return that day's data.
+
+![*A file drawer that contains many files sorted by color. A hand reaches for, and begins to pull out a single red folder.*](https://cdn.shopify.com/s/files/1/2677/1802/collections/sca_64010CD_8b1798bd-da72-44bb-95b4-408204d063ad_1600x.jpg?v=1524714671)
+
+In the folder of data provided to you in "opioid_data". You'll notice that the files in the folder are all very similarly formatted. Each file was collected on a different date.
+
+Write a function that takes in a date, and reads in a returns the data file from that date. Hint: you might want to check out `glue::glue()`!
+
+Your data files are named with this formatting:
+
+"experiment_01_date_YYYY_MM_DD.txt"
+
+**To test**: `test <- import_date("2022_02_01")` should return a tibble: 16 x 11
+
+```{r}
+
+# description: import_date takes a date and returns a data file from that date
+# input: a date in YYYY-MM-DD format
+# output: a df
+# requires: {glue} {readr}
+
+library(glue)
+library(readr)
+
+import_date <- function(date){
+  path <- glue("opioid_data/experiment_01_date_{date}.txt")
+  dat <- read_delim(path)
+  return(dat)
+}
+
+import_date("2022_03_07")
+
+```
+
+Previously, we made a hypothetical function that would return a data file based on the date entered. But what if we wanted to do that for each date in the file - and what if there is a years worth of data in there?! Are we going to run `import_date("date1")`, `import_date("date2")`... over and over again until we do it for the entire folder??
+
+*Absolutely not. We can code our way to laziness!*
+
+**Enter: iteration.**
+
+Here's what we would call a "brittle" solution to our file problem (and what we just described above). It works to row bind (that's what `rbind()` does) all of the output from `import_date()` operating on date 1, date 2, etc. but its not efficient and can break easily if we misspell something or if the dates need to change and is a real pain in the butt to write out each date over and over again...
+
+```{r}
+files <- rbind(import_date("date1"),
+               import_date("date2"),
+               import_date("date3"))
+```
+
+*You'll notice that there is only one thing changing at each line.*
+
+Anytime we find ourselves repeating lines of code over and over again (like above with only one small change each time) it might be time to think about using some form of iteration.
+
+### Step 2: iterate over our custom function to import the whole folder
+
+First: make a vector of dates that we can iterate over (note the formatting is YYYY_MM_DD and goes from 2022_03_07 to 2022_03_14)
+
+Next: iterate over those dates and use our custom function to load them, see if you can make a loop version and an apply version!
+
+```{r}
+
+library(stringr)
+
+# -- part 1. make a vector of dates for us to iterate over -- #
+
+
+# -- part 2. iterate over those dates and use our custom function to load them -- #
+
+
+  # -- option as loop -- #
+  
+  
+  # -- option as apply -- #
+
+
+```
+
+# Additional info
+
+### Help, I don't even know where to start! {#help-i-dont-even-know-where-to-start}
+
+It is very common when first coding/writing functions that something seemingly as simple as "write a function that adds 1 to a number" feels overwhelming. How do I know where to start?
+
+There are a few strategies you can employ.
+
+1.  Break the question/problem down into pieces where each piece is no more than 1 idea.
+2.  *This is a personal favorite*: Start with what the input will be (point A), figure out what the output should be (point B) and fill in the steps it will take to get from point A to point B
+
+Let's see what this might look like. Here's an example problem:
+
+Write a function that returns the length of a vector divided by three.
+
+```{r}
+#' How do we start?
+#' Let's break the problem down into parts and fill in the in between steps
+#' 
+#' 1. Input: a vector
+#' 2. find the length of the vector
+#' 3. return length/3 
+#' X. Output: the length of the vector divided by 3
+#' 
+#' Then test on an example!
+
+# Now that we have a scaffold, let's fill it into our function format.
+my_function_name <- function(input){
+  #do stuff
+  return(stuff)
+}
+
+# for our example:
+vector_in_thirds <- function(a_vec){
+  # 2. find the length of the vector
+  vec_length <- length(a_vec)
+  # 3. return length/3 
+  return(vec_length/3)
+}
+
+# Test on an example vector
+
+vector_example <- rnorm(18) #
+
+vector_in_thirds(vector_example)
+
+```
+
+### Debugging
+
+There are many ways to navigate errors (condition handling: reading and interpreting errors, warnings and messages thrown from functions) and defensive programming (avoiding errors/typos when writing code) but debugging can also be a great tool to fix unanticipated problems with your code.
+
+What do you do when the function you've created doesn't work -it errors or doesn't return what you think it is supposed to?
+
+#### traceback() feature
+
+-   `traceback()` - call it right after an error has occurred to check out what happened
+
+```{r}
+# here we are making a simple function where we add 1 to our input
+add_one <- function(x) {
+  x + 1
+}
+
+# now we've made a new function called step_two that uses add_one on the input
+div_4 <- function(x) {
+  add_one(x)/4
+}
+
+# later we go to run step_two on a character input 'a' and we get an error
+div_4("a")
+
+# Error in x + 1 : non-numeric argument to binary operator
+```
+
+Right after this happens, in the console, we can run `traceback()` to see what happened that led to the error. This is what comes back when we do that:
+
+`> traceback()`
+
+`2: add_one(x) at #2`
+
+`1: div_4("a")`
+
+1: tells us this is what we did
+
+2: tells us this is where the error was generated (when we tried to run add_one(x))
+
+Now we can revisit where add_one(x) appears and this gives us a clue where we're going wrong.
+
+#### debug() feature
+
+There are also more in depth ways of debugging and R Studio has a great interactive debugger (as covered in the demo in class, see 'debug_fish_demo.R' for more.
+
+#### troubleshooting tips
+
+If you're struggling just getting started writing a function/loop and you're feeling overwhelmed, see tips under [Help, I don't even know where to start!](#help-i-dont-even-know-where-to-start) for how to break the problem down into managable bits.
+
+If you've got a function or loop, but the results that it is giving you are not what you expect, here are some tips:
+
+**For a function:**
+
+-   In a new coding chunk, try running the function on a known object (that is, switching out the x for a real data frame/vector/etc. you can play with)
+
+    -   Run each line of the function with that known, given input. Does each line return what you expect? Can you pick up clues as to where you're going wrong?
+
+**For a loop:**
+
+-   Set your `i` to 1 in the console (e.g., `> i = 1`) and run through each line of the loop. What does each line return?
+
+-   If your loop breaks part way through, find out what your i is equal to by running `> i` in the console. What does it return? The number might give you a clue where the loop breaks down (e.g., if i is 8, that means the 8th time through the loop was the last iteration... what's going on when i = 8?)
+
+Additional reading:
+
+<https://rstats.wtf/debugging-r-code.html>
+
+<http://adv-r.had.co.nz/Exceptions-Debugging.html>
+
+<https://support.posit.co/hc/en-us/articles/205612627-Debugging-with-the-RStudio-IDE>
+
+### Note on sourcing and R scripts
+
+Let's say you're working on a project and you create a number of homemade functions that you find yourself using over and over again. You can put them into their own R script, save it, then you can use `source("file/path/to/your/r_script_with_custom_functions.R")` and that will load them into your environment so they're ready to use but don't add a lot of extra fluff to your project/markdown.
+
+![](videos/COG_sourcing_moreinfo.mp4) 
