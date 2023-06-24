@@ -554,7 +554,7 @@ typeof(sapply_example) # is a double (type of vector)
 
 ```
 
-# INSERT VIDEO 'COG_apply_family.mp4' HERE
+embed_url("https://youtu.be/hNn_a7MZJYY")
 
 Here I'm demonstrating for you how we can use `sapply()` to do a quality control-like procedure to find the missing data per column. **Take note that here, when we use more than one function, in this case sum() and is.na() we have to use the function(x) notation and specify what we are operating on in this format!**
 
@@ -832,7 +832,7 @@ map(c(7,14,28), ~rnorm(10, sd = .x))
 
 ## Vectorization
 
-# INSERT VIDEO 'COG_vectorization.mp4'
+embed_url("https://youtu.be/xCw_Ysger0o")
 
 You might have noticed that R implicitly loops - functions will operate on all elements of a vector without having to explicitly loop through and act on each element. This saves a lot of computational time and effort on the part of the coder. Let's see that in practice:
 
@@ -1094,4 +1094,4 @@ Additional reading:
 
 Let's say you're working on a project and you create a number of homemade functions that you find yourself using over and over again. You can put them into their own R script, save it, then you can use `source("file/path/to/your/r_script_with_custom_functions.R")` and that will load them into your environment so they're ready to use but don't add a lot of extra fluff to your project/markdown.
 
-![](videos/COG_sourcing_moreinfo.mp4) 
+embed_url("https://youtu.be/nPmE17UbYG0")
