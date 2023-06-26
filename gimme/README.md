@@ -52,7 +52,10 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 ```
     
 ## Workshop objectives:
-
+1. Define network heterogeneity recognize limitations for individual-level inference
+2. Understand the conceptual background and quantitative basis of GIMME
+3. Gain applied experience using GIMME in R
+4. Explore potential downstream analyses for various research questions
 
 ## Workshop materials:
 - [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/gimme/index.html)
