@@ -53,7 +53,7 @@ GIMME requires specific data formatting, detailed [here](https://tarheels.live/g
 * Data can be entered as either an R list, where each element is an individual's data table, or a local directory that contains .csv files, one for each individual. 
   + I personally recommend the latter, due to believing it is better data management and I have anecdotally run into issues with using GIMME via R lists. 
   
-Please download example data from [here](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimmie/Data.zip) to continue with this walkthrough. This is fMRI BOLD data from 15 ROIs and 2 exogenous variables from Dr. Tom Olino's TADS study. I only included data from 20 individuals for timing purposes. 
+Please download example data from [here](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimmie/Data) to continue with this walkthrough. This is fMRI BOLD data from 15 ROIs and 2 exogenous variables from Dr. Tom Olino's TADS study. I only included data from 20 individuals for timing purposes. 
 This is an example of what a single individual's datafile can look like. The first 15 columns are brain regions, the second two columns are task events (occuring or not occuring). Each individual's file will look exactly like this, just with different data. 
 ![](Images/Data_ex.png)
 
