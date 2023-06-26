@@ -1,4 +1,3 @@
-# UNDER CONSTRUCTION
 # Coding Outreach Group Summer Workshop 2023
 # GIMME
 06/29/2023
@@ -81,7 +80,3 @@ Subgroup-GIMME paper:
 Gates, K. M., Lane, S. T., Varangis, E., Giovanello, K., & Guiskewicz, K. (2017). Unsupervised classification during time-series model building. Multivariate behavioral research, 52(2), 129-148.
 
 Please see the full list of GIMME methodological papers for further information: https://tarheels.live/gimme/papers/
-
-
-### Packages
-
