@@ -1,18 +1,18 @@
 ---
-title: "Using GIMME in R"
+title: "COG 2023: GIMME Workshop"
 author: 
   - name: "**Content creator: Matt Mattoni**"
   - name: "**Content editors: Katie Jobson & Billy Mitchell**"
-date: "2023-06-29"
+date: "2023-06-05"
 output: 
   html_document: 
-    number_sections: true
     toc: true
-    toc_depth: 2
-    toc_float:
-      collapsed: false
-    self_contained: yes
+    toc_float: true
     mode: selfcontained
+    code_folding: show
+    number_sections: true
+    toc_depth: 2
+    self_contained: yes
     df_print: paged
     css: !expr here::here("misc/style_bootcamp.css")
 knit: (function(inputFile, encoding) { 
@@ -23,25 +23,22 @@ knit: (function(inputFile, encoding) {
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, error = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
+# COG Workshop Summer 2023: GIMME
 This R Markdown file was developed for Temple's Coding Outreach Group (COG) summer 2023 workshop series. It will walk through an applied usage of Group Iterative Multiple Model Estimation (GIMME). GIMME is a free to use R package and was developed by Dr. Kathleen Gates at UNC. Any users should first consult, at minimum, the [introductory GIMME manuscript](https://pubmed.ncbi.nlm.nih.gov/22732562/), the [subgroup manuscript](https://pubmed.ncbi.nlm.nih.gov/27925768/) (if using them), and the [GIMME website](https://tarheels.live/gimme/). The COG workshop also includes this brief conceptual introduction to GIMME that should provide a basic foundation for new users: [Slides](ENTER GITHUB LINK TO SLIDES) and [Recording](ENTER LINK TO RECORDING AFTER WORKSHOP).
 
-# Getting Started
+## Getting Started
 Installing GIMME is quite easy. It is also updated on a somewhat frequent basis so users should check and install the newest version when starting a new project. The installation includes all dependencies, mainly lavaan which is the SEM package GIMME is built on.
 We will also install other packages that we will use later. 
-```{r, message = FALSE, warning = FALSE, eval=FALSE}
-  # Installing pacman if it's not present
-  if (require("pacman") == FALSE){
-    install.packages("pacman")
-  }
-  
-  # Using pacman to load necessary packages
-  pacman::p_load(gimme, here)
+```{r, message = FALSE}
+#install.packages("gimme")
+#Remove the above # to run the code
+library(gimme)
 ```
 
-# Data Formatting
+## Data Formatting
 GIMME requires specific data formatting, detailed [here](https://tarheels.live/gimme/preparing-data-and-environment-for-gimme/). 
 
 * Each individual must contain 1 distinct datafile for all of their time series data. 
@@ -53,60 +50,63 @@ GIMME requires specific data formatting, detailed [here](https://tarheels.live/g
 * Data can be entered as either an R list, where each element is an individual's data table, or a local directory that contains .csv files, one for each individual. 
   + I personally recommend the latter, due to believing it is better data management and I have anecdotally run into issues with using GIMME via R lists. 
   
-Please download example data from [here](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimmie/Data) to continue with this walkthrough. This is fMRI BOLD data from 15 ROIs and 2 exogenous variables from Dr. Tom Olino's TADS study. I only included data from 20 individuals for timing purposes. 
+Please download example data from [here](ENTER GITHUB LINK TO DATA) to continue with this walkthrough. This is fMRI BOLD data from 15 ROIs and 2 exogenous variables from Dr. Tom Olino's TADS study. I only included data from 20 individuals for timing purposes. 
 This is an example of what a single individual's datafile can look like. The first 15 columns are brain regions, the second two columns are task events (occuring or not occuring). Each individual's file will look exactly like this, just with different data. 
-![](Images/Data_ex.png)
+![](images/Data_ex.png)
 
 The data downloaded above is formatted and ready to use. Most fMRI times series data is extracted in this format already so will require little-to-no additional data management. If you are using the example data or your own data is already formatted correctly, move on to the next sextion. 
 
-EMA data is often organized in Long format, which requires a couple steps to prepare for GIMME. To do this, with a long-format dataset called 'long_df', you could run some version of the following code, uncommented:
-```{r}
-#data_list <- split(long_df,long$ID)
-#filenames <- paste0("C:/Users/.../",names(data_list), ".csv")
-#Map(write.csv,data_list,filenames)
+EMA data is often organized in Long format, which requires a couple steps to prepare for GIMME. 
+
+**Coding Task:** Let's do a quick coding check for how we could (1) split a long format dataframe (called long_df) of all participants (long_df$ID) into individual dataframes for each participant, and (2) save each participant's dataframe as an individual .csv file. 
+Take a second to think of your code, then click the 'Code' button on the right to see one solution. 
+
+```{r, class.source = 'fold-hide', eval=FALSE}
+data_list <- split(long_df,long$ID) #Divdes the long_df into groups based on id
+filenames <- paste0("C:/Users/.../",names(data_list), ".csv") #creates vector of file names, concatenating a path, an id, and .csv
+Map(write.csv,data_list,filenames) #Map applies a function (write.csv) with arguments of corresponding elements in vectors 
 ```
 
 **(Live workshop) - Data formatting questions?**
 
 
-# GIMME Arguments
-GIMME is quite easy to run. It has just a couple mandatory arguments, and several additional options. Use help(gimme) to see all of them, but here are some basic ones we can think about. There are some very interesting extensions that I recommend looking into yourself. Comments are below the relevant argument.
+## GIMME Arguments
+GIMME is quite easy to run. It has just a couple mandatory arguments, and several additional options. Use help(gimme) to see all of them, but here are some basic ones we can think about. There are some very interesting extensions that I recommend looking into yourself. 
+
+**Coding Task:**
+Copy and paste the chunk below into your R and take a guess how we would fill out each empty argument
 
 ```{r, eval = FALSE}
-gimmeSEM(data        = 'path/to/data/,
-         out         = 'path/for/output/, 
-         #You don't have to create this folder, GIMME will for you
-         sep         = ',',
-         header      = TRUE,
-         ar          = TRUE, 
-         #We will almost always want these. But, with some fMRI scans with TR < 1s, they can become problematic..
+gimmeSEM(data        = ,
+         out         = ,#You don't have to create this folder, GIMME will for you
+         sep         = ,
+         header      = ,
+         ar          = ,#We will almost always want these. But, with some fMRI scans with TR < 1s, they can become problematic..
          plot        = TRUE,
-         subgroup    = TRUE, 
-         #This enables the search for data-driven subgroups
-         exogenous   = c('task1','task2'), 
-         #These are our task events
-         conv_vars   = c('task1','task2'),
-         conv_length = 16, 
-         #For fMRI, we should convolve our exogenous variables by the HRF. Remove all conv_ arguments in EMA or resting fMRI dat.
-         conv_interval = 2,
+         subgroup    = TRUE, #This enables the search for data-driven subgroups
+         exogenous   = , #These are our task events
+         conv_vars   = ,
+         conv_length = , #For fMRI, would we need to convolve our task events by anything? 
+         conv_interval = , #Interval of events, TR for fmri
          standardize = TRUE,
-         groupcutoff = .75, 
-         #What percentage of individuals must have a path for it to be considered group-level
-         subcutoff   = .75, 
-         #Same, but for subgroups
+         groupcutoff = , #What percentage of individuals must have a path for it to be considered group-level
+         subcutoff   = , #Same, but for subgroups
          ms_allow         = FALSE, 
          #We don't cover this here, but this is worth looking into, especially if directionality is important for your study
          #https://psycnet.apa.org/record/2022-16666-001
         )
 ```
 
-# Running GIMME
-Applying this to our data, it looks like this. Please note this will take about 1-2 hours to run, and this increases quickly with more data. To quickly move forward with the walkthrough, you can download the output [here](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/blob/master/gimmie/gimme_output.rds). However, you should run this yourself so you get the output directory stored locally. It is good practice to save the output immediately so you do not have to end up re-running GIMME. 
-```{r, message = FALSE, warning = FALSE, eval=FALSE}
-gimme_out <- gimmeSEM(data = paste0(here::here(), 'gimme/Data'),
+## Running GIMME
+Applying this to our data, it looks something like this (click the Code button below).
+
+Please note this will take about 1-2 hours to run, and this increases quickly with more data. To quickly move forward with the walkthrough, you can download the output [here](ENTER GITHUB LINK TO OUTPUT FILE). However, you should run this yourself so you get the output directory stored locally. It is good practice to save the output immediately so you do not have to end up re-running GIMME. 
+
+```{r, message = FALSE, warning = FALSE, eval=FALSE, class.source = 'fold-hide'}
+gimme_out <- gimmeSEM(data = 'C:/Users/mmatt/Desktop/COG-GIMME/Data',
                       sep = ",",
                       header = T,
-                      out = paste0(here::here(), 'gimme/Output'),
+                      out = 'C:/Users/mmatt/Desktop/COG-GIMME/Output',
                       ar = T,
                       plot = T,
                       subgroup = T,
@@ -117,13 +117,12 @@ gimme_out <- gimmeSEM(data = paste0(here::here(), 'gimme/Data'),
                       conv_interval = 2,
                       groupcutoff = .75,
                       subcutoff = .5)
-saveRDS(gimme_out,
-        paste0(here::here(), 'gimme/gimme_output.rds'))
+saveRDS(gimme_out,'C:/Users/mmatt/Desktop/Workshops/Hosted/GIMME/gimme_output.rds')
 
 ```
 
 If you run this yourself, GIMME tells will tell you it finished running normally, and found two subgroups. What do things look like?
-```{r, message=FALSE,warning = FALSE, eval=FALSE}
+```{r, message=FALSE}
 gimme_out <- readRDS('gimme_output.rds')
 plot(gimme_out)
 ```
@@ -139,19 +138,19 @@ The green paths are subgroup-level paths. From this view, we can't see which pat
 
 
 
-# GIMME Output 
+## GIMME Output 
 GIMME outputs an R object that contains all relevant information, as well as plots and results in the ouput directory specified in the call. 
 
-## Output Directory
+### Output Directory
 Things are easier to look at manually in the directory. Here's what it looks like:
 
-![](Images/Direct.png)
+![](images/Direct.png)
 
 
 
 The **indivPathEstimates** csv file is where most of the relevant information is.
 
-![](Images/IndPaths.png)
+![](images/IndPaths.png)
 
 
 This file has all model results for GIMME models for each participant,including group, subgroup (if estimated), and individual-level paths. 
@@ -177,7 +176,7 @@ This file has all model results for GIMME models for each participant,including 
 
 If you go into the **subgroup subdirectory** we can get some nice plots showing us how our subgroups differ. Here, the second subgroup has a much denser network. 
 
-![](Images/Subs.png)
+![](images/Subs.png)
 
 
 As another reminder, please see [this resource](https://gateslab.web.unc.edu/programs/perturbr/) for subgroup validation, or consider your own alternative procedures. 
@@ -185,12 +184,12 @@ As another reminder, please see [this resource](https://gateslab.web.unc.edu/pro
 * The individual subdirectory has individual path estimates in separate files. But, the **IndPathEstimates** file we first discussed in the main output directory is the most important file you will work with. 
   * There are also individual-specific plots here, which can be interesting for very person-centered work. 
 
-## R Object
+### R Object
 The GIMME R output object, here called gimme_out, contains **all of the information in the output directory**, so again it is an important object to save (saveRDS). If you have some proficiency with R, you can continue working on downstream analyses with this object (ideal). The gimme_out$path_se_est list has the same information as the indivPathEstimates file, making it your go-to. You can see that information here: 
 
-![](Images/R_Out.png)
+![](images/R_Out.png)
 
-# Checkpoint
+## Checkpoint
 Thus far, we have loaded our formatted data into R, used various GIMME arguments to estimate group, subgroup, and individual-level network models, and explored the output format. 
 
 **(For live workshop) - Questions?**
@@ -203,10 +202,10 @@ We will explore this briefly, but this is where roads will begin quickly divergi
 
 ## Downstream Analyses
 Downstream analyses will largely depend on your research question. For the most part, everything you would typically do with a network model (e.g., fMRI connectivity), you can also do with GIMME models, plus much more. 
-I'll briefly mention some options, but it would likely be useful to skim what other folks have done as well. You can search GIMME papers yourself on scholar or looking at papers citing the original GIMME manuscript, or look at this collection: https://tarheels.live/gimme/papers/
+I'll briefly mention some options and we can test some code, but it would likely be useful to skim what other folks have done as well. You can search GIMME papers yourself on scholar or looking at papers citing the original GIMME manuscript, or look at this collection: https://tarheels.live/gimme/papers/
 
 
-## Examining Heterogeneity
+### Examining Heterogeneity
 
 One path that is at the heart of GIMME's purpose is characterizing heterogeneity. 
 
@@ -217,7 +216,68 @@ One path that is at the heart of GIMME's purpose is characterizing heterogeneity
   
 For any discussion of heterogeneity, you should also consider if the uncovered individual differences are actually heterogeneity, or just noise. See this paper for a useful discussion: https://pubmed.ncbi.nlm.nih.gov/36318496/
 
-## Subgroup Differences
+#### Coding Task
+
+Explore the gimme_out R object. Can you script the following?
+
+1. Create a dataframe that contains all non-autoregrssive group level paths, their beta and SE for all participants
+2. Create a clean table that includes each group-level path the average beta coefficient, and the average SE
+3. Create a dataframe that lists all individual level paths and how many individuals each path was significant in 
+Click the Code button below to see a potential solution. 
+
+Solution 1
+```{r, class.source = 'fold-hide', eval=FALSE}
+#Create a df of all participants, path nodes, beta, and SE
+group_paths_all <- data.frame(gimme_out[["path_se_est"]][["file"]],gimme_out[["path_se_est"]][["level"]],
+                              gimme_out[["path_se_est"]][["rhs"]],gimme_out[["path_se_est"]][["lhs"]],
+                              gimme_out[["path_se_est"]][["beta"]],gimme_out[["path_se_est"]][["se"]])
+#Easy column names
+colnames(group_paths_all) <- c('id','level','from','to','beta','se')
+#Remove all non-group level paths
+group_paths_all <- group_paths_all[group_paths_all$level=='group',]
+#We can see the first 15 paths for all participants are autoregressive (all 15 ROIs had significant autocorrelations)
+group_paths_all
+#Remove the first 15 rows for each ID
+group_paths <- do.call(rbind, lapply(split(group_paths_all,as.character(group_paths_all$id)), function(x) x[-(1:15),]))
+#DONE 
+
+```
+
+Solution 2
+```{r, class.source = 'fold-hide', eval=FALSE}
+#How many group level paths? number of paths / number of participants
+nrow(group_paths)/20 #21
+#Create a table with 21 rows and 2 columns (path, beta (se))
+group_paths_tab <- as.data.frame(matrix(NA,21,2))
+colnames(group_paths_tab) <- c('Path','Beta (SE)')
+#Group path names
+group_paths_tab[1] <- paste0(group_paths$from[1:21],'->',group_paths$to[1:21])
+#Group path values
+group_paths$lab <- seq(1:21)
+group_paths_tab[2] <- paste0(round(tapply(group_paths$beta, group_paths$lab, mean),3),' (', #beta
+                             round(tapply(group_paths$se, group_paths$lab, mean),2),')') #se
+#DONE
+```
+
+Solution 3
+```{r, class.source = 'fold-hide', eval=FALSE}
+#Indices of individual-level paths
+ind_id <- which(gimme_out[["path_se_est"]][["level"]] == "ind",arr.ind = T)
+#Just need lhs and rhs
+ind_paths <- gimme_out[["path_se_est"]][ind_id,]
+ind_paths <- ind_paths[c(2,4)]
+
+#Get number of duplicates for unique rows
+library(dplyr)
+ind_paths_unique <- ind_paths %>% group_by_all() %>% count
+#DONE
+#You could also subset to identify individual-level rows that occured in a certain amount of people
+#Let's say paths occuring in at least 4 people (20% of sample)
+ind_paths_4 <- ind_paths_unique[ind_paths_unique$n > 3 ,]
+
+```
+
+### Subgroup Differences
 
 * Again, if you estimated subgroups you should focus on validating them. This can include using the referenced [perturbr package](https://gateslab.web.unc.edu/programs/perturbr/), cross-validation approaches, or split sample replications. For fMRI, you should also consider if subgroups differ by head motion (e.g., are these subgroups distinct in signal or noise?) 
   + See my previous [publication](https://doi.org/10.1162/netn_a_00306) as an example and open code. 
@@ -228,8 +288,36 @@ For any discussion of heterogeneity, you should also consider if the uncovered i
   + Is one subgroup much denser than the others (i.e., have more paths)? 
     + What does this difference in *centrality* mean?
   + Is there a theoretical reason you can hypothesize for these subgroups? Can you test this in a follow-up study?
+  
+#### Coding Task
 
-## Path Estimates
+Can you script the following?
+
+1. How many individuals are in each subgroup?
+2. How many subgroup-level paths are in each subgroup? 
+Click the Code button below to see a potential solution. 
+
+Solution 1
+```{r, class.source = 'fold-hide', eval=FALSE}
+unique_out <- gimme_out[["path_se_est"]][!duplicated(gimme_out[["path_se_est"]][["file"]]),]
+table(unique_out$sub_membership)
+#DONE
+```
+
+Solution 2
+```{r, class.source = 'fold-hide', eval=FALSE}
+unique_out 
+#Subject 1 is in subgroup 1, subject 2 is in subgroup 2. 
+sub1_paths <- gimme_out[["path_se_est"]][gimme_out[["path_se_est"]][["file"]]=="Subject001_ts",]
+#Number of subgroup-1-level paths
+nrow(sub1_paths[sub1_paths$level=="sub",]) #19
+sub2_paths <- gimme_out[["path_se_est"]][gimme_out[["path_se_est"]][["file"]]=="Subject002_ts",]
+#Number of subgroup-2-level paths
+nrow(sub1_paths[sub2_paths$level=="sub",]) #9
+#DONE
+```
+
+### Path Estimates
 
 In my mind, this is the most powerful use of GIMME. How do invidual differences in *person-centered* paths, rather than group-aggregate, relate to external outcomes?
 (To be clear, group-level GIMME paths are still person-centered, as they were present for a majority of the sample. The contrast I am making is to using more traditional, aggregation-based approaches).
@@ -261,9 +349,55 @@ The field has taken multiple approaches to do this, and there are many possibili
     + How important is a certain node, or group of nodes, in the overall network?
     + Total number of paths attached to a node (degree), or each path times its beta coefficient (weighted degree/strength)
       + e.g., Do individuals with a stronger reward brain hub engage in more reward-seeking behaviors
-      + I have not found examples, but I am doing this soon. Preregistration here: 
+      + I have not found examples, but I am doing this soon. Preregistration here: https://osf.io/aqs8m
 
-# Ackowledgements
+#### Coding Task
+
+The previous coding tasks will be useful here. Let's try one more thing as well:
+
+* Create a weighted centrality measure a **dorsal striatum hub** for each participant. This is the sum of the magnitude of *all paths that involve any of the left or right caudate or putamen nodes*. This will require some thinking + grep skills!
+Click the Code button below to see a potential solution. 
+
+Solution
+```{r, class.source = 'fold-hide', eval=FALSE}
+#Remove Autoregressive Paths (first 15 rows for id)
+paths_all <- data.frame(gimme_out[["path_se_est"]][["file"]],gimme_out[["path_se_est"]][["level"]],
+                              gimme_out[["path_se_est"]][["rhs"]],gimme_out[["path_se_est"]][["lhs"]],
+                              gimme_out[["path_se_est"]][["beta"]],gimme_out[["path_se_est"]][["se"]])
+#Easy column names
+colnames(paths_all) <- c('id','level','from','to','beta','se')
+#Remove the first 15 rows for each ID (autoregressive paths)
+paths_clean <- do.call(rbind, lapply(split(paths_all,as.character(paths_all$id)), function(x) x[-(1:15),]))
+
+#Create single path name
+for (i in 1:nrow(paths_clean)){
+  paths_clean$path[i] <- paste0(paths_clean$from[i],'-',paths_clean$to[i])
+}
+
+#Enter ROIs of hub
+striatum <- c('Caud.L','Caud.R','Put.L','Put.R','Caud.Llag','Caud.Rlag','Put.Llag','Put.Rlag')
+paths_clean$striatum <- 0
+
+#Does path contain any of ROIs
+for (iG in 1:nrow(paths_clean)){
+  for (iS in 1:length(striatum)){
+    if(any(grepl(paste0('\\<',striatum[iS],'\\>'),paths_clean$path[iG])) == TRUE){
+      paths_clean$striatum[iG] <- 1
+    }}}
+  
+striatum_strength <- as.data.frame(matrix(nrow=20,ncol=2))
+colnames(striatum_strength) <- c('id','hub_strength')  
+striatum_strength$id <- unique(paths_clean$id)
+for (i in 1:nrow(striatum_strength)){
+  striatum_strength$hub_strength[i] <- sum(abs(paths_clean$beta[paths_clean$id == striatum_strength$id[i] & 
+                                               paths_clean$striatum == 1]))}
+mean(striatum_strength$hub_strength)
+sd(striatum_strength$hub_strength)
+#DONE
+```
+
+
+## Ackowledgements
 
 Workshop and Markdown created by Matt Mattoni. Many thanks to the Pitt Methods Summer Workshop on GIMME, taught by Dr. Katie Gates. 
 Dr. Katie Gates is the developer of GIMME. Further resources can be found on her website: https://tarheels.live/gimme/
