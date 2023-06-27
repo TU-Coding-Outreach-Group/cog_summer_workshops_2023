@@ -22,9 +22,6 @@ This workshop demands that users:
 2. Download the dataset for the workshop
 3. Download the relevant packages (See below)
     
-## Workshop objectives:
-
-
 ## Workshop materials:
 - [Notebook Viewer]
 
