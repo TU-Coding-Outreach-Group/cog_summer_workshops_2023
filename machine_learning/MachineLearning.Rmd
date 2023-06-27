@@ -12,9 +12,14 @@ output:
       collapsed: false
     toc_depth: 3
     df_print: paged
-    theme: lumen
     highlight: kate
     code_folding: show
+    css: !expr here::here("misc/style_bootcamp.css")
+knit: (function(inputFile, encoding) { 
+      out_dir <- './';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 ---
 
 # What is Machine Learning?
