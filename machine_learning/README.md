@@ -33,9 +33,9 @@ This workshop demands that users:
 | Intro | Video | 10 min|
 | Setup | Tutorial, Package, and ML Questions | 05 min|
 | Section 1 | Data Exploration & Supervised Machine Learning | 25 min|
-| Break |  | 05 min|
+| - | Break | 05 min|
 | Section 2 | Unsupervised Machine Learning | 20 min|
-| Break |  | 05 min|
+| - | Break | 05 min|
 | Conclusion | General Questions | 10 min|
 
 ## Additional Resources
