@@ -48,7 +48,11 @@ Supplemental information can be found within the [supplements folder]
 
 ### Packages
 ```tidyverse``` - [a collection of packages that are always incredibly helpful no matter what project you're working on; sometimes the only package I load (contains ggplot2](https://www.tidyverse.org/packages/)
+
 ```vembedr``` - [Used to embed video urls within the script](https://cran.r-project.org/web/packages/vembedr/vignettes/vembedr.html)
+
 ```gapminder``` - [used for some data analysis](https://cran.r-project.org/web/packages/gapminder/index.html)
+
 ```glue``` - [package contained within tidyverse that helps interpret strings as literals - also very helpful for data analysis of text!](https://glue.tidyverse.org/)
+
 ```datasets``` - [package where public data is stored](https://github.com/huggingface/datasets)
