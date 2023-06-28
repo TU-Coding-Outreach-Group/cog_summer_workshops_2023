@@ -2,8 +2,9 @@
 # Machine Learning
 07/06/2023
 
-__**Content creator:**__ Helen Schmidt
-__**Content editor:**__ Billy Mitchell
+__**Content creator:**__ Helen Schmidt 
+  
+__**Content editor:**__ Katie Jobson & Billy Mitchell
 
 ## Description
 Machine learning (ML) broadly describes the process of teaching computers to learn information. It is widely used in computer science, neuroscience, and data science to train 'machines' (e.g., algorithms, models) to learn about information and make predictions or classifications based on that learning. ML models can reduce time, effort, and error costs and can be applied flexibly across projects and datasets, including behavioral, survey, and neuroimaging data. The goal of this tutorial is to introduce a variety of machine learning methods that can be applied to psychological data. We will examine the differences between unsupervised and supervised models and in which contexts they are best applied. This tutorial will also touch on model evaluation and comparison, and unpack how to determine certain parameters given your data. 
@@ -33,13 +34,13 @@ This workshop demands that users:
 | Intro | Video | 10 min|
 | Setup | Tutorial, Package, and ML Questions | 05 min|
 | Section 1 | Data Exploration & Supervised Machine Learning | 25 min|
-| Break |  | 05 min|
+| - | Break | 05 min|
 | Section 2 | Unsupervised Machine Learning | 20 min|
-| Break |  | 05 min|
+| - | Break | 05 min|
 | Conclusion | General Questions | 10 min|
 
 ## Additional Resources
-None
+No supplementary materials included
 
 ### Packages
 * ```class``` - [Functions for classification](https://www.rdocumentation.org/packages/class/versions/7.3-20)
@@ -58,4 +59,7 @@ None
 * ```tidyverse``` - [a collection of packages that are always incredibly helpful no matter what project you're working on; sometimes the only package I load (contains ggplot2](https://www.tidyverse.org/packages/)
 * ```vembedr``` - [Used to embed video urls within the script](https://cran.r-project.org/web/packages/vembedr/vignettes/vembedr.html)
 
-### Other Workshops
+### Other Workshops You Might Find Interesting
+- COG 2022 [Natural Language Processing in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2022/tree/main/nlp) workshop by Celia Litovsky
+- COG 2022 [Data Visualization in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2022/tree/main/data-visualization-in-r) workshop by Billy Mitchell
+
