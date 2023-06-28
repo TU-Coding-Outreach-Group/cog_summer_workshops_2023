@@ -2890,6 +2890,14 @@ install other packages that we will use later.</p>
   
   # Using pacman to load necessary packages
   pacman::p_load(gimme, here)</code></pre>
+<p>We can also start by defining our working directory and there are at
+least two ways to do this. We can manually specify this by saving a
+filepath string as a variable. If you’ve downloaded the whole workshop
+directory, it should include a .here file and if it does, then the
+<code>here::here()</code> function should automatically identify your
+directory. Either way works. We’ll default to manual to be safe.</p>
+<pre class="r"><code>dir &lt;- &quot;C:/Users/.../gimme/&quot;
+# dir &lt;- here::here()</code></pre>
 </div>
 <div id="data-formatting" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Data Formatting</h1>
@@ -2941,9 +2949,25 @@ of all participants (<code>long_df$ID</code>) into individual dataframes
 for each participant, and (2) save each participant’s dataframe as an
 individual .csv file. Take a second to think of your code, then click
 the ‘Code’ button on the right to see one solution.</p>
-<pre class="r fold-hide"><code>data_list &lt;- split(long_df,long$ID) #Divdes the long_df into groups based on id
-filenames &lt;- paste0(here::here(),names(data_list), &quot;.csv&quot;) #creates vector of file names, concatenating a path, an id, and .csv
-Map(write.csv,data_list,filenames) #Map applies a function (write.csv) with arguments of corresponding elements in vectors </code></pre>
+<pre class="r"><code>&#39;
+
+
+
+&#39;</code></pre>
+<p>Click <code>CODE</code> to see the solution! ==&gt;</p>
+<pre class="r fold-hide"><code>#Divdes the long_df into groups based on id
+data_list &lt;- split(long_df,
+                   long$ID) 
+
+#creates vector of file names, concatenating a path, an id, and .csv
+filenames &lt;- paste0(dir, 
+                    names(data_list), 
+                    &quot;.csv&quot;) 
+
+#Map applies a function (write.csv) with arguments of corresponding elements in vectors
+Map(write.csv,
+    data_list,
+    filenames)  </code></pre>
 <p><strong>(Live workshop) - Data formatting questions?</strong></p>
 </div>
 <div id="gimme-arguments" class="section level1" number="3">
@@ -2983,10 +3007,10 @@ you can download the output <a href="ENTER%20GITHUB%20LINK%20TO%20OUTPUT%20FILE"
 should run this yourself so you get the output directory stored locally.
 It is good practice to save the output immediately so you do not have to
 end up re-running GIMME.</p>
-<pre class="r fold-hide"><code>gimme_out &lt;- gimmeSEM(data = paste0(here::here(), &#39;gimme/Data&#39;),
+<pre class="r fold-hide"><code>gimme_out &lt;- gimmeSEM(data = paste0(dir, &#39;Data&#39;),
                       sep = &quot;,&quot;,
                       header = T,
-                      out = paste0(here::here(), &#39;gimme/Output&#39;),
+                      out = paste0(dir, &#39;Output&#39;),
                       ar = T,
                       plot = T,
                       subgroup = T,
@@ -2998,7 +3022,7 @@ end up re-running GIMME.</p>
                       groupcutoff = .75,
                       subcutoff = .5)
 saveRDS(gimme_out,
-        paste0(here::here(), &#39;gimme/gimme_output.rds&#39;))</code></pre>
+        paste0(dir, &#39;gimme_output.rds&#39;))</code></pre>
 <p>If you run this yourself, GIMME tells will tell you it finished
 running normally, and found two subgroups. What do things look like?</p>
 <pre class="r"><code>gimme_out &lt;- readRDS(&#39;gimme_output.rds&#39;)
@@ -3181,7 +3205,12 @@ beta coefficient, and the average SE</li>
 many individuals each path was significant in Click the Code button
 below to see a potential solution.</li>
 </ol>
-<p>Solution 1</p>
+<pre class="r"><code>&#39;
+
+
+
+&#39;</code></pre>
+<p>Click <code>CODE</code> to see Solution 1 ==&gt;</p>
 <pre class="r fold-hide"><code>#Create a df of all participants, path nodes, beta, and SE
 group_paths_all &lt;- data.frame(gimme_out[[&quot;path_se_est&quot;]][[&quot;file&quot;]],gimme_out[[&quot;path_se_est&quot;]][[&quot;level&quot;]],
                               gimme_out[[&quot;path_se_est&quot;]][[&quot;rhs&quot;]],gimme_out[[&quot;path_se_est&quot;]][[&quot;lhs&quot;]],
@@ -3195,7 +3224,7 @@ group_paths_all
 #Remove the first 15 rows for each ID
 group_paths &lt;- do.call(rbind, lapply(split(group_paths_all,as.character(group_paths_all$id)), function(x) x[-(1:15),]))
 #DONE </code></pre>
-<p>Solution 2</p>
+<p>Click <code>CODE</code> to see Solution 2 ==&gt;</p>
 <pre class="r fold-hide"><code>#How many group level paths? number of paths / number of participants
 nrow(group_paths)/20 #21
 #Create a table with 21 rows and 2 columns (path, beta (se))
@@ -3208,7 +3237,7 @@ group_paths$lab &lt;- seq(1:21)
 group_paths_tab[2] &lt;- paste0(round(tapply(group_paths$beta, group_paths$lab, mean),3),&#39; (&#39;, #beta
                              round(tapply(group_paths$se, group_paths$lab, mean),2),&#39;)&#39;) #se
 #DONE</code></pre>
-<p>Solution 3</p>
+<p>Click <code>CODE</code> to see Solution 3 ==&gt;</p>
 <pre class="r fold-hide"><code>#Indices of individual-level paths
 ind_id &lt;- which(gimme_out[[&quot;path_se_est&quot;]][[&quot;level&quot;]] == &quot;ind&quot;,arr.ind = T)
 #Just need lhs and rhs
@@ -3258,14 +3287,18 @@ subgroups? Can you test this in a follow-up study?</li>
 <p>Can you script the following?</p>
 <ol style="list-style-type: decimal">
 <li>How many individuals are in each subgroup?</li>
-<li>How many subgroup-level paths are in each subgroup? Click the Code
-button below to see a potential solution.</li>
+<li>How many subgroup-level paths are in each subgroup?</li>
 </ol>
-<p>Solution 1</p>
+<pre class="r"><code>&#39;
+
+
+
+&#39;</code></pre>
+<p>Click <code>CODE</code> to see Solution 1 ==&gt;</p>
 <pre class="r fold-hide"><code>unique_out &lt;- gimme_out[[&quot;path_se_est&quot;]][!duplicated(gimme_out[[&quot;path_se_est&quot;]][[&quot;file&quot;]]),]
 table(unique_out$sub_membership)
 #DONE</code></pre>
-<p>Solution 2</p>
+<p>Click <code>CODE</code> to see Solution 2 ==&gt;</p>
 <pre class="r fold-hide"><code>unique_out 
 #Subject 1 is in subgroup 1, subject 2 is in subgroup 2. 
 sub1_paths &lt;- gimme_out[[&quot;path_se_est&quot;]][gimme_out[[&quot;path_se_est&quot;]][[&quot;file&quot;]]==&quot;Subject001_ts&quot;,]
@@ -3361,10 +3394,14 @@ thing as well:</p>
 <li>Create a weighted centrality measure a <strong>dorsal striatum
 hub</strong> for each participant. This is the sum of the magnitude of
 <em>all paths that involve any of the left or right caudate or putamen
-nodes</em>. This will require some thinking + grep skills! Click the
-Code button below to see a potential solution.</li>
+nodes</em>. This will require some thinking + grep skills!</li>
 </ul>
-<p>Solution</p>
+<pre class="r"><code>&#39;
+
+
+
+&#39;</code></pre>
+<p>Click <code>CODE</code> to see Solution ==&gt;</p>
 <pre class="r fold-hide"><code>#Remove Autoregressive Paths (first 15 rows for id)
 paths_all &lt;- data.frame(gimme_out[[&quot;path_se_est&quot;]][[&quot;file&quot;]],gimme_out[[&quot;path_se_est&quot;]][[&quot;level&quot;]],
                               gimme_out[[&quot;path_se_est&quot;]][[&quot;rhs&quot;]],gimme_out[[&quot;path_se_est&quot;]][[&quot;lhs&quot;]],

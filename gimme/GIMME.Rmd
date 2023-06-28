@@ -42,6 +42,13 @@ We will also install other packages that we will use later.
   pacman::p_load(gimme, here)
 ```
 
+We can also start by defining our working directory and there are at least two ways to do this. We can manually specify this by saving a filepath string as a variable. If you've downloaded the whole workshop directory, it should include a .here file and if it does, then the `here::here()` function should automatically identify your directory. Either way works. We'll default to manual to be safe.
+
+```{r}
+dir <- "C:/Users/.../gimme/"
+# dir <- here::here()
+```
+
 # Data Formatting
 GIMME requires specific data formatting, detailed [here](https://tarheels.live/gimme/preparing-data-and-environment-for-gimme/). 
 
@@ -65,10 +72,26 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 **Coding Task:** Let's do a quick coding check for how we could (1) split a long format dataframe (called `long_df`) of all participants (`long_df$ID`) into individual dataframes for each participant, and (2) save each participant's dataframe as an individual .csv file. 
 Take a second to think of your code, then click the 'Code' button on the right to see one solution. 
 
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
 ```{r, class.source = 'fold-hide', eval=FALSE}
-data_list <- split(long_df,long$ID) #Divdes the long_df into groups based on id
-filenames <- paste0(here::here(),names(data_list), ".csv") #creates vector of file names, concatenating a path, an id, and .csv
-Map(write.csv,data_list,filenames) #Map applies a function (write.csv) with arguments of corresponding elements in vectors 
+#Divdes the long_df into groups based on id
+data_list <- split(long_df,
+                   long$ID) 
+
+#creates vector of file names, concatenating a path, an id, and .csv
+filenames <- paste0(dir, 
+                    names(data_list), 
+                    ".csv") 
+
+#Map applies a function (write.csv) with arguments of corresponding elements in vectors
+Map(write.csv,
+    data_list,
+    filenames)  
 ```
 
 **(Live workshop) - Data formatting questions?**
@@ -107,10 +130,10 @@ Applying this to our data, it looks something like this (click the Code button b
 Please note this will take about 1-2 hours to run, and this increases quickly with more data. To quickly move forward with the walkthrough, you can download the output [here](ENTER GITHUB LINK TO OUTPUT FILE). However, you should run this yourself so you get the output directory stored locally. It is good practice to save the output immediately so you do not have to end up re-running GIMME. 
 
 ```{r, message = FALSE, warning = FALSE, eval=FALSE, class.source = 'fold-hide'}
-gimme_out <- gimmeSEM(data = paste0(here::here(), 'gimme/Data'),
+gimme_out <- gimmeSEM(data = paste0(dir, 'Data'),
                       sep = ",",
                       header = T,
-                      out = paste0(here::here(), 'gimme/Output'),
+                      out = paste0(dir, 'Output'),
                       ar = T,
                       plot = T,
                       subgroup = T,
@@ -122,7 +145,7 @@ gimme_out <- gimmeSEM(data = paste0(here::here(), 'gimme/Data'),
                       groupcutoff = .75,
                       subcutoff = .5)
 saveRDS(gimme_out,
-        paste0(here::here(), 'gimme/gimme_output.rds'))
+        paste0(dir, 'gimme_output.rds'))
 ```
 
 If you run this yourself, GIMME tells will tell you it finished running normally, and found two subgroups. What do things look like?
@@ -229,13 +252,13 @@ Explore the gimme_out R object. Can you script the following?
 3. Create a dataframe that lists all individual level paths and how many individuals each path was significant in 
 Click the Code button below to see a potential solution. 
 
-```{r Coding Task 2, include=TRUE}
+```{r, code="'\n\n\n\n'", results=F}
  
  
  
 ```
 
-Solution 1
+Click `CODE` to see Solution 1 ==>
 ```{r, class.source = 'fold-hide', eval=FALSE}
 #Create a df of all participants, path nodes, beta, and SE
 group_paths_all <- data.frame(gimme_out[["path_se_est"]][["file"]],gimme_out[["path_se_est"]][["level"]],
@@ -253,7 +276,7 @@ group_paths <- do.call(rbind, lapply(split(group_paths_all,as.character(group_pa
 
 ```
 
-Solution 2
+Click `CODE` to see Solution 2 ==>
 ```{r, class.source = 'fold-hide', eval=FALSE}
 #How many group level paths? number of paths / number of participants
 nrow(group_paths)/20 #21
@@ -269,7 +292,7 @@ group_paths_tab[2] <- paste0(round(tapply(group_paths$beta, group_paths$lab, mea
 #DONE
 ```
 
-Solution 3
+Click `CODE` to see Solution 3 ==>
 ```{r, class.source = 'fold-hide', eval=FALSE}
 #Indices of individual-level paths
 ind_id <- which(gimme_out[["path_se_est"]][["level"]] == "ind",arr.ind = T)
@@ -305,16 +328,21 @@ Can you script the following?
 
 1. How many individuals are in each subgroup?
 2. How many subgroup-level paths are in each subgroup? 
-Click the Code button below to see a potential solution. 
 
-Solution 1
+```{r, code="'\n\n\n\n'", results=F}
+ 
+ 
+ 
+```
+
+Click `CODE` to see Solution 1 ==>
 ```{r, class.source = 'fold-hide', eval=FALSE}
 unique_out <- gimme_out[["path_se_est"]][!duplicated(gimme_out[["path_se_est"]][["file"]]),]
 table(unique_out$sub_membership)
 #DONE
 ```
 
-Solution 2
+Click `CODE` to see Solution 2 ==>
 ```{r, class.source = 'fold-hide', eval=FALSE}
 unique_out 
 #Subject 1 is in subgroup 1, subject 2 is in subgroup 2. 
@@ -366,9 +394,14 @@ The field has taken multiple approaches to do this, and there are many possibili
 The previous coding tasks will be useful here. Let's try one more thing as well:
 
 * Create a weighted centrality measure a **dorsal striatum hub** for each participant. This is the sum of the magnitude of *all paths that involve any of the left or right caudate or putamen nodes*. This will require some thinking + grep skills!
-Click the Code button below to see a potential solution. 
 
-Solution
+```{r, code="'\n\n\n\n'", results=F}
+ 
+ 
+ 
+```
+
+Click `CODE` to see Solution ==>
 ```{r, class.source = 'fold-hide', eval=FALSE}
 #Remove Autoregressive Paths (first 15 rows for id)
 paths_all <- data.frame(gimme_out[["path_se_est"]][["file"]],gimme_out[["path_se_est"]][["level"]],
