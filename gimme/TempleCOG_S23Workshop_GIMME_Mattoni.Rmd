@@ -1,19 +1,20 @@
 ---
-title: "COG 2023: GIMME Workshop"
+title: "Using GIMME in R"
 author: 
   - name: "**Content creator: Matt Mattoni**"
   - name: "**Content editors: Katie Jobson & Billy Mitchell**"
-date: "2023-06-05"
+date: "2023-06-29"
 output: 
   html_document: 
     toc: true
-    toc_float: true
+    toc_depth: 2
+    toc_float:
+      collapsed: false
+    self_contained: yes
     mode: selfcontained
+    df_print: paged    
     code_folding: show
     number_sections: true
-    toc_depth: 2
-    self_contained: yes
-    df_print: paged
     css: !expr here::here("misc/style_bootcamp.css")
 knit: (function(inputFile, encoding) { 
       out_dir <- './';
@@ -26,7 +27,6 @@ knit: (function(inputFile, encoding) {
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
-# COG Workshop Summer 2023: GIMME
 This R Markdown file was developed for Temple's Coding Outreach Group (COG) summer 2023 workshop series. It will walk through an applied usage of Group Iterative Multiple Model Estimation (GIMME). GIMME is a free to use R package and was developed by Dr. Kathleen Gates at UNC. Any users should first consult, at minimum, the [introductory GIMME manuscript](https://pubmed.ncbi.nlm.nih.gov/22732562/), the [subgroup manuscript](https://pubmed.ncbi.nlm.nih.gov/27925768/) (if using them), and the [GIMME website](https://tarheels.live/gimme/). The COG workshop also includes this brief conceptual introduction to GIMME that should provide a basic foundation for new users: [Slides](ENTER GITHUB LINK TO SLIDES) and [Recording](ENTER LINK TO RECORDING AFTER WORKSHOP).
 
 ## Getting Started
