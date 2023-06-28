@@ -7,10 +7,10 @@ Workshops are on Thursdays in June, July and August from 1:00pm to 3:00pm
 | Date        | Workshop                             | Presenter  |
 | :-----------: |:------------------------------------:| :-----------:|
 | 6/29    | [GIMME](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/gimme)                       | [Matt Mattoni](https://twitter.com/MattMattoni) |
-| 7/6    | Machine Learning                       | [Helen Schmidt](https://hschmidt12.github.io/) |
-| 7/13    | [Intro to jPsych](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/jspsych)      | Steven Martinez |
-| 7/20    | Functions & Iterations in R | Beth Smedley |                          
-| 7/27    | Intro to Item Response Theory                     | Rebekah Banerjee & Merve Tansan |
-| 8/3    | Text Analysis in R              | Camille Johnston |
-| 8/10    | Dyadic Analysis in R                 | Ginny Ulichney |
-| 8/17    | Intro to SQL              | Katie Jobson & Billy Mitchell |
+| 7/6    | [Machine Learning](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/machine_learning)                       | [Helen Schmidt](https://hschmidt12.github.io/) |
+| 7/13    | [Intro to jPsych](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/jspsych)      | [Steven Martinez](https://www.researchgate.net/scientific-contributions/Steven-A-Martinez-2159311354) |
+| 7/20    | [Functions & Iterations in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/functions_iterations) | [Beth Smedley](https://twitter.com/ebsmed?lang=en) |                          
+| 7/27    | [Intro to Item Response Theory](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/irt)                     | [Rebekah Banerjee](https://twitter.com/interperceptual) & [Merve Tansan](https://twitter.com/Merve_Tansan) |
+| 8/3    | [Text Analysis in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/text_analysis)              | [Camille Johnston](https://www.linkedin.com/in/camille-johnston-489365162/) |
+| 8/10    | [Dyadic Analysis in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/dyadic_analysis)                 | [Ginny Ulichney](https://www.linkedin.com/in/ginny-ulichney/) |
+| 8/17    | [Intro to SQL](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/sql)              | [Katie Jobson](https://kjobson-neuro.github.io/) & [Billy Mitchell](https://wj-mitchell.github.io/) |
