@@ -25,16 +25,6 @@ knit: (function(inputFile, encoding) {
 # What is Machine Learning?
 
 ```{r Packages, message = FALSE, results = FALSE}
-# define packages we need
-# packages <- c("tidyverse", "palmerpenguins", "stats", "factoextra", "cluster", "formatR", "class", "modelsummary",
-#               "kableExtra", "vembedr", "gridExtra", "corrr", "ggcorrplot", "FactoMineR", "rpart", "rpart.plot")
-# 
-# # install packages  
-# install.packages(packages)
-# 
-# # load packages
-# lapply(packages, require, character.only = TRUE, quietly = TRUE)
-
   # Installing pacman if it's not present
   if (require("pacman") == FALSE){
     install.packages("pacman")
@@ -223,9 +213,53 @@ print(paste0("KNN classification accuracy = ", round(accuracy, digits = 2), "%",
 
 ### Example
 
-1. Use the KNN algorithm to classify penguin species based on flipper length and body mass. Try a range of neighbors when employing the model. [Click for solution.](LINK TO knn-1.R FOR SOLUTION)
+1. Use the KNN algorithm to classify penguin species based on flipper length and body mass. Try a range of neighbors when employing the model. 
 
-2. Use the KNN algorithm to classify penguin species based on all data dimensions. Try a range of neighbors when employing the model. [Click for solution.](LINK TO knn-2.R FOR SOLUTION)
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
+```{r, class.source = 'fold-hide', eval=FALSE}
+# k-nearest neighbors example #1 solution
+set.seed(123)
+ran <- sample(1:nrow(df), 0.8 * nrow(df))
+nor <- function(x) { (x - min(x))/(max(x) - min(x)) }
+df.norm <- as.data.frame(lapply(df[,c("flipper_length_mm", "body_mass_g")], nor))
+summary(df.norm)
+df.train <- df.norm[ran,]
+df.test <- df.norm[-ran,]
+df.category <- df[ran, 1]
+pred <- knn(train = df.train, test = df.test, cl = df.category$species, k = 3)
+accuracy <- 100 * sum(df.category$species == pred)/nrow(df.category)
+print(paste0("KNN classification accuracy = ", round(accuracy, digits = 2), "%", sep = ""))
+```
+
+
+2. Use the KNN algorithm to classify penguin species based on all data dimensions. Try a range of neighbors when employing the model.
+
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
+```{r, class.source = 'fold-hide', eval=FALSE}
+# k-nearest neighbors example #2 solution
+set.seed(123)
+ran <- sample(1:nrow(df), 0.8 * nrow(df))
+nor <- function(x) { (x - min(x))/(max(x) - min(x)) }
+df.norm <- as.data.frame(lapply(df[,c("bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g")], nor))
+summary(df.norm)
+df.train <- df.norm[ran,]
+df.test <- df.norm[-ran,]
+df.category <- df[ran, 1]
+pred <- knn(train = df.train, test = df.test, cl = df.category$species, k = 3)
+accuracy <- 100 * sum(df.category$species == pred)/nrow(df.category)
+print(paste0("KNN classification accuracy = ", round(accuracy, digits = 2), "%", sep = ""))
+```
+
 
 ## Classification / Decision Trees
 
@@ -272,7 +306,34 @@ print(paste0("Decision tree classification accuracy = ", round(accuracy, digits 
 
 ### Example
 
-What happens to the decision tree if you remove **island name** and **flipper length** from the data frame. Does it change the model accuracy? What does that tell you about the removed data? [Click for solution.](LINK TO dectree.R FOR SOLUTION)
+What happens to the decision tree if you remove **island name** and **flipper length** from the data frame. Does it change the model accuracy? What does that tell you about the removed data?
+
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
+```{r, class.source = 'fold-hide', eval=FALSE}
+# pca example solution
+df.ul <- df %>%
+  select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex)
+df.ul$sex <- as.character(df.ul$sex)
+df.ul$sex[df.ul$sex == "male"] <- 0
+df.ul$sex[df.ul$sex == "female"] <- 1
+df.ul$sex <- as.numeric(df.ul$sex)
+df.norm <- as.data.frame(lapply(df.ul, nor))
+df.corr <- cor(df.norm)
+ggcorrplot(df.corr)
+df.pca <- princomp(df.corr)
+summary(df.pca)
+df.pca$loadings
+fviz_eig(df.pca, addlabels = T, barfill = "deepskyblue3", barcolor = "deepskyblue3")
+fviz_pca_var(df.pca, col.var = "deepskyblue3")
+fviz_pca_var(df.pca, col.var = "cos2",
+             gradient.cols = c("deepskyblue4", "deepskyblue"),
+             repel = T)  
+```
 
 ***
 
@@ -378,7 +439,48 @@ grid.arrange(p1, p2, p3, nrow = 2)
 
 ### Example
 
-Repeat k-means clustering using **bill depth** and **body mass** from the unlabeled data frame. Does it change the number of optimal clusters? [Click for solution.](LINK TO kmeans.R FOR SOLUTION)
+Repeat k-means clustering using **bill depth** and **body mass** from the unlabeled data frame. Does it change the number of optimal clusters? 
+
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
+```{r, class.source = 'fold-hide', eval=FALSE}
+# k-means clustering solution
+ul.subset <- df.ul %>%
+  select(body_mass_g, bill_depth_mm)
+ggplot(data = df, aes(x = body_mass_g, y = bill_depth_mm, color = species, group = species)) +
+  geom_point() +
+  labs(x = "body mass (g)", y = "bill depth (mm)", title = "Penguin Bill Depth and Body Mass by Species") +
+  plot.format
+ggplot(data = df, aes(x = body_mass_g, y = bill_depth_mm, color = sex, group = sex)) +
+  geom_point() +
+  labs(x = "body mass (g)", y = "bill depth (mm)", title = "Penguin Bill Depth and Body Mass by Sex") +
+  plot.format
+set.seed(123)
+k3 <- stats::kmeans(ul.subset, 3, nstart = 25)
+str(k3)
+k3
+fviz_cluster(k3, data = ul.subset) + theme_classic()
+k2 <- stats::kmeans(ul.subset, 2, nstart = 25)
+str(k2)
+k2
+fviz_cluster(k2, data = ul.subset) + theme_classic()
+fviz_nbclust(ul.subset, kmeans, method = "wss")
+fviz_nbclust(ul.subset, kmeans, method = "silhouette")
+gap_stat <- clusGap(ul.subset, FUN = kmeans, nstart = 25,
+                    K.max = 10, B = 50)
+fviz_gap_stat(gap_stat)
+k1 <- kmeans(ul.subset, centers = 1, nstart = 25)
+k2 <- kmeans(ul.subset, centers = 2, nstart = 25)
+k3 <- kmeans(ul.subset, centers = 3, nstart = 25)
+p1 <- fviz_cluster(k1, geom = "point", data = ul.subset) + ggtitle("k = 1") + theme_classic()
+p2 <- fviz_cluster(k2, geom = "point", data = ul.subset) + ggtitle("k = 2") + theme_classic()
+p3 <- fviz_cluster(k3, geom = "point", data = ul.subset) + ggtitle("k = 3") + theme_classic()
+grid.arrange(p1, p2, p3, nrow = 1)
+```
 
 ## Principal Components Analysis
 
@@ -406,7 +508,35 @@ fviz_pca_var(df.pca, col.var = "deepskyblue3")
 
 ### Example
 
-Let's pretend that the penguin species variable is our only "label" variable. Try coding sex as a numeric variable (where male = 0 and female = 1) and re-run the PCA. What is similar? What's different? [Click for solution.](LINK TO pca.R FOR SOLUTION)
+Let's pretend that the penguin species variable is our only "label" variable. Try coding sex as a numeric variable (where male = 0 and female = 1) and re-run the PCA. What is similar? What's different?
+
+
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
+```{r, class.source = 'fold-hide', eval=FALSE}
+# pca example solution
+df.ul <- df %>%
+  select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex)
+df.ul$sex <- as.character(df.ul$sex)
+df.ul$sex[df.ul$sex == "male"] <- 0
+df.ul$sex[df.ul$sex == "female"] <- 1
+df.ul$sex <- as.numeric(df.ul$sex)
+df.norm <- as.data.frame(lapply(df.ul, nor))
+df.corr <- cor(df.norm)
+ggcorrplot(df.corr)
+df.pca <- princomp(df.corr)
+summary(df.pca)
+df.pca$loadings
+fviz_eig(df.pca, addlabels = T, barfill = "deepskyblue3", barcolor = "deepskyblue3")
+fviz_pca_var(df.pca, col.var = "deepskyblue3")
+fviz_pca_var(df.pca, col.var = "cos2",
+             gradient.cols = c("deepskyblue4", "deepskyblue"),
+             repel = T)
+```
 
 # Conclusion
 
