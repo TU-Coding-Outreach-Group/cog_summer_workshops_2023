@@ -2,7 +2,7 @@
 # Machine Learning
 07/06/2023
 
-__**Content creator:**__ Helen Schmidt
+__**Content creator:**__ Helen Schmidt  
 __**Content editor:**__ Billy Mitchell
 
 ## Description
@@ -39,7 +39,7 @@ This workshop demands that users:
 | Conclusion | General Questions | 10 min|
 
 ## Additional Resources
-None
+No supplementary materials included
 
 ### Packages
 * ```class``` - [Functions for classification](https://www.rdocumentation.org/packages/class/versions/7.3-20)
