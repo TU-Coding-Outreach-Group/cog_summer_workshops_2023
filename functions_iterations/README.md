@@ -31,7 +31,7 @@ This workshop demands that users:
 - [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/functions_iterations/index.html)
 
 ## What We Won't Cover:
-We will not be covering data wrangling, or how to format the data to in way that facilitates visualization. We also will not be covering how to conduct statistical tests of the data that we will be visualizing. Lastly, we will not be reviewing many basic visualizations like bar graphs or regression plots that I had covered in the previous year's workshop.  
+We will not be covering data wrangling, or how to format the data to in way that facilitates visualization. We also will not be covering how to conduct statistical tests of the data that we will be utilizing. 
 
 ## Outline
 | Section | Description | Time |
