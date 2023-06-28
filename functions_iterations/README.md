@@ -23,7 +23,13 @@ This workshop demands that users:
 3. Download the relevant packages (See below)
     
 ## Workshop objectives:
+-   Learn when to use functions, and how to make custom functions
 
+-   Function style and housekeeping
+
+-   When to use iteration, loops and their alternatives
+
+-   Apply knowledge of functions and iteration to load all files from a folder of data and perform quality assurance measures
 
 ## Workshop materials:
 - [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/functions_iterations/index.html)
@@ -34,17 +40,18 @@ We will not be covering data wrangling, or how to format the data to in way that
 ## Outline
 | Section | Description | Time |
 | --- | --- | --- |
-| Intro | | |
-| Setup |  |  |
-| Section 1 |  |  |
-| Section 2 |  |  |
-| Section 3 |  |  |
-| Section 4 |  |  |
-| Conclusion |  |  |
-| Q & A | --- |  |
+| Intro | Why use functions and iterations? | 15 min|
+| Functions | A basic function and faded examples | 15 min |
+| Applied knowledge | Folder of files and how to deal with them | 15 min |
+| Additional info | Troubleshooting and more | 15 min |
+| Q & A | --- | 5 min |
 
 ## Additional Resources
-Supplemental information can be found within the [supplements folder]
+https://rstats.wtf/debugging-r-code.html
+
+http://adv-r.had.co.nz/Exceptions-Debugging.html
+
+https://support.posit.co/hc/en-us/articles/205612627-Debugging-with-the-RStudio-IDE
 
 ### Packages
 ```tidyverse``` - [a collection of packages that are always incredibly helpful no matter what project you're working on; sometimes the only package I load (contains ggplot2](https://www.tidyverse.org/packages/)
