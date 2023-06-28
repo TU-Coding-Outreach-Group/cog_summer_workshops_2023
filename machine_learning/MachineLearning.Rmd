@@ -26,14 +26,23 @@ knit: (function(inputFile, encoding) {
 
 ```{r Packages, message = FALSE, results = FALSE}
 # define packages we need
-packages <- c("tidyverse", "palmerpenguins", "stats", "factoextra", "cluster", "formatR", "class", "modelsummary",
-              "kableExtra", "vembedr", "gridExtra", "corrr", "ggcorrplot", "FactoMineR", "rpart", "rpart.plot")
+# packages <- c("tidyverse", "palmerpenguins", "stats", "factoextra", "cluster", "formatR", "class", "modelsummary",
+#               "kableExtra", "vembedr", "gridExtra", "corrr", "ggcorrplot", "FactoMineR", "rpart", "rpart.plot")
+# 
+# # install packages  
+# install.packages(packages)
+# 
+# # load packages
+# lapply(packages, require, character.only = TRUE, quietly = TRUE)
 
-# install packages  
-#install.packages(packages)
-
-# load packages
-lapply(packages, require, character.only = TRUE, quietly = TRUE)
+  # Installing pacman if it's not present
+  if (require("pacman") == FALSE){
+    install.packages("pacman")
+  }
+  
+  # Using pacman to load necessary packages
+  pacman::p_load(tidyverse, palmerpenguins, stats, factoextra, cluster, formatR, class, modelsummary,
+                 kableExtra, vembedr, gridExtra, corrr, ggcorrplot, FactoMineR, rpart, rpart.plot)
 ```
 
 ```{r Setup, include = FALSE, echo = FALSE}
@@ -311,7 +320,7 @@ set.seed(123)
 k3 <- stats::kmeans(ul.subset, 3, nstart = 25)
 str(k3)
 k3
-fviz_cluster(k3, data = ul.subset) + theme_classic()
+factoextra::fviz_cluster(k3, data = ul.subset) + theme_classic()
 
 # let's visualize the data using sex labels
 ggplot(data = df, aes(x = bill_length_mm, y = flipper_length_mm, color = sex, group = sex)) +
@@ -324,7 +333,7 @@ set.seed(123)
 k2 <- stats::kmeans(ul.subset, 2, nstart = 25)
 str(k2)
 k2
-fviz_cluster(k2, data = ul.subset) + theme_classic()
+factoextra::fviz_cluster(k2, data = ul.subset) + theme_classic()
 ```
 
 How do we determine the "optimal" number of clusters based on our data? There are a few different methods we can use to find the optimal `k` to specify. This process can be somewhat subjective, but we can use three different methods to attempt to reach a consensus. Partitioning the data with k-means clustering aims to minimize the intra-cluster variation.
