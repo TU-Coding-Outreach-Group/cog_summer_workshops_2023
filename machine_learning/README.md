@@ -58,4 +58,7 @@ No supplementary materials included
 * ```tidyverse``` - [a collection of packages that are always incredibly helpful no matter what project you're working on; sometimes the only package I load (contains ggplot2](https://www.tidyverse.org/packages/)
 * ```vembedr``` - [Used to embed video urls within the script](https://cran.r-project.org/web/packages/vembedr/vignettes/vembedr.html)
 
-### Other Workshops
+### Other Workshops You Might Find Interesting
+- COG 2022 [Natural Language Processing in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2022/tree/main/nlp) workshop by Celia Litovsky
+- COG 2022 [Data Visualization in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2022/tree/main/data-visualization-in-r) workshop by Billy Mitchell
+
