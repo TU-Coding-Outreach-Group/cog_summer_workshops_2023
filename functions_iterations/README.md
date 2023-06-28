@@ -1,4 +1,3 @@
-# UNDER CONSTRUCTION
 # Coding Outreach Group Summer Workshop 2023
 # Functions & Iterations in R
 07/20/2023
