@@ -2,7 +2,8 @@
 # Machine Learning
 07/06/2023
 
-__**Content creator:**__ Helen Schmidt  
+__**Content creator:**__ Helen Schmidt 
+  
 __**Content editor:**__ Billy Mitchell
 
 ## Description
