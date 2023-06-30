@@ -100,7 +100,7 @@ Now that we're all set up, let's start with a basic function example.
 
 Let's make a function that adds 1 to our_input and returns the new_value.
 
-```{r Basic function example}
+```{r Basic function example, results='hide'}
 
 our_input <- c(1,2,3,4,5)
 
@@ -148,7 +148,7 @@ Let's turn our homemade mean example from the intro video and turn it into a fun
 
 If we needed to use a function within our custom function, we can pass arguments from the nested function like this:
 
-```{r more than 1 argument example}
+```{r more than 1 argument example, results='hide'}
 homemade_mean <- function(sample_vector, ...){
   sum_of_vector <- sum(sample_vector, ... ) # pass args from sum!
   n <- length(sample_vector)
@@ -289,7 +289,7 @@ If this is your first time seeing a loop of any kind, a while loop is a great pl
 
 Here is an example where we start with x having a value of 0 when it enters the loop. R sees the `while()` statement and checks the condition to see if it returns TRUE, since indeed 0 is smaller than 1000, it is TRUE. So, the loop continues and we add 17 to x (which remember is 0 right now) and x now becomes 17. This gets sent back to the top and `while()` evaluates again, is x less than 1000? TRUE, 17 is less than 1000 so we continue on and add 17 again... this continues until x is greater than 1000 and as soon as the evaluation returns FALSE, the loop stops.
 
-```{r}
+```{r, results='hide'}
 # initialize x to start at 0
 x <- 0
 # Condition: while x is less than 1000, add 17 to x
@@ -592,7 +592,7 @@ sapply(df_x, function(x) { # you can format it more function-like if you prefer!
 
 Perhaps we want to find the **maximum number in each row** in a dataframe. We can use `apply()` to do this.
 
-```{r, eval=F, warning=F}
+```{r, eval=F, warning=F, results='hide'}
 # fake data of cell counts per replicate
 fake_data <- data.frame(rep_01 = seq(10, 100, 10),
                         rep_02 = seq(10, 55, 5),
@@ -623,7 +623,7 @@ apply(fake_data, 1, max) # takes each row as an input, and decides one by one wh
 
 What happens if within our data frame we don't have all numeric data (a common occurrence)? We could exclude the columns or rows we are not interested in.
 
-```{r}
+```{r, results='hide'}
 # sometimes we don't have all numeric input in a dataframe though...
 fake_data_factor <- data.frame(day = as.factor(c(1:10)), 
                         rep_01 = seq(10, 100, 10),
@@ -651,7 +651,7 @@ apply(fake_data_factor[,-c(1,6)], 1, mean, na.rm = TRUE)
 
 1.  With this patient data we want to find the average value (from the three replicate values 1, 2, 3) for each patient. *Take this loop and turn it into an apply statement or statements (depends upon how you want to solve) that is a functional equivalent (it produces a very similar/the same result).*
 
-```{r}
+```{r, results='hide'}
 set.seed(2023)
 patient_data <- data.frame(patient_id = c(1:5),
                            age = c(23,55,34,64,12),
@@ -709,7 +709,7 @@ For the curious: this blog is a good resource on how `base::` compares to `purrr
 
 I'm personally more of a fan of the apply family but I wanted to point these out to you - maybe you find you prefer `purrr::`.
 
-```{r, eval=F, warning=F}
+```{r, eval=F, warning=F, results='hide'}
 library(purrr)
 
 # let's look at an example
@@ -751,7 +751,7 @@ map_df(df, mean, na.rm = TRUE)
 
 Map functions can also replace multi-step custom functions by using the .x notation. Let's say we want to take the sum of squares for each element in df (from the above chunk).
 
-```{r, eval=F, warning=F}
+```{r, eval=F, warning=F, results='hide'}
 df
 
 # essentially we want to apply the below line of code to each column
@@ -785,7 +785,7 @@ sapply(df, function(x){sum(x^2)}) # alternative still using the apply family
 
 An example of translating a loop to a map and how a map can be a bit more flexible. The goal is to make 3 lists of 10 numbers each sampled from a random distribution where the standard deviation is 1 (in list 1) and then 2 (in list 2) and then 3 (in list 3). This is rather easy to do with a loop:
 
-```{r}
+```{r, results='hide'}
 #-- a loop --#
 
 set.seed(2023)
