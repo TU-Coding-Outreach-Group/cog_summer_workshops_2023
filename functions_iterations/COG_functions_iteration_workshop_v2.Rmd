@@ -6,6 +6,7 @@ author:
   - name: "Content editor: **Katie Jobson**"
 output:
   html_document:
+    cold_folding: show
     number_sections: true
     toc: true
     toc_float: 
@@ -120,21 +121,27 @@ Following this basic format, let's work on completing some faded examples (parti
 
 ### Activity_01: Make some functions (faded examples)
 
-1.  Fill in the blanks in the code so that `my_square_root(16)` returns `4`.
+1.  Write some code so that `my_square_root(16)` returns `4`.
 
-```{r Activity_01_01 my_square_root, eval=F, warning=F}
-my_square_root <- function(____){
-  return_value <- sqrt(____)
-  return(____)
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `CODE` to see the solution! ==>
+
+```{r Activity_01_01 my_square_root, eval=F, warning=F, class.source = 'fold-hide'}
+my_square_root <- function(our_input){
+  return_value <- sqrt(our_input)
+  return(return_value)
 }
 
 my_square_root(16)
 ```
 
-2.  Fill in the blanks in the code so that `my_max_minus_min(c(4,7,1,6,8))` returns `7`
+2.  Write a function so that the variable `my_max_minus_min(c(4,7,1,6,8))` returns `7`
 
 ```{r Activity_01_02 my_max_minus_min, eval=F, warning=F}
-my_max_minus_min <- ____(____){
+my_max_minus_min <- _____(____){
   return_value <- ____(____) - ____(____)
   ____(____)
 }
@@ -227,46 +234,71 @@ For all of the following examples, be sure to practice good housekeeping and fol
 Use these prompts to practice writing and testing functions. Use the [Function Style Guide] to properly comment your homemade functions. If you're feeling stuck, check out [Help, I don't even know where to start!](#help-i-dont-even-know-where-to-start)
 
 1.  Make a function that takes a vector and sums it up after it squares it.
+    
+```{r, code="'\n\n\n\n'", results=F}
 
-    **To test**: use `sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)`
+```
 
-    such that `sum_squares(sample_vector)` should return `27361`
+Click `CODE` to see the solution! ==>
 
-    ```{r, eval=F, warning=F}
+    ```{r, eval=F, warning=F, class.source = 'fold-hide'}
     # description: 
     # input: 
     # output: 
     # requires:
-
+    
+    sum_squares <- function(numbers) {
+      sum <- sum(numbers)
+      square <- (sum^2)
+    return(square) 
+  } 
     sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)
-
     sum_squares(sample_vector)
 
     ```
 
 2.  Make a function that takes a number, a string, and a separator and combines them.
 
-    **To test**: `num_hello(1, "hello", ".")` returns `"1.hello"`
+```{r, code="'\n\n\n\n'", results=F}
 
-    ```{r, eval=F, warning=F}
+```
+
+Click `CODE` to see a solution! ==>
+
+    ```{r, eval=F, warning=F, class.source = 'fold-hide'}
     # description: 
     # input: 
     # output: 
     # requires: 
-
+    
+    combine <- function(number, string, separator) {
+      return_combine <- paste(number, string, separator)
+      return(return_combine)
+    }
     combine(1, "hello", ".")
     ```
 
 3.  Write a function to convert farenheit to centegrade (Celcius = (Farenheit - 32) x 5/9). Get your function to print out your result in the following format: "Farenheit : *value of oF* is equivalent to *value oC* centigrade."
 
     **To test:** `temp_conversion(23)` should return `"Farenheit: 23 is equivalent to -5 centigrade"`
+    
+```{r, code="'\n\n\n\n'", results=F}
 
-    ```{r, eval=F, warning=F}
+```
+
+Click `CODE` to see a solution! ==>
+
+    ```{r, eval=F, warning=F, class.source = 'fold-hide'}
     # description: 
     # input: 
     # output: 
     # requires:
 
+    temp_conversion <- function(temp) {
+      centigrade <- ((temp - 32) * (5/9))
+      message <- paste("Farenheit:", temp, "is equivalent to", centigrade, "centigrade")
+      return(message)
+    }
     temp_conversion(23)
 
     ```
