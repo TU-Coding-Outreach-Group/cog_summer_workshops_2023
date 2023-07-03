@@ -3,9 +3,10 @@ title: "Coding Outreach Group Summer Workshop - Functions and Iteration in R"
 date: "`r Sys.Date()`"
 author: 
   - name: "Content creator: **Elizabeth Smedley**"
-  - name: "Content editor: Katie Jobson & Billy Mitchell"
+  - name: "Content editor: **Katie Jobson**"
 output:
   html_document:
+    code_folding: show
     number_sections: true
     toc: true
     toc_float: 
@@ -24,7 +25,7 @@ editor_options:
 ---
 
 ```{r Setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, error = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 options(yaml.eval.expr = TRUE)
 ```
 
@@ -44,8 +45,9 @@ library(vembedr)
 -   apply our knowledge of functions and iteration to load all files from a folder of data and perform quality assurance measures
 
 # Section 1: Intro - Why use functions and when to use iteration?
-
-embed_url("https://youtu.be/hH_HLv82Vf8")
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/hH_HLv82Vf8")
+```
 
 ```{r Section 1 Video, echo = FALSE}
 #vembedr::embed_url("https://www.youtube.com/watch?v=Jc87nRBSPWQ")
@@ -57,10 +59,9 @@ embed_url("https://youtu.be/hH_HLv82Vf8")
 
 ### Workshop Setup
 
-I'm first going to load the couple of packages that we will need for this workshop. I've included a little bit of information about each of their uses in a comment below. Running the code chunk below will load the desired packages if you have already installed them, and the nice thing is, it will also automatically install any needed packages if you have not yet done so. Basically, this is possible through creating an object containing the names of the desired packages ("function_iteration_packages"), creating an object containing the names of your existing packages ("packages"), and using a function to install any package names that are listed among the desired packages, but not among existing packages.
+I'm first going to load the couple of packages that we will need for this workshop. I've included a little bit of information about each of their uses in a comment below. *If you don't have these packages installed, make sure to do so before trying to load the libraries!*
 
-```{r Packages, message=FALSE, warning=FALSE}
-function_iteration_packages <- c("tidyverse", "gapminder", "glue", "datasets")
+```{r Packages, message=F, warning=F}
 
 ## -- brief explanation of packages -- ##
 
@@ -72,20 +73,10 @@ function_iteration_packages <- c("tidyverse", "gapminder", "glue", "datasets")
 
 # datasets provides many example data sets for R
 
-packages <- rownames(installed.packages())
-p_to_install <- wrangling_packages[!(wrangling_packages %in% packages)]
-
-if(length(p_to_install) > 0){
-  install.packages(p_to_install)
-}
-
-lapply(wrangling_packages, library, character.only = TRUE)
-```
-
-Now let's clean our environment of the variables we won't need
-
-```{r Removing Unnecessary Variables}
-rm(p_to_install, packages, wrangling_packages)
+library(tidyverse)
+library(gapminder)
+library(glue)
+library(datasets)
 ```
 
 We're next going to ***specify the working directory*** to wherever you have this workshop stored locally.
@@ -110,7 +101,7 @@ Now that we're all set up, let's start with a basic function example.
 
 Let's make a function that adds 1 to our_input and returns the new_value.
 
-```{r Basic function example}
+```{r Basic function example, results='hide'}
 
 our_input <- c(1,2,3,4,5)
 
@@ -130,21 +121,27 @@ Following this basic format, let's work on completing some faded examples (parti
 
 ### Activity_01: Make some functions (faded examples)
 
-1.  Fill in the blanks in the code so that `my_square_root(16)` returns `4`.
+1.  Write some code so that `my_square_root(16)` returns `4`.
 
-```{r Activity_01_01 my_square_root}
-my_square_root <- function(____){
-  return_value <- sqrt(____)
-  return(____)
+```{r, code="'\n\n\n\n'", results=F}
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+my_square_root <- function(our_input){
+  return_value <- sqrt(our_input)
+  return(return_value)
 }
 
 my_square_root(16)
 ```
 
-2.  Fill in the blanks in the code so that `my_max_minus_min(c(4,7,1,6,8))` returns `7`
+2.  Write a function so that the variable `my_max_minus_min(c(4,7,1,6,8))` returns `7`
 
-```{r Activity_01_02 my_max_minus_min}
-my_max_minus_min <- ____(____){
+```{r Activity_01_02 my_max_minus_min, eval=F, warning=F}
+my_max_minus_min <- _____(____){
   return_value <- ____(____) - ____(____)
   ____(____)
 }
@@ -158,7 +155,7 @@ Let's turn our homemade mean example from the intro video and turn it into a fun
 
 If we needed to use a function within our custom function, we can pass arguments from the nested function like this:
 
-```{r more than 1 argument example}
+```{r more than 1 argument example, results='hide'}
 homemade_mean <- function(sample_vector, ...){
   sum_of_vector <- sum(sample_vector, ... ) # pass args from sum!
   n <- length(sample_vector)
@@ -237,46 +234,68 @@ For all of the following examples, be sure to practice good housekeeping and fol
 Use these prompts to practice writing and testing functions. Use the [Function Style Guide] to properly comment your homemade functions. If you're feeling stuck, check out [Help, I don't even know where to start!](#help-i-dont-even-know-where-to-start)
 
 1.  Make a function that takes a vector and sums it up after it squares it.
+    
+```{r, code="'\n\n\n\n'", results=F}
 
-    **To test**: use `sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)`
+```
 
-    such that `sum_squares(sample_vector)` should return `27361`
+Click `SHOW` to see the solution! ==>
 
-    ```{r}
-    # description: 
-    # input: 
-    # output: 
-    # requires:
-
+    ```{r class.source = 'fold-hide', eval=F, warning=F}
+    # description: sum_squares takes a vecotor, sums the data and squares it
+    # input: a vector of numbers
+    # output: a single number
+    
+    sum_squares <- function(numbers) {
+      sum <- sum(numbers)
+      square <- (sum^2)
+    return(square) 
+  } 
     sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)
-
     sum_squares(sample_vector)
 
     ```
 
 2.  Make a function that takes a number, a string, and a separator and combines them.
 
-    **To test**: `num_hello(1, "hello", ".")` returns `"1.hello"`
+```{r, code="'\n\n\n\n'", results=F}
 
-    ```{r}
-    # description: 
-    # input: 
-    # output: 
-    # requires: 
+```
 
+Click `SHOW` to see a solution! ==>
+
+    ```{r class.source = 'fold-hide', eval=F, warning=F}
+    # description: takes various types of input and combines them
+    # input: three variables
+    # output: a combination of all the input
+    
+    combine <- function(number, string, separator) {
+      return_combine <- paste(number, string, separator)
+      return(return_combine)
+    }
     combine(1, "hello", ".")
     ```
 
 3.  Write a function to convert farenheit to centegrade (Celcius = (Farenheit - 32) x 5/9). Get your function to print out your result in the following format: "Farenheit : *value of oF* is equivalent to *value oC* centigrade."
 
     **To test:** `temp_conversion(23)` should return `"Farenheit: 23 is equivalent to -5 centigrade"`
+    
+```{r, code="'\n\n\n\n'", results=F}
 
-    ```{r}
-    # description: 
-    # input: 
-    # output: 
-    # requires:
+```
 
+Click `SHOW` to see a solution! ==>
+
+    ```{r class.source = 'fold-hide', eval=F, warning=F}
+    # description: take a temperature in Farenheit and calculate that temperature in centigrade
+    # input: a number in Fahrenheit 
+    # output: a number in Centrigrade
+
+    temp_conversion <- function(temp) {
+      centigrade <- ((temp - 32) * (5/9))
+      message <- paste("Farenheit:", temp, "is equivalent to", centigrade, "centigrade")
+      return(message)
+    }
     temp_conversion(23)
 
     ```
@@ -299,7 +318,7 @@ If this is your first time seeing a loop of any kind, a while loop is a great pl
 
 Here is an example where we start with x having a value of 0 when it enters the loop. R sees the `while()` statement and checks the condition to see if it returns TRUE, since indeed 0 is smaller than 1000, it is TRUE. So, the loop continues and we add 17 to x (which remember is 0 right now) and x now becomes 17. This gets sent back to the top and `while()` evaluates again, is x less than 1000? TRUE, 17 is less than 1000 so we continue on and add 17 again... this continues until x is greater than 1000 and as soon as the evaluation returns FALSE, the loop stops.
 
-```{r}
+```{r, results='hide'}
 # initialize x to start at 0
 x <- 0
 # Condition: while x is less than 1000, add 17 to x
@@ -321,7 +340,7 @@ Quick note, whenever I'm testing out a new loop, I will put i (or whatever varia
 
 Students at University of Samhain that are working towards a bachelor's degree (120 credit hours) have to choose courses from a curriculum that offers 2, 3 or 4 credits courses. They also must take at least 4 courses per semester to be considered a "full time" student. **In this loop, we will simulate the course progression for one student to find out how many total credits they will actually take. Do they end up with exactly 120 credits or do they take more, if so, how many more?** *Fill in this faded example so we can see what one possible course progression could be for a student.*
 
-```{r}
+```{r, eval=F, warning=F}
 
 set.seed(2023)
   
@@ -365,7 +384,7 @@ Unlike while statements that do not have a fixed, or predetermined number of ite
 
 2\. for x in some vector y, do stuff.
 
-```{r}
+```{r, eval=F, warning=F}
 # for loop example: to add 1:10 (e.g., 1 + 2 + 3 + 4 + 5...) 
 
 # 1. make y an empty numeric/double vector in which to hold our final result 
@@ -416,7 +435,7 @@ Why does x = 10 after you run the loop? What is happening each time x passes thr
 
     #\`[1] "COG workshops are the best."
 
-```{r}
+```{r, eval=F, warning=F}
 
 for(i in 1:___){
   ______("COG workshops are the best!")
@@ -425,7 +444,7 @@ for(i in 1:___){
 
 2.  Evaluate the number of characters in each word in this string of words. **To test:** the first printed item will return `[1] "trade has 5 letters"`
 
-```{r}
+```{r, eval=F, warning=F}
 
 set.seed(2023)
 word_string <- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
@@ -448,7 +467,7 @@ word_string <- sample(stringr::words, size = 30) # pull 30 elements at random fr
     | introduce | 9           |
     | god       | 3           |
 
-```{r}
+```{r, eval=F, warning=F}
 set.seed(2023)
 word_string <- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
 
@@ -501,7 +520,7 @@ The above loop totally works, and is a reasonable option and sometimes if that's
 
 `base::apply()` here we're taking this data frame we've created and we want to take the sum of the columns.
 
-```{r}
+```{r, eval=F, warning=F}
 # making the data frame
 df_x <- data.frame(v1 = c(1,2,NA), v2 = c(2,3,1))
 
@@ -534,7 +553,7 @@ typeof(apply_example_rows) # is a double (type of vector)
 
 `lapply()` is better for lists, since that's what it will return to you, but we can pop our data frame in there and see it will return our sums in a list. We just cant specify if we're summing over rows or columns like we can with `apply()` and it automatically assumes we're summing over columns.
 
-```{r}
+```{r, eval=F, warning=F}
 # -- lapply example that returns sums in a list of each column in df_x -- #
 lapply_example <- lapply(df_x, sum, na.rm = TRUE) 
 lapply_example
@@ -544,7 +563,7 @@ typeof(lapply_example) # is a list
 
 `sapply()` here is helping us achieve the same goal as above. The difference to using sapply here over lapply is that sapply will return a vector where as lapply returns a list. Same thing though, sapply is better for vectors as input rather than data frames because we can't specify rows or columns...
 
-```{r}
+```{r, eval=F, warning=F}
 
 # -- sapply example that returns sums in a list of each column in df_x -- #
 sapply_example <- sapply(df_x, sum, na.rm = TRUE) 
@@ -554,11 +573,12 @@ typeof(sapply_example) # is a double (type of vector)
 
 ```
 
-embed_url("https://youtu.be/hNn_a7MZJYY")
-
+```{r, echo=FALSE} 
+vembedr::embed_url("https://youtu.be/hNn_a7MZJYY")
+```
 Here I'm demonstrating for you how we can use `sapply()` to do a quality control-like procedure to find the missing data per column. **Take note that here, when we use more than one function, in this case sum() and is.na() we have to use the function(x) notation and specify what we are operating on in this format!**
 
-```{r}
+```{r, eval=F, warning=F}
 
 # WILL GO OVER THIS AND BELOW CHUNK IN VIDEO 2
 
@@ -586,7 +606,7 @@ sapply(df_x, function(x) sum(is.na(x)))
 
 Here is another example of the function(x) and multiple function passing with `sapply()` where we are finding the proportion of missing data for all columns
 
-```{r}
+```{r, eval=F, warning=F}
 # --- How we can use sapply() to find the proportion of missing data for all columns --- #
 
 sapply(df_x, function(x) sum(is.na(x))/length(x)) # {} around the inside of the function are optional!
@@ -601,7 +621,7 @@ sapply(df_x, function(x) { # you can format it more function-like if you prefer!
 
 Perhaps we want to find the **maximum number in each row** in a dataframe. We can use `apply()` to do this.
 
-```{r}
+```{r, eval=F, warning=F, results='hide'}
 # fake data of cell counts per replicate
 fake_data <- data.frame(rep_01 = seq(10, 100, 10),
                         rep_02 = seq(10, 55, 5),
@@ -632,7 +652,7 @@ apply(fake_data, 1, max) # takes each row as an input, and decides one by one wh
 
 What happens if within our data frame we don't have all numeric data (a common occurrence)? We could exclude the columns or rows we are not interested in.
 
-```{r}
+```{r, results='hide'}
 # sometimes we don't have all numeric input in a dataframe though...
 fake_data_factor <- data.frame(day = as.factor(c(1:10)), 
                         rep_01 = seq(10, 100, 10),
@@ -660,7 +680,7 @@ apply(fake_data_factor[,-c(1,6)], 1, mean, na.rm = TRUE)
 
 1.  With this patient data we want to find the average value (from the three replicate values 1, 2, 3) for each patient. *Take this loop and turn it into an apply statement or statements (depends upon how you want to solve) that is a functional equivalent (it produces a very similar/the same result).*
 
-```{r}
+```{r, results='hide'}
 set.seed(2023)
 patient_data <- data.frame(patient_id = c(1:5),
                            age = c(23,55,34,64,12),
@@ -718,7 +738,7 @@ For the curious: this blog is a good resource on how `base::` compares to `purrr
 
 I'm personally more of a fan of the apply family but I wanted to point these out to you - maybe you find you prefer `purrr::`.
 
-```{r}
+```{r, eval=F, warning=F, results='hide'}
 library(purrr)
 
 # let's look at an example
@@ -760,7 +780,7 @@ map_df(df, mean, na.rm = TRUE)
 
 Map functions can also replace multi-step custom functions by using the .x notation. Let's say we want to take the sum of squares for each element in df (from the above chunk).
 
-```{r}
+```{r, eval=F, warning=F, results='hide'}
 df
 
 # essentially we want to apply the below line of code to each column
@@ -794,7 +814,7 @@ sapply(df, function(x){sum(x^2)}) # alternative still using the apply family
 
 An example of translating a loop to a map and how a map can be a bit more flexible. The goal is to make 3 lists of 10 numbers each sampled from a random distribution where the standard deviation is 1 (in list 1) and then 2 (in list 2) and then 3 (in list 3). This is rather easy to do with a loop:
 
-```{r}
+```{r, results='hide'}
 #-- a loop --#
 
 set.seed(2023)
@@ -832,11 +852,12 @@ map(c(7,14,28), ~rnorm(10, sd = .x))
 
 ## Vectorization
 
-embed_url("https://youtu.be/xCw_Ysger0o")
-
+```{r, echo=FALSE}
+vembedr::embed_url("https://youtu.be/xCw_Ysger0o")
+```
 You might have noticed that R implicitly loops - functions will operate on all elements of a vector without having to explicitly loop through and act on each element. This saves a lot of computational time and effort on the part of the coder. Let's see that in practice:
 
-```{r}
+```{r, eval=F, warning=F}
 #(when you add 1 to vector you get [1] + 1, [2] + 1, etc)
 # vectorized
 vec <- c(1:20)
@@ -937,7 +958,7 @@ Previously, we made a hypothetical function that would return a data file based 
 
 Here's what we would call a "brittle" solution to our file problem (and what we just described above). It works to row bind (that's what `rbind()` does) all of the output from `import_date()` operating on date 1, date 2, etc. but its not efficient and can break easily if we misspell something or if the dates need to change and is a real pain in the butt to write out each date over and over again...
 
-```{r}
+```{r, eval=F, warning=F}
 files <- rbind(import_date("date1"),
                import_date("date2"),
                import_date("date3"))
@@ -1029,7 +1050,7 @@ What do you do when the function you've created doesn't work -it errors or doesn
 
 -   `traceback()` - call it right after an error has occurred to check out what happened
 
-```{r}
+```{r, eval=F, warning=F}
 # here we are making a simple function where we add 1 to our input
 add_one <- function(x) {
   x + 1
@@ -1094,4 +1115,6 @@ Additional reading:
 
 Let's say you're working on a project and you create a number of homemade functions that you find yourself using over and over again. You can put them into their own R script, save it, then you can use `source("file/path/to/your/r_script_with_custom_functions.R")` and that will load them into your environment so they're ready to use but don't add a lot of extra fluff to your project/markdown.
 
-embed_url("https://youtu.be/nPmE17UbYG0")
+```{r, echo=FALSE}
+vembedr::embed_url("https://youtu.be/nPmE17UbYG0")
+```

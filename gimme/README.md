@@ -13,8 +13,8 @@ This R Markdown file was developed for Temple's Coding Outreach Group (COG) summ
 ## Prerequisites
 This workshop demands that users:
 1. Have R and RStudio Downloaded
-2. Download the GIMMIE package in R
-3. Download the example data from the cog_summer_workshops_2023/gimmie folder
+2. Download the GIMME package in R
+3. Download the example data from the cog_summer_workshops_2023/gimme folder
 
 ## Getting Started
 Installing GIMME is quite easy. It is also updated on a somewhat frequent basis so users should check and install the newest version when starting a new project. The installation includes all dependencies, mainly lavaan which is the SEM package GIMME is built on.
@@ -63,9 +63,9 @@ EMA data is often organized in Long format, which requires a couple steps to pre
 | Section | Description | Time |
 | :---: | :---: | :---: |
 | Intro | Data formatting questions | 10 mins |
-| GIMMIE Arguments | Required arguments and running GIMMIE | 15 mins |
-| GIMMIE Outputs | Examing the output of GIMMIE, formatting as an R object | 15 mins |
-| Downstream Analyses | Statistical analyses that can be done with GIMMIE output | 15 mins |
+| GIMME Arguments | Required arguments and running GIMME | 15 mins |
+| GIMME Outputs | Examing the output of GIMME, formatting as an R object | 15 mins |
+| Downstream Analyses | Statistical analyses that can be done with GIMME output | 15 mins |
 | Q&A | Any questions? | 5 mins |
 
 

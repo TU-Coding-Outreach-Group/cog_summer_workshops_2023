@@ -26,47 +26,11 @@ knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 options(yaml.eval.expr = TRUE)
 ```
 
-# README:
-
-## Description
-
-A great deal of statistical methods and analyses focus on analyzing social processes at an individual level. Using dyadic methods (statistical analyses of pairs), we can examine how individuals influence one another 1:1 and can pinpoint how each person in an interaction influences the other. These methods have been utilized in the past to examine interpersonal linkage and influence at multiple levels of analysis (e.g., physiological, self-report, behavioral).
-
-In this workshop, we will walk through an introduction to dyadic analysis and visualization in R. Statistical concepts (e.g., Actor-Partner Interdependence Models) will be briefly introduced, but the workshop focus will be on application of these methods rather than their statistical underpinnings. Recommended readings for further statistical depth will be provided. R, RStudio, and familiarity with R are pre-requisites for this workshop. This workshop will cover a basic introduction to dyadic data analysis, both Multilevel Modeling for dyads and Actor Partner Interdependence Modeling, and their visualization, in R.
-
-## Prerequisites
-
-This workshop requires that users:
-
-1.  have the R programming language downloaded, which can be accessed here:(<https://archive.linux.duke.edu/cran/>)
-2.  have the R Studio user interface downloaded, which can be accessed here:(<https://www.rstudio.com/products/rstudio/download/#download>)
-3.  have a proficiency with the R programming language (see resources below):
-
--   installing packages and loading libraries
--   [data structures and objects in R](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/)\
--   have a proficiency with the R programming language:
-    -   [Python and R for Data Science](https://www.anotherbookondatascience.com)
-    -   [R for Data Science](https://r4ds.had.co.nz)
-    -   [Introduction to Data Exploration and Analysis with R](https://bookdown.org/mikemahoney218/IDEAR/)
-    -   [lavaan documentation](https://lavaan.ugent.be)
-    -   [lme4 documentation](https://github.com/lme4/lme4/)
--   have a basic understanding of multivariate statistical analysis (e.g., multilevel modeling, structural equation models)
--   have a basic familiarity with plotting data in R; previous primers can be accessed here: (<https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2021/tree/main/data-visualization-in-r>)
--   have an interest in interpersonal processes of some kind (including but not limited to parent-child, couple, friend, clinical, boss-employee relationships)
-
-## What we won't cover
-
-It is worth noting that this workshop will cover basics and application of data wrangling, a few analytic techniques, and visualization for dyadic data in R. Given the breadth of the workshop, we will not go into a great level of detail on the statistical foundations of each model described. For example, while we will apply Actor-Partner Interdependence Models and Multilevel Models to dyadic data and discuss some nuances of each approach, we will not dive very deeply into the statistical foundations of these models. Likewise, we will cover the most basic applications of each model and will not cover more advanced topics such as examination of direct/indirect effects or more complex designs (e.g., intensive longitudinal modeling, Bayesian methods). For interested workshop participants, I have included a few recommended resources that go into greater depth regarding the underpinnings of dyadic analyses, more advanced applications of each method, and their uses in psychological research in "References and recommended resources" below.
-
-## Set-up (to-do before the workshop)
-
-1.  Download the R-markdown script from Github
-
 # Workshop Objectives & Introduction
 
-<iframe width="560" height="315" src="https://youtu.be/rmz5eD7Wgng" frameborder="0" allowfullscreen>
-
-</iframe>
+```{r, echo=FALSE}
+vembedr::embed_url("https://youtu.be/rmz5eD7Wgng")
+```
 
 # Workshop Setup
 
@@ -74,7 +38,7 @@ I'm first going to load the couple of packages that we will need for this worksh
 
 This workshop was generated with R version 4.3.0 (R Core Team 2023) and the following R packages: here v. 1.0.1 (Müller 2020), knitr v. 1.43 (Xie 2014, 2015, 2023), lavaan v. 0.6.15 (Rosseel 2012), mice v. 3.16.0 (van Buuren and Groothuis-Oudshoorn 2011), modelsummary v. 1.4.1 (Arel-Bundock 2022), rmarkdown v. 2.22 (Xie, Allaire, and Grolemund 2018; Xie, Dervieux, and Riederer 2020; Allaire et al. 2023), semPlot v. 1.1.6 (Epskamp 2022), tidyverse v. 2.0.0 (Wickham et al. 2019).
 
-```{r Packages, message=F, warning=F}
+```{r Packages, message=F, warning=F, results='hide'}
 cog_packages <- c("tidyverse", "data.table", "modelsummary", "skimr", "psych", "lme4", "lmerTest", "lavaan", "semPlot", "grateful", "reactable", "mice", "finalfit", "effects", "lavaanPlot", "ppcor", "nlme")
 
 packages <- rownames(installed.packages())
@@ -104,7 +68,7 @@ Across waves of speed-dating data collection, we are going to look at perception
 
 We're first going to import and examine the raw data described above from the website for the Gelman & Hill (2006) textbook. The codebook for the data is also available at the same source (<http://www.stat.columbia.edu/~gelman/arm/examples/>), but I will briefly outline the variables of interest below. We are interested in looking at dyads where both members are having their first interaction. We will create a unique dyad identifier for pairs ("dyad_id") and select data where both people within a dyad are having their first interaction of the round so we can look at first dates.
 
-```{r Import}
+```{r Import, eval=FALSE, warning=FALSE}
 ## import raw speed-dating data from Dr. Gelman's site
 dyad_df_raw <- as.data.frame(fread("http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/Speed%20Dating%20Data.csv"))
 
@@ -117,7 +81,7 @@ dyad_df_raw <- dyad_df_raw %>%
   ungroup()
 
 ## select dyads who are sharing a first date
-dyad_df <- dyad_df %>%
+dyad_df <- dyad_df_raw %>%
   subset(order == 1) %>%
   group_by(dyad_id) %>%
   filter(n() == 2) %>%
@@ -174,7 +138,7 @@ Using this first-date data from the speed dating dataset, we can run many differ
 
 Next, we'll select just the variables we are interested in. Without getting too into the weeds of multiple imputation, we're also going to impute missing values here to simplify analyses later on (for details, see Enders, 2017; Enders, 2022; van Buuren, 2011). You can also skip imputation and exclude missing data, since it's quite a low percentage of the overall data, but that may complicate analyses if some dyads are missing observations. Lastly, we'll z-standardize variables of interest so that they are on the same scale.
 
-```{r Wrangle}
+```{r Wrangle, eval=FALSE,warning=FALSE}
 ## select variables we will need for analysis 
 dyad_df <- dyad_df %>% dplyr::select(c('iid', 'pid', 'dyad_id', 'gender', 'age', 
                                        'exphappy', 'int_corr', 'wave', 'like', 
@@ -253,7 +217,7 @@ Is rating of liking ("like") predicted by gender ("gender") and shared interests
 
 As an example, we will test whether personal liking of one's partner (like) is predicted by their self-identified gender (gender) and correlation of shared interests between the two dyad members (int_corr). We might expect that liking will be positively related to correlated interests. We'll use the standardized versions of all variables calculated above to ensure that they're on the same scale and facilitate interpretation of results. Note that the gls() command will give us z-test results as its test statistics, which is why the tests do not have degrees of freedom listed.
 
-```{r MLM Example Model}
+```{r MLM Example Model, eval=FALSE, warning=FALSE}
 mlmA <- gls(like_z ~ gender + int_corr,
             correlation=corCompSymm (form=~1|dyad_id), 
             data=dyad_df_new)
@@ -269,13 +233,13 @@ As such, the intercept (*b* = -0.1089893, *95% CI*[-0.23770585, 0.0197272], *SE*
 
 The coefficient for gender (*b* = 0.1727516, *95% CI*[0.01716095, 0.3283423], *SE* = 0.07938446) can be interpreted as the effect of one unit change of gender on liking while correlation between interests is held constant. Here, it looks like on average, men report significantly higher levels of liking of their partners but not significantly so, *t* = 2.1761392, *p* = 0.0300 (below).
 
-```{r MLM gender}
+```{r MLM gender, eval=FALSE, warning=FALSE}
 plot(effect("gender", mlmA), grid = TRUE) 
 ```
 
 The coefficient for interest correlation (*b* = 0.1377368, *95% CI*[-0.15681868, 0.4322923], *SE* = 0.15028618) can be interpreted as the effect of one unit change of interest overlap (i.e., correlation) on liking while gender is held constant. Here, it looks like on average, greater correlation in interests is not linked to different levels of liking across participants, *t* = 0.9164969, *p* = 0.3598 (below).
 
-```{r MLM int_corr}
+```{r MLM int_corr, eval=FALSE, warning=FALSE}
 plot(effect("int_corr", mlmA), grid = TRUE) 
 ```
 
@@ -283,7 +247,7 @@ The measure of non-independence for the test comes from the "Rho" statistic for 
 
 Lastly, to calculate effect size, we will calculate Cohen's d for each fixed effect as the coefficient for the fixed effect mutiplied by two, and divided by the standard deviation of the errors.
 
-```{r MLM Cohen's d}
+```{r MLM Cohens d, eval=FALSE, warning=FALSE}
 2*coef(summary(mlmA))[2]/mlmA$sigma #for gender
 2*coef(summary(mlmA))[3]/mlmA$sigma #for int_corr
 ```
@@ -292,7 +256,7 @@ Following the rules of thumb for interpreting Cohen's d (small Cohen's *d* is le
 
 Translating this into an "lmer" model should produce the same results as those reported above. It can be helpful to manually specify the correlated errors in gls, but lmer should produce the same result because the Maximum Likelihood estimation used in "lmer" automatically assumes a compound symmetric correlation structure that we manually specified in the "gls" command above.
 
-```{r MLM Example Model in lmer}
+```{r MLM Example Model in lmer, eval=FALSE, warning=FALSE}
 mlmA_lmer <- lmer(like_z ~ gender + int_corr + (1|dyad_id), 
             data=dyad_df_new)
 summary(mlmA_lmer)
@@ -309,7 +273,7 @@ plot(effect("int_corr", mlmA_lmer), grid = TRUE)
 
 Finally, we will do a quick plot of our original results. The results are visualized similarly to any other multilevel regression model in ggplot
 
-```{r MLM visualization}
+```{r MLM visualization, eval=FALSE, warning=FALSE}
 ## generate predicted values
 dyad_df_new$predicted_mlm <- predict(mlmA)
 
@@ -384,7 +348,7 @@ Is rating of liking ("like") predicted by gender ("gender") and discrepancies in
 
 ```
 
-```{r MLM practice model solution, include = F}
+```{r MLM practice model solution, include = F, eval=FALSE, warning=FALSE}
 #I will look at differences in perceived attractiveness as a predictor in the example solution model and visualization below, but results may vary based on the choice of the workshop attendee.
 mlmB <- gls(like_z ~ gender + attr_diff_abs_z,
             correlation=corCompSymm (form=~1|dyad_id), 
@@ -405,7 +369,7 @@ plot(effect("gender", mlmB), grid = TRUE)
 plot(effect("attr_diff_abs_z", mlmB), grid = TRUE)
 ```
 
-```{r MLM visualization solution, include = F}
+```{r MLM visualization solution, include = F, eval=FALSE, warning=FALSE}
 ## generate predicted values
 dyad_df_new$predicted_mlmB <- predict(mlmB)
 
@@ -458,7 +422,7 @@ What is the effect of personal ("fun") and partner ratings of fun ("fun_o") on r
 
 #### 1. Multilevel Model APIM, treating dyads as distinguishable
 
-```{r distinguishable APIM MLM}
+```{r distinguishable APIM MLM, eval=FALSE, warning=FALSE}
 ## fit the model using the two-intercept approach, where -1 is added to the formula to remove the intercept. this will allow for separate fixed effects estimates for each distinguishable dyad member.
 
 dist.APIM.mlm <- gls(like_z ~ gender + fun_z:gender + fun_o_z:gender -1,
@@ -503,7 +467,7 @@ dyad_df_new %>%
 
 For pedagogical purposes, lmer multilevel modeling code is again included below for those more comfortable with that syntax. The two methods (gls() vs. lmer()) should produce the same result here just as they did for the multilevel model example.
 
-```{r lmer example, distinguishable APIM MLM}
+```{r lmer example, distinguishable APIM MLM, eval=FALSE, warning=FALSE}
 ## lmer method
 dist.APIM.mlm_lmer <- lmer(like_z ~ -1 + gender + fun_z:gender + fun_o_z:gender + (1|dyad_id), data = dyad_df_new, control = lmerControl(optimizer = "bobyqa"))
 
@@ -515,7 +479,7 @@ We'll now examine the same model, but test what happens if we treat the dyads as
 
 #### 2. Multilevel Model APIM, treating dyads as indistinguishable
 
-```{r indistinguishable APIM}
+```{r indistinguishable APIM, eval=FALSE, warning=FALSE}
 ## fit the model treating dyads as indistinguishable
 indist.APIM.mlm <- gls(like_z ~ fun_z + fun_o_z,
                        data = dyad_df_new,
@@ -538,7 +502,7 @@ as.numeric(pcor.test(dyad_df_new$fun_z,dyad_df_new$like_z,dyad_df_new$fun_o_z)[1
 
 Again, for pedagogical purposes, lmer multilevel modeling code is again included below for those more comfortable with that syntax, and this should produce the same result.
 
-```{r lmer example, indistinguishable APIM MLM}
+```{r lmer example, indistinguishable APIM MLM, eval=FALSE, warning=FALSE}
 ## fit the model using lmer treating the dyads as indistinguishable (so actor and partner effects are equal between dyad members)
 indist.APIM_lmer <- lmer(like_z ~ fun_z + fun_o_z + (1|dyad_id),
                     data = dyad_df_new,
@@ -551,7 +515,7 @@ summary(indist.APIM_lmer)
 
 Lastly, we will look at an SEM of the same model. We will first re-wrangle the data from pairwise into dyad format, with separate columns for date ratings (e.g., fun, ambition, intelligence, etc.) by self-identified gender within each dyad.
 
-```{r SEM APIM wrangle}
+```{r SEM APIM wrangle, eval=FALSE, warning=FALSE}
 ## re-wrangle into dyad format
 dyad_df_wide <- dyad_df_new %>%
   mutate(gender = ifelse(gender == 1, "m", "f")) %>% 
@@ -569,7 +533,7 @@ reactable(dyad_df_wide)
 
 We will next run the APIM model laid out above in the R package "lavaan" (Rosseel, 2012; see lavaan documentation for additional information on its syntax here: <https://lavaan.ugent.be/index.html>). This tutorial [(Garcia & Kenny, 2018)](https://randilgarcia.github.io/week-dyad-workshop/APIM_SEM.html) provides additional nuance and support for APIM topics as applied to APIM (e.g., APIM with indistinguishable dyads).
 
-```{r distinguishable APIM SEM}
+```{r distinguishable APIM SEM, eval=FALSE, warning=FALSE}
 ## estimate APIM for distinguishable dyads in lavaan
 dist.APIM.SEM <- '
                   # actor effect m: like predicted by fun rating across male
@@ -647,7 +611,7 @@ modelfit.apim.fit
 
 Below is code to visualize the model results using the "semPlot" R package. This visualization lines up with the conceptual models outlined above.
 
-```{r APIM viz}
+```{r APIM viz, eval=FALSE, warning=FALSE}
 #visualization
 apim_plot <- semPlot::semPlotModel(apim.fit)
 add_output <- data.frame(standardizedsolution(apim.fit)) %>% filter(op != ":=")
@@ -685,7 +649,7 @@ Now you can practice for yourself by investigating the effect of one of particip
 
 ```
 
-```{r APIM practice solution for SEM, include = F}
+```{r APIM practice solution for SEM, include = F, eval=FALSE, warning=FALSE}
 ## models will vary. I chose sincerity as an example, but won't include results since these will depend on what X variable is chosen. refer to interpretations for example when looking to interpret results.
 APIM_B <- '
                   # actor effect m: like predicted by sinc rating across male
@@ -754,7 +718,7 @@ modelfit.apim.prac.fit <- data.frame(lavaan::fitMeasures(apim.prac.fit))
 modelfit.apim.prac.fit
 ```
 
-```{r APIM viz practice for SEM, include = F}
+```{r APIM viz practice for SEM, include = F, eval=FALSE, warning=FALSE}
 ## visualization
 apim_plot_prac <- semPlot::semPlotModel(apim.prac.fit)
 add_output_prac <- data.frame(standardizedsolution(apim.prac.fit)) %>% filter(op != ":=")
