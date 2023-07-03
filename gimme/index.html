@@ -2649,6 +2649,19 @@ window.onload = function() {
   PagedTableDoc.initAll();
 };
 </script>
+<style type="text/css">.vembedr {
+margin-bottom: 10px;
+}
+.vembedr-rounded {
+display: inline-block;
+border-radius: 15px;
+overflow: hidden;
+}
+.vembedr-rounded iframe {
+display: block;
+border: none;
+}
+</style>
 
 <style type="text/css">
 code{white-space: pre-wrap;}
@@ -2898,6 +2911,11 @@ directory, it should include a .here file and if it does, then the
 directory. Either way works. We’ll default to manual to be safe.</p>
 <pre class="r"><code>dir &lt;- &quot;C:/Users/.../gimme/&quot;
 # dir &lt;- here::here()</code></pre>
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/1ZH6NXZoRAw" width="533" height="300" frameborder="0" allowfullscreen data-external="1"></iframe>
+</div>
+</div>
 </div>
 <div id="data-formatting" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Data Formatting</h1>
@@ -3046,7 +3064,7 @@ shortly.</p>
 <div id="gimme-output" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> GIMME Output</h1>
 <p>GIMME outputs an R object that contains all relevant information, as
-well as plots and results in the ouput directory specified in the
+well as plots and results in the output directory specified in the
 call.</p>
 <div id="output-directory" class="section level3" number="5.0.1">
 <h3><span class="header-section-number">5.0.1</span> Output

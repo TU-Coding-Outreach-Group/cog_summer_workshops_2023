@@ -39,14 +39,14 @@ We will also install other packages that we will use later.
   }
   
   # Using pacman to load necessary packages
-  pacman::p_load(gimme, here, vembedr)
+  pacman::p_load(gimme, here)
 ```
 
 We can also start by defining our working directory and there are at least two ways to do this. We can manually specify this by saving a filepath string as a variable. If you've downloaded the whole workshop directory, it should include a .here file and if it does, then the `here::here()` function should automatically identify your directory. Either way works. We'll default to manual to be safe.
 
 ```{r}
-# dir <- "C:/Users/.../gimme/"
-dir <- here::here()
+dir <- "C:/Users/.../gimme/"
+# dir <- here::here()
 ```
 
 ```{r Introduction Video, echo = FALSE}
