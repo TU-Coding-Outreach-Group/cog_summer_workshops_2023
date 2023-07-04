@@ -30,9 +30,8 @@ knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 
 Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. This language is one of the most common used in "industry" jobs that people get after leaving academia, such as data scientist or data engineer. This tutorial will be a basic introduction to SQL so that individuals who are interested in jobs outside of academia will have some experience relevant to these jobs. 
 
-An example of something that we work with that is like SQL would be GitHub. It allows data to be stored in a centralized place. Others are able to access and add to this data. 
+An example of something that we work with that is like SQL would be GitHub. It allows data to be stored in a centralized place. Others are able to access and add to this data. You can store and call whole databases on GitHub. However, SQL has a built in language that allows you to directly interface with the data, rather than using a separate program like you would for GitHub.
 
-![](images/sql_intro.png)
 ## What does SQL do?
 
 SQL is primarily use to interface with very large databases. Unlike datasets in academic settings, many of the databases that companies work with are terabytes worth of data, and cannot simply be stored in a program like Excel or SPSS. SQL allows you to call certain pieces of the database that you are interested in without having to rake through tons of data. You can also use SQL to add or delete data from these databases.
@@ -43,10 +42,14 @@ Beyond this, SQL can also be automatized by triggers. Companies can write script
 
 ## Why is SQL important?
 
-This isn't a programming language one would readily encounter in academia. Our datasets are not often big enough to justify using SQL. 
+This isn't a programming language one would readily encounter in academia. Our datasets are not often big enough to justify using SQL. As seen in the image below, SQL is a big part of many of the jobs we may hold as individuals with graduate degrees. As there is little opportunity to be exposed to this programming language, we hope this workshop will be helpful. While it is not a difficult language to learn, this workshop will provide the necessary groundwork so that attendees can easily use this knowledge for industry job interviews.
+
+![](images/sql_intro.png)
 
 
 ## What is an SQL Server?
+
+An SQL Server is where the data is stored for SQL.
 
 # Data
 
