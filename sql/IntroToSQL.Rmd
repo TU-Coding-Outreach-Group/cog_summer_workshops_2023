@@ -28,14 +28,35 @@ knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 
 ## What is SQL?
 
-Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. This language is one of the most common used in "industry" jobs that people get after leaving academia, such as data scientist or data engineer. This tutorial will be a basic introduction to SQL so that individuals who are interested in jobs outside of academia will have some experience relevant to other jobs they may want to have. 
+Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. This language is one of the most common used in "industry" jobs that people get after leaving academia, such as data scientist or data engineer. This tutorial will be a basic introduction to SQL so that individuals who are interested in jobs outside of academia will have some experience relevant to these jobs. 
+
+An example of something that we work with that is like SQL would be GitHub. It allows data to be stored in a centralized place. Others are able to access and add to this data. 
 
 ![](images/sql_intro.png)
+## What does SQL do?
+
+SQL is primarily use to interface with very large databases. Unlike datasets in academic settings, many of the databases that companies work with are terabytes worth of data, and cannot simply be stored in a program like Excel or SPSS. SQL allows you to call certain pieces of the database that you are interested in without having to rake through tons of data. You can also use SQL to add or delete data from these databases.
+
+###Regex example here
+
+Beyond this, SQL can also be automatized by triggers. Companies can write scripts to automatically append data as it comes in, so that it does not need to be monitored and done by hand. This reduces the need to enter data, and effort can be geared towards data cleaning and other functions.
+
+## Why is SQL important?
+
+This isn't a programming language one would readily encounter in academia. Our datasets are not often big enough to justify using SQL. 
+
+
+## What is an SQL Server?
+
+# Data
 
 ## Getting Started
 
+### How to Use SQL with MySQL
 
-## How to Use SQL in R
+There are multiple ways to use SQL. MySQL is 
+
+### How to Use SQL in R
 
 SQL is compatible with R, and we can actually use it within RMarkdown. FOllow the steps below to get setup for that.
 
@@ -49,15 +70,36 @@ library(DBI)
 ```
 3. Connect to an SQL server
 ```{r sql}
-summary(cars)
+
 ```
 
-## Including Plots
+## MySQL Database example data
 
-You can also embed plots, for example:
+
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Key Functions
+
+
+## SELECT
+
+
+## 
+
+## Other types of common functions
+
+
+
+# Integrations & Analyses
+
+## Using SQL in R
+
+## Regression with Python
+
+## Machine Learning with Python
+
+# Advanced Functions
+
