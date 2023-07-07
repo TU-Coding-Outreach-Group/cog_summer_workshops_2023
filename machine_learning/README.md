@@ -6,6 +6,8 @@ __**Content creator:**__ Helen Schmidt
   
 __**Content editor:**__ Katie Jobson & Billy Mitchell
 
+### [Full Workshop Recording](https://youtu.be/1_uCPvbrsnY)
+
 ## Description
 Machine learning (ML) broadly describes the process of teaching computers to learn information. It is widely used in computer science, neuroscience, and data science to train 'machines' (e.g., algorithms, models) to learn about information and make predictions or classifications based on that learning. ML models can reduce time, effort, and error costs and can be applied flexibly across projects and datasets, including behavioral, survey, and neuroimaging data. The goal of this tutorial is to introduce a variety of machine learning methods that can be applied to psychological data. We will examine the differences between unsupervised and supervised models and in which contexts they are best applied. This tutorial will also touch on model evaluation and comparison, and unpack how to determine certain parameters given your data. 
 
