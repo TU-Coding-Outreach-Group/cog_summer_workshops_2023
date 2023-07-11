@@ -880,7 +880,7 @@ timeline.push(experiment_finished);
 
 
 # --- Conclusion & General Notes | Review, Pavlovia compatibility, tutorial suggestions, etc. --- 
-```
+
 Yael Niv’s lab has a super helpful task repository, which also includes tutorials: https://nivlab.github.io/jspsych-demos/
 
 Winson Yang has a great YouTube series for jsPsych tutorials: https://www.youtube.com/playlist?list=PLtdKTIOUlb42qG962wz30fzlUMibJCGQW
@@ -895,7 +895,7 @@ Super friendly forum for asking questions about jsPsych (I have asked some truly
 I included an online version of our experiment in a script titled "index.html" in the jsPsych_workshop folder. I also included a few slides in the Outro video that go through the minor coding tweaks you need to make in order for your script to run online.
 
 Hope this workshop has been helpful! :) 
-```
+
 ```{r Conclusion Video, echo = FALSE}
 vembedr::embed_url("https://www.youtube.com/watch?v=n63bv-tKInk")
 ```

@@ -8,7 +8,7 @@ __**Content creator:**__ Steven Martinez
 __**Content editors:**__ Billy Mitchell & Katie Jobson
 
 ## Description
-This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/jspsych/jsPsych/releases/tag/jspsych%407.3.3) to build psychological experiments. jsPsych is a free, open-source software that employs a JavaScript framework for creating behavioral experiments that run in a web browser. It's a popular alternative to PsychoPy and E-Prime for task development, can be used in both behavioral and neuroimaging tasks, and supports online study capabilities.  
+This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/jspsych/jsPsych/releases/tag/jspsych%407.3.3) to build psychological experiments. jsPsych is a free, open-source software that employs a JavaScript framework for creating behavioral experiments that run in a web browser. It's a popular alternative to PsychoPy and E-Prime for task development, is used primarily in behavioral tasks, and supports online study capabilities.  
 
 ## Set Up (do before the workshop)
 1. Download Visual Studio Code, which is a programming-friendly text editor that works with Windows, OSX/Mac, and Linux, and can be downloaded at the following link:  https://code.visualstudio.com/Download
