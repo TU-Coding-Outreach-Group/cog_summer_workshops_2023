@@ -28,13 +28,17 @@ knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 
 ## What is SQL?
 
-Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. This language is one of the most common used in "industry" jobs that people get after leaving academia, such as data scientist or data engineer. This tutorial will be a basic introduction to SQL so that individuals who are interested in jobs outside of academia will have some experience relevant to these jobs. 
+![](images/logo.png)
 
-An example of something that we work with that is like SQL would be GitHub. It allows data to be stored in a centralized place. Others are able to access and add to this data. You can store and call whole databases on GitHub. However, SQL has a built in language that allows you to directly interface with the data, rather than using a separate program like you would for GitHub.
+Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. You use it much like you would use the language git to access Github. Both SQL and git allow data to be stored in a centralized place; often a remote server. Others are able to access and add to this data. You can store and call whole databases on GitHub. 
+
+![SQL allows local users to access large remote datasets](images/demonstrate.jpg)
+
+However, SQL has a built in language that allows you to directly interface with the data, rather than using a separate program like you would for GitHub. This language is one of the most common used in "industry" jobs that people get after leaving academia, such as data scientist or data engineer. This tutorial will be a basic introduction to SQL so that individuals who are interested in jobs outside of academia will have some additional experience relevant to these jobs. 
 
 ## What does SQL do?
 
-SQL is primarily use to interface with very large databases. Unlike datasets in academic settings, many of the databases that companies work with are terabytes worth of data, and cannot simply be stored in a program like Excel or SPSS. SQL allows you to call certain pieces of the database that you are interested in without having to rake through tons of data. You can also use SQL to add or delete data from these databases.
+SQL is primarily used to interface with very large databases. Unlike datasets in academic settings, many of the databases that companies work with are terabytes worth of data, and cannot simply be stored in a program like Excel or SPSS. SQL allows you to call certain pieces of the database that you are interested in without having to rake through tons of data. You can also use SQL to add or delete data from these databases.
 
 ###Regex example here
 
@@ -42,14 +46,14 @@ Beyond this, SQL can also be automatized by triggers. Companies can write script
 
 ## Why is SQL important?
 
-This isn't a programming language one would readily encounter in academia. Our datasets are not often big enough to justify using SQL. As seen in the image below, SQL is a big part of many of the jobs we may hold as individuals with graduate degrees. As there is little opportunity to be exposed to this programming language, we hope this workshop will be helpful. While it is not a difficult language to learn, this workshop will provide the necessary groundwork so that attendees can easily use this knowledge for industry job interviews.
+This isn't a programming language one would readily encounter in academia. Our datasets are not often big enough to justify using SQL. However, as we see in the image below, SQL is a big part of many data and tech jobs that we might pursue after competing our graduate degrees. It's pretty unlikely that you would be exposed to this programming language without occupying one of these positions or seeking it out yourself, so we hope this workshop exposes you to some of the basic functions and utility of SQL. It is not a difficult language to learn, so this workshop will provide a foundation for attendees to easily apply for something like an industry job interview.
 
 ![](images/sql_intro.png)
 
 
 ## What is an SQL Server?
 
-An SQL Server is where the data is stored for SQL.
+An SQL Server, also known as a relational database management system (RDBMS), is where the data that SQL accesses is stored. The data stored on these servers are often structured into tables similar to a spreadsheet. These SQL Servers tables can be *massive* and the SQL language offers a relatively quick means of retrieve, insert, update, and delete data in the database, but this is just one of the many reasons why SQL servers are used. SQL servers are designed to handle variably concurrent access requests from different users in an efficient **and** secure manner. A server administrator enforces rules as to who can modify and access what on the server. SQL Servers also feature different options for data backup and recovery and can allow users to perform calculations directly in the table without having to necessarily create a subset of data. 
 
 # Data
 
@@ -61,9 +65,9 @@ There are multiple ways to use SQL. MySQL is
 
 ### How to Use SQL in R
 
-SQL is compatible with R, and we can actually use it within RMarkdown. FOllow the steps below to get setup for that.
+SQL is compatible with R, and we can actually use it within RMarkdown. Follow the steps below to get setup for that.
 
-1. First, follow the download instructions in this website for the ODBC Driver:https://www.sqlshack.com/how-to-configure-a-linked-server-using-the-odbc-driver/ This will allow you to access data stored in database management systems.
+1. First, follow the download instructions in [this website for the ODBC Driver](https://www.sqlshack.com/how-to-configure-a-linked-server-using-the-odbc-driver/). This will allow you to access data stored in database management systems.
 
 2. Run the chunk of code below to load the SQL package in R
 
