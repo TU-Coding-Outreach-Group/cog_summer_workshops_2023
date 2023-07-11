@@ -31,8 +31,22 @@ knit: (function(inputFile, encoding) {
   }
   
   # Using pacman to load necessary packages
-  pacman::p_load(tidyverse, palmerpenguins, stats, factoextra, cluster, formatR, class, modelsummary,
-                 kableExtra, vembedr, gridExtra, corrr, ggcorrplot, FactoMineR, rpart, rpart.plot)
+  pacman::p_load(tidyverse, 
+                 palmerpenguins, 
+                 stats, 
+                 factoextra, 
+                 cluster, 
+                 formatR, 
+                 class, 
+                 modelsummary,
+                 kableExtra, 
+                 vembedr, 
+                 gridExtra, 
+                 corrr, 
+                 ggcorrplot, 
+                 FactoMineR, 
+                 rpart, 
+                 rpart.plot)
 ```
 
 ```{r Setup, include = FALSE, echo = FALSE}
@@ -315,24 +329,37 @@ What happens to the decision tree if you remove **island name** and **flipper le
 Click `CODE` to see the solution! ==>
 
 ```{r, class.source = 'fold-hide', eval=FALSE}
-# pca example solution
-df.ul <- df %>%
-  select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex)
-df.ul$sex <- as.character(df.ul$sex)
-df.ul$sex[df.ul$sex == "male"] <- 0
-df.ul$sex[df.ul$sex == "female"] <- 1
-df.ul$sex <- as.numeric(df.ul$sex)
-df.norm <- as.data.frame(lapply(df.ul, nor))
-df.corr <- cor(df.norm)
-ggcorrplot(df.corr)
-df.pca <- princomp(df.corr)
-summary(df.pca)
-df.pca$loadings
-fviz_eig(df.pca, addlabels = T, barfill = "deepskyblue3", barcolor = "deepskyblue3")
-fviz_pca_var(df.pca, col.var = "deepskyblue3")
-fviz_pca_var(df.pca, col.var = "cos2",
-             gradient.cols = c("deepskyblue4", "deepskyblue"),
-             repel = T)  
+# classification / decision tree example solution
+set.seed(123)
+
+shuffle.index <- sample(1:nrow(df))
+shuffle.df <- df[shuffle.index, ]
+shuffle.df <- shuffle.df[, c(-2,-5)]
+
+create_train_set <- function(data, size = 0.8, train = TRUE) {
+  n_row = nrow(data)
+  total_row = size * n_row
+  train_sample <- 1:total_row
+  if (train == TRUE) {
+    return (data[train_sample, ]) 
+  } else {
+    return (data[-train_sample, ])
+  }
+}
+
+df.train <- create_train_set(shuffle.df, 0.8, train = T)
+df.test <- create_train_set(shuffle.df, 0.8, train = F)
+
+fit <- rpart(species ~ ., data = df.train, method = "class")
+rpart.plot(fit, extra = 106)
+
+predicted.test <- predict(fit, df.test, type = 'class')
+table_predicted <- table(df.test$species, predicted.test)
+table_predicted
+
+accuracy <- sum(diag(table_predicted)) / sum(table_predicted)
+accuracy <- accuracy * 100
+print(paste0("Decision tree classification accuracy = ", round(accuracy, digits = 2), "%", sep = ""))
 ```
 
 ***
