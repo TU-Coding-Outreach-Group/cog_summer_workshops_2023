@@ -3320,18 +3320,17 @@ cross will be displayed on the screen. In phase 2, participants will
 complete a free recall test where they will see the name of each animal
 they previously saw and type as much as they can remember about each
 animal image.</p>
-<p>jsPsych has a special feature called “Timeline variables” which allow
+<p>jsPsych has a special feature called <b>Timeline variables</b> which allow
 us to loop through the animal images and names without building a
 function or a for loop. Importantly, let’s say we want to use plugin “A”
 for the phase 1 experimental trial and plugin “B” for the phase 2
 experimental trial; timeline variables allow us to do just that!</p>
 <p>To start, let’s make an array that contains all of the different
 trials that we want to run in Phase 1 (the presentation of animal
-images). There are only four images of animals and we will only show
-each image once, so there will be four trials in this experiment.
-However, because we will later present the names of each animal and ask
-participants to describe as much as they can remember about the images
-of the animals, we also need to include the names of the animal.</p>
+images). Because there are only four animal images and we will only show
+each image once, there will be four trials in Phase 1 and four trials in Phase 2.
+Additionally, since we will later present the names of each animal and ask
+participants to describe as much as they can remember about the animal images, we also need to include the names of the animal.</p>
 <p>We will create an array called “task_stimuli” that has an object
 called “animal” which includes the pathway to each animal image located
 in the “stimuli” folder that we downloaded at the start of the workshop.
