@@ -3160,8 +3160,8 @@ advance to the next trial)</li>
 <div id="step-10-adding-the-welcome-trial-to-the-experimental-timeline" class="section level2">
 <h2>Step 10: Adding the welcome trial to the experimental timeline</h2>
 <p>In order to add the welcome trial to the experiment, we will need to
-push it to the timeline array that we created earlier. <b>By pushing the
-welcome trial to the timeline, this will add it to the experiment.</b></p>
+push it to the timeline array that we created earlier. We can push a trial to the the timeline array by using the <b>timeline.push()</b> function and including the name of the trial in between the parentheses. Let's use the timeline.push() function to push the welcome trial to the timeline array.</p> 
+<p><b>By pushing the welcome trial to the timeline, this will add it to the experiment.</b></p>
 <pre><code>//Create the first experimental trial called &quot;welcome&quot; and use the html-keyboard-response plugin to print a welcome message.
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
@@ -3331,7 +3331,7 @@ images). Because there are only four animal images and we will only show
 each image once, there will be four trials in Phase 1 and four trials in Phase 2.
 Additionally, since we will later present the names of each animal and ask
 participants to describe as much as they can remember about the animal images, we also need to include the names of the animal.</p>
-<p>We will create an array called “task_stimuli” that has an object
+<p>We will create an array called <b>task_stimuli</b> that has an object
 called “animal” which includes the pathway to each animal image located
 in the “stimuli” folder that we downloaded at the start of the workshop.
 We will do this for all four images. After each “animal” object, we will
@@ -3434,7 +3434,7 @@ a fixation trial first, and then a stimuli_presentation trial, but it
 will randomize the order of the stimuli_presentation trials (which means
 the order of the animal images will be randomized!)</li>
 </ol>
-<p>Lastly, you’ll want to use the “timeline.push” function to push the
+<p>Lastly, you’ll want to use the <b>timeline.push</b> function to push the
 phase1_procedure to the timeline.</p>
 <p>Of note, there is more than one way to push a trial object to the
 experimental timeline.</p> 
