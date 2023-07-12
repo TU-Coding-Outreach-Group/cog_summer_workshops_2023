@@ -1,4 +1,3 @@
-# UNDER CONSTRUCTION
 # Coding Outreach Group Summer Workshop 2023
 # Intro to jPsych
 07/13/2023
