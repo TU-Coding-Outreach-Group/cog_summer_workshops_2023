@@ -3,7 +3,7 @@ title: "Coding Outreach Group Summer Workshop - Functions and Iteration in R"
 date: "`r Sys.Date()`"
 author: 
   - name: "Content creator: **Elizabeth Smedley**"
-  - name: "Content editor: **Katie Jobson**"
+  - name: "Content editors: **Katie Jobson & Billy Mitchell**"
 output:
   html_document:
     code_folding: show
@@ -47,14 +47,6 @@ library(vembedr)
 # Section 1: Intro - Why use functions and when to use iteration?
 ```{r, echo = FALSE}
 vembedr::embed_url("https://youtu.be/hH_HLv82Vf8")
-```
-
-```{r Section 1 Video, echo = FALSE}
-#vembedr::embed_url("https://www.youtube.com/watch?v=Jc87nRBSPWQ")
-# 
-
-#' GO OVER CONTENT IN "COG_intro.mp4"
-#' 
 ```
 
 ### Workshop Setup
@@ -123,7 +115,14 @@ Following this basic format, let's work on completing some faded examples (parti
 
 1.  Write some code so that `my_square_root(16)` returns `4`.
 
-```{r, code="'\n\n\n\n'", results=F}
+```{r, Activity_01_01 my_square_root, eval=F, warning=F}
+
+my_square_root <- _____(_______){
+  _______ <- ____(_______)
+  _____(_______)
+}
+
+my_square_root(16)
 
 ```
 
@@ -144,6 +143,17 @@ my_square_root(16)
 my_max_minus_min <- _____(____){
   return_value <- ____(____) - ____(____)
   ____(____)
+}
+
+my_max_minus_min(c(4,7,1,6,8))
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+my_max_minus_min <- function(input){
+  return_value <- max(input) - min(input)
+  return(return_value)
 }
 
 my_max_minus_min(c(4,7,1,6,8))
@@ -376,6 +386,30 @@ cat("total semesters", ________, "\n", "total credits earned", ________)
 
 ```
 
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+set.seed(2023)
+
+grad.credits <- 0 # keep track of credits that count towards graduation, need 120 credit hours
+course_offerings <- c(2,2,3,3,4,4,4,4,4,4,4,4,4,4) # courses are between 2-4 credit hours each, only 4 courses allowed per semester
+semester_total <- 0 # keep track of credits per semester
+semester <- 0 # keep track of how many semesters it will take to finish
+
+while(grad.credits < 120){
+  semester <- semester + 1
+  semester_total <- sum(sample(course_offerings, size = 4))
+  grad.credits <- sum(grad.credits + semester_total)
+  
+  cat("semester", semester, ": credits", semester_total, "\n")
+}
+
+# print the total semesters and credits at the end
+cat("total semesters", semester, "\n", "total credits earned", grad.credits)
+
+```
+
 ### For loops
 
 Unlike while statements that do not have a fixed, or predetermined number of iterations, with for loops you're repeating a certain block/lines of code a predetermined amount of times. This is the general format:
@@ -442,6 +476,18 @@ for(i in 1:___){
 }
 ```
 
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+for(i in 1:3){
+  print("COG workshops are the best.")
+}
+
+```
+
+
+
 2.  Evaluate the number of characters in each word in this string of words. **To test:** the first printed item will return `[1] "trade has 5 letters"`
 
 ```{r, eval=F, warning=F}
@@ -458,7 +504,25 @@ word_string <- sample(stringr::words, size = 30) # pull 30 elements at random fr
     
 ```
 
-3.  What if we wanted to just return the number of characters from each word into a vector? This is really similar to #2, but instead of printing the number of letters per word, we're going to get them into a vector. **End result 'foo' should start like this:**
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+set.seed(2023)
+word_string <- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
+
+# loop over the word_string and evaluate the number of characters in each word then print the results
+for(i in word_string){
+  word.length <- nchar(i)
+  message <- paste(i, "has", word.length, "letters")
+  print(message)
+}
+
+
+```
+
+
+3.  What if we wanted to just return the number of characters from each word into a vector? This is really similar to #2, but instead of printing the number of letters per word, we're going to get them into a vector. **End result should start like this:**
 
     |           | word.length |
     |-----------|-------------|
@@ -486,6 +550,29 @@ foo <- as.data.frame(word.length)
 foo
 
 ```
+
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+set.seed(2023)
+word_string <- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
+
+# loop over the word_string and evaluate the number of characters in each word then print the results
+
+
+# initialize an object to keep our results
+word.length <- c()
+
+for(i in word_string){
+  word.length[i] <- nchar(i)
+}
+
+foo <- as.data.frame(word.length)
+
+
+```
+
 
 ### Alternatives to loops
 
@@ -708,6 +795,20 @@ means
 
 ```
 
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+# # find avg value score for each patient
+apply(patient_data[3:5], 1, mean) # outputs vector for means of values for each patient
+# 
+lapply(patient_data[3:5], mean) # outputs list of means of each value (mean val1, mean val2, NOT PATIENT SPECIFIC)
+# 
+sapply(patient_data[3:5], mean) # outputs vector of means of each value (mean val1, mean val2, NOT PATIENT SPECIFIC)
+
+```
+
+
 2.  Finding the mean and standard deviation for each column in mtcars. *Take this loop and turn it into an apply statement or statements (depends upon how you want to solve) that is a functional equivalent (it produces a very similar/the same result).*
 
 ```{r}
@@ -727,6 +828,48 @@ combine
 
 # -- using an apply statement to find the mean and standard deviation for each column in mtcars -- #
 
+
+```
+
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+# there are a few ways to do this with the apply family, here are some options that produce the same results, but just each formatted a bit differently. 
+
+# # apply with column specification (single vector outputs and combined later)
+mu<-apply(mtcars, 2, mean)
+sd<-apply(mtcars, 2, sd)
+apply_df<-data.frame(mu,sd)
+apply_df
+# 
+# # this also sort of works
+unlist(apply(mtcars, 2, function(x){
+   data.frame(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+ }))
+ 
+# # lapply with dataframe -- I think I like this the best
+ lapply(mtcars, function(x) {
+   data.frame(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+   }
+   )
+ 
+# # lapply with cbind
+ lapply(mtcars, function(x) {
+   cbind(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+   }
+   ) 
+ 
+# # lapply with dataframe piped to bind_rows - a very pretty option 
+ lapply(mtcars, function(x) {
+   data.frame(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+   }
+   ) %>%
+   bind_rows(.id = c("variable"))
 
 ```
 
@@ -930,15 +1073,9 @@ Your data files are named with this formatting:
 
 **To test**: `test <- import_date("2022_02_01")` should return a tibble: 16 x 11
 
-```{r}
+```{r, code="'\n\n\n\n'", results=F}
 
-# description: import_date takes a date and returns a data file from that date
-# input: a date in YYYY-MM-DD format
-# output: a df
-# requires: {glue} {readr}
-
-library(glue)
-library(readr)
+# Step 1. import_date function
 
 import_date <- function(date){
   path <- glue("opioid_data/experiment_01_date_{date}.txt")
@@ -946,9 +1083,48 @@ import_date <- function(date){
   return(dat)
 }
 
-import_date("2022_03_07")
+```
+
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+# Step 2. Load folder iteratively 
+# -- part 1. make a vector of dates for us to iterate over -- #
+dates <- as.Date("2022-03-07") + 0:7 
+dates <- str_replace_all(dates,"-", "_")
+dates
+
+# -- part 2. iterate over those dates and use our custom function to load them -- #
+all_data<-list() # initiate empty list
+# 
+for (i in 1:length(dates)) { # for every item in 1 thru the number of items in files
+  temp_file<-dates[i] # temporarily name the ith index in files as temp_file
+  day<-import_date(temp_file) #then use my custom function to load the file into "day"
+  all_data[[i]]<-day # stick that data object into our initiated list at the ith index
+}
+
+View(all_data) # need to use View() and not view() to see a list of lists... not sure why but lower cas, tibble::view() returns a weird like cbind version of the data...
+
+# -- option as apply -- #
+apply_all_data <- lapply(dates, function(x) {import_date(x)}) # outputs list of lists
+View(apply_all_data)
+
+# -- speed comparison -- #
+
+# loop takes: 0.845 seconds
+system.time(for (i in 1:length(dates)) {  
+  temp_file<-dates[i] 
+  day<-import_date(temp_file) 
+  all_data[[i]]<-day 
+})
+
+# apply takes: 0.858 seconds
+system.time(lapply(dates, function(x) {import_date(x)}))
 
 ```
+
+
 
 Previously, we made a hypothetical function that would return a data file based on the date entered. But what if we wanted to do that for each date in the file - and what if there is a years worth of data in there?! Are we going to run `import_date("date1")`, `import_date("date2")`... over and over again until we do it for the entire folder??
 
@@ -974,7 +1150,7 @@ First: make a vector of dates that we can iterate over (note the formatting is Y
 
 Next: iterate over those dates and use our custom function to load them, see if you can make a loop version and an apply version!
 
-```{r}
+```{r, code="'\n\n\n\n'", results=F}
 
 library(stringr)
 
@@ -991,6 +1167,15 @@ library(stringr)
 
 
 ```
+
+Click `SHOW` to see a solution! ==>
+
+```{r class.source = 'fold-hide', eval=F, warning=F}
+
+
+
+```
+
 
 # Additional info
 

@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2023-07-02" />
+<meta name="date" content="2023-07-13" />
 
 <title>Coding Outreach Group Summer Workshop - Functions and Iteration in R</title>
 
@@ -261,8 +261,8 @@ div.tocify {
 
 <h1 class="title toc-ignore">Coding Outreach Group Summer Workshop - Functions and Iteration in R</h1>
 <h4 class="author">Content creator: <strong>Elizabeth Smedley</strong></h4>
-<h4 class="author">Content editor: <strong>Katie Jobson</strong></h4>
-<h4 class="date">2023-07-02</h4>
+<h4 class="author">Content editors: <strong>Katie Jobson &amp; Billy Mitchell</strong></h4>
+<h4 class="date">2023-07-13</h4>
 
 </div>
 
@@ -333,11 +333,12 @@ add_one(4)</code></pre>
 <ol style="list-style-type: decimal">
 <li>Write some code so that <code>my_square_root(16)</code> returns <code>4</code>.</li>
 </ol>
-<pre class="r"><code>&#39;
+<pre class="r"><code>my_square_root &lt;- _____(_______){
+  _______ &lt;- ____(_______)
+  _____(_______)
+}
 
-
-
-&#39;</code></pre>
+my_square_root(16)</code></pre>
 <p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
 <pre class="r fold-hide"><code>my_square_root &lt;- function(our_input){
   return_value &lt;- sqrt(our_input)
@@ -351,6 +352,13 @@ my_square_root(16)</code></pre>
 <pre class="r"><code>my_max_minus_min &lt;- _____(____){
   return_value &lt;- ____(____) - ____(____)
   ____(____)
+}
+
+my_max_minus_min(c(4,7,1,6,8))</code></pre>
+<p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
+<pre class="r fold-hide"><code>my_max_minus_min &lt;- function(input){
+  return_value &lt;- max(input) - min(input)
+  return(return_value)
 }
 
 my_max_minus_min(c(4,7,1,6,8))</code></pre>
@@ -550,6 +558,24 @@ cat(&quot;total semesters&quot;, ________, &quot;\n&quot;, &quot;total credits e
 # at the end of the loop print the total semesters taken, and total number of credits earned
 
 # note: the &quot;\n&quot; notation is a line separator!</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code>set.seed(2023)
+
+grad.credits &lt;- 0 # keep track of credits that count towards graduation, need 120 credit hours
+course_offerings &lt;- c(2,2,3,3,4,4,4,4,4,4,4,4,4,4) # courses are between 2-4 credit hours each, only 4 courses allowed per semester
+semester_total &lt;- 0 # keep track of credits per semester
+semester &lt;- 0 # keep track of how many semesters it will take to finish
+
+while(grad.credits &lt; 120){
+  semester &lt;- semester + 1
+  semester_total &lt;- sum(sample(course_offerings, size = 4))
+  grad.credits &lt;- sum(grad.credits + semester_total)
+  
+  cat(&quot;semester&quot;, semester, &quot;: credits&quot;, semester_total, &quot;\n&quot;)
+}
+
+# print the total semesters and credits at the end
+cat(&quot;total semesters&quot;, semester, &quot;\n&quot;, &quot;total credits earned&quot;, grad.credits)</code></pre>
 </div>
 </div>
 <div id="for-loops" class="section level3" number="2.2.2">
@@ -604,6 +630,10 @@ y</code></pre>
 <pre class="r"><code>for(i in 1:___){
   ______(&quot;COG workshops are the best!&quot;)
 }</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code>for(i in 1:3){
+  print(&quot;COG workshops are the best.&quot;)
+}</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Evaluate the number of characters in each word in this string of words. <strong>To test:</strong> the first printed item will return <code>[1] &quot;trade has 5 letters&quot;</code></li>
 </ol>
@@ -616,8 +646,18 @@ word_string &lt;- sample(stringr::words, size = 30) # pull 30 elements at random
       message &lt;- paste(_, &quot;has&quot;, ____________, &quot;letters&quot;)
       print(message)
     }</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code>set.seed(2023)
+word_string &lt;- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
+
+# loop over the word_string and evaluate the number of characters in each word then print the results
+for(i in word_string){
+  word.length &lt;- nchar(i)
+  message &lt;- paste(i, &quot;has&quot;, word.length, &quot;letters&quot;)
+  print(message)
+}</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>What if we wanted to just return the number of characters from each word into a vector? This is really similar to #2, but instead of printing the number of letters per word, we’re going to get them into a vector. <strong>End result ‘foo’ should start like this:</strong></p>
+<li><p>What if we wanted to just return the number of characters from each word into a vector? This is really similar to #2, but instead of printing the number of letters per word, we’re going to get them into a vector. <strong>End result should start like this:</strong></p>
 <table>
 <thead>
 <tr class="header">
@@ -661,6 +701,21 @@ for(_ in __________){
 foo &lt;- as.data.frame(word.length)
 
 foo</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code>set.seed(2023)
+word_string &lt;- sample(stringr::words, size = 30) # pull 30 elements at random from stringr::words
+
+# loop over the word_string and evaluate the number of characters in each word then print the results
+
+
+# initialize an object to keep our results
+word.length &lt;- c()
+
+for(i in word_string){
+  word.length[i] &lt;- nchar(i)
+}
+
+foo &lt;- as.data.frame(word.length)</code></pre>
 </div>
 </div>
 <div id="alternatives-to-loops" class="section level3" number="2.2.3">
@@ -871,6 +926,13 @@ for(i in 1:nrow(patient_data)){
 means
 
 # -- How to find the mean values for each patient with an apply statement -- #</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code># # find avg value score for each patient
+apply(patient_data[3:5], 1, mean) # outputs vector for means of values for each patient
+# 
+lapply(patient_data[3:5], mean) # outputs list of means of each value (mean val1, mean val2, NOT PATIENT SPECIFIC)
+# 
+sapply(patient_data[3:5], mean) # outputs vector of means of each value (mean val1, mean val2, NOT PATIENT SPECIFIC)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Finding the mean and standard deviation for each column in mtcars. <em>Take this loop and turn it into an apply statement or statements (depends upon how you want to solve) that is a functional equivalent (it produces a very similar/the same result).</em></li>
 </ol>
@@ -942,6 +1004,42 @@ combine</code></pre>
 ## m  2.8125
 ## sd 1.6152</code></pre>
 <pre class="r"><code># -- using an apply statement to find the mean and standard deviation for each column in mtcars -- #</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code># there are a few ways to do this with the apply family, here are some options that produce the same results, but just each formatted a bit differently. 
+
+# # apply with column specification (single vector outputs and combined later)
+mu&lt;-apply(mtcars, 2, mean)
+sd&lt;-apply(mtcars, 2, sd)
+apply_df&lt;-data.frame(mu,sd)
+apply_df
+# 
+# # this also sort of works
+unlist(apply(mtcars, 2, function(x){
+   data.frame(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+ }))
+ 
+# # lapply with dataframe -- I think I like this the best
+ lapply(mtcars, function(x) {
+   data.frame(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+   }
+   )
+ 
+# # lapply with cbind
+ lapply(mtcars, function(x) {
+   cbind(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+   }
+   ) 
+ 
+# # lapply with dataframe piped to bind_rows - a very pretty option 
+ lapply(mtcars, function(x) {
+   data.frame(mu = mean(x, na.rm = TRUE),
+   sd = sd(x, na.rm = TRUE))
+   }
+   ) %&gt;%
+   bind_rows(.id = c(&quot;variable&quot;))</code></pre>
 </div>
 <div id="purrr-and-map-functions" class="section level4" number="2.2.4.2">
 <h4 number="2.2.4.2"><span class="header-section-number">2.2.4.2</span> purrr and “map” functions</h4>
@@ -1133,34 +1231,44 @@ system.time(x &gt; 2) # 0 seconds elapsed</code></pre>
 <p>Your data files are named with this formatting:</p>
 <p>“experiment_01_date_YYYY_MM_DD.txt”</p>
 <p><strong>To test</strong>: <code>test &lt;- import_date(&quot;2022_02_01&quot;)</code> should return a tibble: 16 x 11</p>
-<pre class="r"><code># description: import_date takes a date and returns a data file from that date
-# input: a date in YYYY-MM-DD format
-# output: a df
-# requires: {glue} {readr}
+<pre class="r"><code>&#39;
 
-library(glue)
-library(readr)
 
-import_date &lt;- function(date){
-  path &lt;- glue(&quot;opioid_data/experiment_01_date_{date}.txt&quot;)
-  dat &lt;- read_delim(path)
-  return(dat)
+
+&#39;</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
+<pre class="r fold-hide"><code># Step 2. Load folder iteratively 
+# -- part 1. make a vector of dates for us to iterate over -- #
+dates &lt;- as.Date(&quot;2022-03-07&quot;) + 0:7 
+dates &lt;- str_replace_all(dates,&quot;-&quot;, &quot;_&quot;)
+dates
+
+# -- part 2. iterate over those dates and use our custom function to load them -- #
+all_data&lt;-list() # initiate empty list
+# 
+for (i in 1:length(dates)) { # for every item in 1 thru the number of items in files
+  temp_file&lt;-dates[i] # temporarily name the ith index in files as temp_file
+  day&lt;-import_date(temp_file) #then use my custom function to load the file into &quot;day&quot;
+  all_data[[i]]&lt;-day # stick that data object into our initiated list at the ith index
 }
 
-import_date(&quot;2022_03_07&quot;)</code></pre>
-<pre><code>## Rows: 16 Columns: 11
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (5): DATE, EARTAG#, DOSE, PROGRAM, CONDITION
-## dbl (6): SESSION, BOX#, WEIGHT(g), INF, ACTIVE, INACTIVE
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["DATE"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SESSION"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["EARTAG#"],"name":[3],"type":["chr"],"align":["left"]},{"label":["BOX#"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["DOSE"],"name":[5],"type":["chr"],"align":["left"]},{"label":["WEIGHT(g)"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["PROGRAM"],"name":[7],"type":["chr"],"align":["left"]},{"label":["INF"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["ACTIVE"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["INACTIVE"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["CONDITION"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"3/7/22","2":"1","3":"T460","4":"1","5":"SAL","6":"380","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"10","9":"16","10":"30","11":"SAL"},{"1":"3/7/22","2":"1","3":"T465","4":"2","5":"YO","6":"578","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"12","9":"16","10":"12","11":"MORPH"},{"1":"3/7/22","2":"1","3":"T467","4":"3","5":"SAL","6":"546","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"18","9":"22","10":"10","11":"SAL"},{"1":"3/7/22","2":"1","3":"T469","4":"4","5":"OG","6":"490","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"9","9":"18","10":"30","11":"MORPH"},{"1":"3/7/22","2":"1","3":"T484","4":"5","5":"YO","6":"508","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"10","9":"26","10":"9","11":"MORPH"},{"1":"3/7/22","2":"1","3":"T486","4":"6","5":"SAL","6":"462","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"7","9":"11","10":"22","11":"SAL"},{"1":"3/7/22","2":"1","3":"T491","4":"7","5":"YO","6":"510","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"19","9":"58","10":"14","11":"MORPH"},{"1":"3/7/22","2":"1","3":"T498","4":"8","5":"G","6":"389","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"75","9":"109","10":"64","11":"MORPH"},{"1":"3/7/22","2":"1","3":"G486","4":"9","5":"SAL","6":"534","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"5","9":"5","10":"3","11":"SAL"},{"1":"3/7/22","2":"1","3":"G489","4":"10","5":"SAL","6":"490","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"8","9":"15","10":"5","11":"SAL"},{"1":"3/7/22","2":"1","3":"G637","4":"11","5":"YO","6":"540","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"14","9":"22","10":"18","11":"MORPH"},{"1":"3/7/22","2":"1","3":"G641","4":"12","5":"YO","6":"621","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"32","9":"134","10":"70","11":"MORPH"},{"1":"3/7/22","2":"1","3":"G648","4":"13","5":"SAL","6":"513","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"8","9":"13","10":"10","11":"SAL"},{"1":"3/7/22","2":"1","3":"G649","4":"14","5":"YO","6":"707","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"7","9":"8","10":"12","11":"MORPH"},{"1":"3/7/22","2":"1","3":"G651","4":"15","5":"SAL","6":"442","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"7","9":"9","10":"43","11":"SAL"},{"1":"3/7/22","2":"1","3":"G676","4":"16","5":"SAL","6":"351","7":"HEROIN_6HR_FR1_INTERMITTENT_CUES_75MAX","8":"20","9":"34","10":"33","11":"SAL"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+View(all_data) # need to use View() and not view() to see a list of lists... not sure why but lower cas, tibble::view() returns a weird like cbind version of the data...
+
+# -- option as apply -- #
+apply_all_data &lt;- lapply(dates, function(x) {import_date(x)}) # outputs list of lists
+View(apply_all_data)
+
+# -- speed comparison -- #
+
+# loop takes: 0.845 seconds
+system.time(for (i in 1:length(dates)) {  
+  temp_file&lt;-dates[i] 
+  day&lt;-import_date(temp_file) 
+  all_data[[i]]&lt;-day 
+})
+
+# apply takes: 0.858 seconds
+system.time(lapply(dates, function(x) {import_date(x)}))</code></pre>
 <p>Previously, we made a hypothetical function that would return a data file based on the date entered. But what if we wanted to do that for each date in the file - and what if there is a years worth of data in there?! Are we going to run <code>import_date(&quot;date1&quot;)</code>, <code>import_date(&quot;date2&quot;)</code>… over and over again until we do it for the entire folder??</p>
 <p><em>Absolutely not. We can code our way to laziness!</em></p>
 <p><strong>Enter: iteration.</strong></p>
@@ -1175,18 +1283,12 @@ import_date(&quot;2022_03_07&quot;)</code></pre>
 <h3 number="3.0.2"><span class="header-section-number">3.0.2</span> Step 2: iterate over our custom function to import the whole folder</h3>
 <p>First: make a vector of dates that we can iterate over (note the formatting is YYYY_MM_DD and goes from 2022_03_07 to 2022_03_14)</p>
 <p>Next: iterate over those dates and use our custom function to load them, see if you can make a loop version and an apply version!</p>
-<pre class="r"><code>library(stringr)
-
-# -- part 1. make a vector of dates for us to iterate over -- #
+<pre class="r"><code>&#39;
 
 
-# -- part 2. iterate over those dates and use our custom function to load them -- #
 
-
-  # -- option as loop -- #
-  
-  
-  # -- option as apply -- #</code></pre>
+&#39;</code></pre>
+<p>Click <code>SHOW</code> to see a solution! ==&gt;</p>
 </div>
 </div>
 <div id="additional-info" class="section level1" number="4">
