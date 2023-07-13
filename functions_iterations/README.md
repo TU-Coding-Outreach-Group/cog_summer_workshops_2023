@@ -4,10 +4,10 @@
 
 __**Content creator:**__ Beth Smedley
 
-__**Content editor:**__ Katie Jobson
+__**Content editors:**__ Katie Jobson & Billy Mitchell
 
 ## Description
-  
+Functions and iteration are vital components of the coding language R, enabling efficient and flexible programming. Functions allow for the encapsulation and reuse of code blocks, enhancing code organization and modularity. By defining functions, programmers can break down complex tasks into smaller, manageable units, promoting code readability and maintainability. Iteration, on the other hand, empowers developers to repeat operations or calculations over a range of values or elements. This iterative capability is particularly valuable when working with large datasets or performing repetitive tasks, as it eliminates the need for redundant code and simplifies complex operations. Together, functions and iteration provide R programmers with powerful tools to streamline their code, enhance productivity, and solve a wide range of data-related problems efficiently. In this workshop, we will cover the basics of functions and iterations for better, cleaner coding in R!  
 
 ## Prerequisites
 This workshop demands that users:
