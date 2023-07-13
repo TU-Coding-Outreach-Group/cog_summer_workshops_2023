@@ -39,9 +39,9 @@ We won't be covering more advanced functions of SQL. This is meant to be an intr
 | Q & A | --- |  |
 
 ## Additional Resources
-W3schools tutorial on SQL: https://www.w3schools.com/sql/
-Khan Academy tutorial on SQL: https://www.khanacademy.org/computing/computer-programming/sql
-Kaggle **advanced** tutorial on SQL: https://www.kaggle.com/learn/advanced-sql
+W3schools tutorial on SQL: https://www.w3schools.com/sql/    
+Khan Academy tutorial on SQL: https://www.khanacademy.org/computing/computer-programming/sql   
+Kaggle **advanced** tutorial on SQL: https://www.kaggle.com/learn/advanced-sql     
 
 ### Packages and Dependencies
 R:   
