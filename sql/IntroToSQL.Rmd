@@ -73,16 +73,17 @@ MySQL can also be integrated with Visual Studio Code, directions on how to do th
 
 SQL is compatible with R, and we can actually use it within RMarkdown. Follow the steps below to get setup for that.
 
-1. First, follow the download instructions in [this website for the ODBC Driver](https://www.sqlshack.com/how-to-configure-a-linked-server-using-the-odbc-driver/). This will allow you to access data stored in database management systems.
+1. Download the ODBC Driver, to be able to initalize other code: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
 
-2. Run the chunk of code below to load the SQL package in R
+2. Run the chunk of code below to load packages in R that can deal with SQL data and code
 
 ```{r, echo = FALSE}
-install.packages("DBI", "sqldf")
-library(DBI, sqldf)
+install.packages("DBI", "sqldf", "odbc")
+library(DBI, sqldf, odbc)
+con <- dbConnect(odbc::odbc(), driver ="PostgreSQL")
 ```
 3. Connect to an SQL server
-```{r sql}
+```{r sql, connection=con, output.var = "mydataframe"}
 
 ```
 
