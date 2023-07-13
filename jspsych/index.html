@@ -3151,7 +3151,7 @@ advance to the next trial)</li>
 <pre><code>//Create the first experimental trial called &quot;welcome&quot; and use the html-keyboard-response plugin to print a welcome message.
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: &#39;Welcome to the experiment. Press the space bar to begin.&#39;
+      stimulus: &#39;Welcome to the experiment. Press the space bar to begin.&#39;,
       choices: [&#39; &#39;],
     }</code></pre>
 </div>
@@ -3163,7 +3163,7 @@ push it to the timeline array that we created earlier. We can push a trial to th
 <pre><code>//Create the first experimental trial called &quot;welcome&quot; and use the html-keyboard-response plugin to print a welcome message.
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: &#39;Welcome to the experiment. Press the space bar to begin.&#39;
+      stimulus: &#39;Welcome to the experiment. Press the space bar to begin.&#39;,
       choices: [&#39; &#39;],
     }
     
@@ -3240,7 +3240,7 @@ script on a web page and see what the experiment looks like.</p>
 //Create the first experimental trial called &quot;welcome&quot; and use the html-keyboard-response plugin to print a welcome message.
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: &#39;Welcome to the experiment. Press the space bar to begin.&#39;
+      stimulus: &#39;Welcome to the experiment. Press the space bar to begin.&#39;,
       choices: [&#39; &#39;],
     }
 
@@ -3448,7 +3448,7 @@ experimental procedure to the experimental timeline!</p>
     };
   
 //Push phase 1 procedure to experimental timeline  
-timeline.push(task_procedure);</code></pre>
+timeline.push(phase1_procedure);</code></pre>
 </div>
 <div id="step-20-building-a-full-experiment-run-phase-1" class="section level2">
 <h2>Step 20: Building a full experiment – Run Phase 1</h2>
@@ -3532,7 +3532,7 @@ var stimuli_presentation = {
     };
     
 //Push phase 1 procedure to experimental timeline    
-timeline.push(task_procedure);
+timeline.push(phase1_procedure);
     
     
 
