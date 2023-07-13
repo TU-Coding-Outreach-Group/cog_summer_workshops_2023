@@ -44,11 +44,11 @@ Khan Academy tutorial on SQL: https://www.khanacademy.org/computing/computer-pro
 Kaggle **advanced** tutorial on SQL: https://www.kaggle.com/learn/advanced-sql
 
 ### Packages and Dependencies
-R:
-```sqldf``` - package that allows R to interfact with mySQL, PostgreSQL, H2 and SQLite
-```DBI``` - package that allows users to access SQL databases
+R:   
+```sqldf``` - package that allows R to interfact with mySQL, PostgreSQL, H2 and SQLite   
+```DBI``` - package that allows users to access SQL databases     
 
-Python/Jupyter Notebooks:
-```pip install ipython-sql```
-```pip install sqlalchemy```
-```pip install pandas```
+Python/Jupyter Notebooks:     
+```pip install ipython-sql```    
+```pip install sqlalchemy```    
+```pip install pandas```    
