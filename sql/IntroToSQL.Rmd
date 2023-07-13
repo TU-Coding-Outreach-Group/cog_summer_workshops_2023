@@ -61,7 +61,13 @@ An SQL Server, also known as a relational database management system (RDBMS), is
 
 ### How to Use SQL with MySQL
 
-There are multiple ways to use SQL. MySQL is 
+There are multiple ways to use SQL. While we will not be covering how to use MySQL is this workshop, in favor of languages you all might be familiar with, this seems to be one of the most common ways people use SQL. MySQL is basically just a program specifically for SQL programming. It is also more secure than something like RSudio and Jupyter Notebooks, so if you are in a job where the data needs to be secure, you are more likely to encounter MySQL. 
+
+The directions for installing MySQL on your computer can be found [here](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing)
+
+[MySQL can be downloaded here](https://dev.mysql.com/downloads/installer/)
+
+MySQL can also be integrated with Visual Studio Code, directions on how to do that [here](https://dev.mysql.com/doc/mysql-shell-gui/en/mysql-shell-for-vscode-setup.html)
 
 ### How to Use SQL in R
 
@@ -72,21 +78,22 @@ SQL is compatible with R, and we can actually use it within RMarkdown. Follow th
 2. Run the chunk of code below to load the SQL package in R
 
 ```{r, echo = FALSE}
-install.packages("DBI")
-library(DBI)
+install.packages("DBI", "sqldf")
+library(DBI, sqldf)
 ```
 3. Connect to an SQL server
 ```{r sql}
 
 ```
 
-## MySQL Database example data
-
-
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+### How to use SQL in Jupyter Notebooks
+```{python}
+pip install ipython-sql
+pip install sqlalchemy
+pip install pandas
 ```
+
+## MySQL Database example data
 
 # Key Functions
 
