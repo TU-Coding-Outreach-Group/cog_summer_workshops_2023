@@ -55,23 +55,12 @@ This isn't a programming language one would readily encounter in academia. Our d
 
 An SQL Server, also known as a relational database management system (RDBMS), is where the data that SQL accesses is stored. The data stored on these servers are often structured into tables similar to a spreadsheet. These SQL Servers tables can be *massive* and the SQL language offers a relatively quick means of retrieve, insert, update, and delete data in the database, but this is just one of the many reasons why SQL servers are used. SQL servers are designed to handle variably concurrent access requests from different users in an efficient **and** secure manner. A server administrator enforces rules as to who can modify and access what on the server. SQL Servers also feature different options for data backup and recovery and can allow users to perform calculations directly in the table without having to necessarily create a subset of data. 
 
-# Data
+# Setting Up a SQL Server
 
-## Getting Started
+## How to Use SQL with SQL Server
 
-### How to Use SQL with MySQL
+There are multiple ways to use SQL. While we will not be covering how to use SQL Server is this workshop, in favor of languages you all might be familiar with, this seems to be one of the most common ways people use SQL. SQL Server is basically just a program specifically for SQL programming. It is also more secure than something like RSudio and Jupyter Notebooks, so if you are in a job where the data needs to be secure, you are more likely to encounter SQL Server. There are several steps to get SQL setup on your local computer.
 
-There are multiple ways to use SQL. While we will not be covering how to use MySQL is this workshop, in favor of languages you all might be familiar with, this seems to be one of the most common ways people use SQL. MySQL is basically just a program specifically for SQL programming. It is also more secure than something like RSudio and Jupyter Notebooks, so if you are in a job where the data needs to be secure, you are more likely to encounter MySQL. 
-
-The directions for installing MySQL on your computer can be found [here](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing)
-
-[MySQL can be downloaded here](https://dev.mysql.com/downloads/installer/)
-
-MySQL can also be integrated with Visual Studio Code, directions on how to do that [here](https://dev.mysql.com/doc/mysql-shell-gui/en/mysql-shell-for-vscode-setup.html)
-
-### How to Use SQL in R
-
-SQL is compatible with R, and we can actually use it within RMarkdown. Follow the steps below to get setup for that.
 
 1. Download the ODBC Driver, to be able to initalize other code: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16 - **make sure you download the correct version of this, either 32- or 64-bit for your computer.**
 
@@ -91,6 +80,8 @@ Highlight 'SQL Server', and then click 'Finish'.A new window will pop up. Under 
 ![](images/newdatasource.png)
 After this, you can click 'Finish', and it will test your connection for you. 
 
+## How to Use SQL Server in R
+
 5. Run the chunk of code below to load packages in R that can deal with SQL data and code
 
 ```{r, echo = FALSE}
@@ -108,45 +99,6 @@ con <- dbConnect(
 
 ```
 
-Now, let's take our downloaded data (from the [Intro to SQL GitHub page](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/sql/Sample%20Databases)) and load it into a variable. You will need to use an R chunk in RMarkdown to do this.
-
-
-```{sql, connection=con}
-
-CREATE TABLE bikes (
-  Company char,
-  Country char,
-  Model char,
-  CC int,
-  Horsepower char,
-  Torque char,
-  Transmission char,
-  Drivetrain char,
-  Seating int,
-  Price char,
-  Year int,
-  Looks char,
-  Nody_Type char,
-  Engine_Type char,
-  Cylinders int
-  
-);
-
-```
-
-```{sql, connection=con}
-BULK INSERT bikes
-FROM 'C:\Users\KRJ\Downloads\bike_data.csv'
-WITH (
-    FIELDTERMINATOR = ',',
-    ROWTERMINATOR = '\n'
-); 
-
-```
-
-```{sql,connection=con, output.var="world_dataframe"\}
-```
-
 ### How to use SQL in Jupyter Notebooks
 ```{python}
 pip install ipython-sql
@@ -155,6 +107,41 @@ pip install pandas
 ```
 
 ## MySQL Database example data
+
+Loading in data from something like a CSV can be difficult, so we are going to skip that and create our own database using SQL code. 
+
+```{sql, connection=con}
+CREATE TABLE  AGENTS (	
+    AGENT_CODE CHAR(6), 
+	AGENT_NAME CHAR(40), 
+	WORKING_AREA CHAR(35), 
+	COMMISSION INT, 
+	PHONE_NO CHAR(15), 
+	COUNTRY VARCHAR(25) 
+	 );
+```
+
+```{sql, connection=con}
+INSERT INTO AGENTS VALUES ('A007', 'Ramasundar', 'Bangalore', '300', '077-25814763', '');
+INSERT INTO AGENTS VALUES ('A003', 'Alex ', 'London', '800', '075-12458969', '');
+INSERT INTO AGENTS VALUES ('A008', 'Alford', 'New York', '900', '044-25874365', '');
+INSERT INTO AGENTS VALUES ('A011', 'Ravi Kumar', 'Bangalore', '400', '077-45625874', '');
+INSERT INTO AGENTS VALUES ('A010', 'Santakumar', 'Chennai', '250', '007-22388644', '');
+INSERT INTO AGENTS VALUES ('A012', 'Lucida', 'San Jose', '675', '044-52981425', '');
+INSERT INTO AGENTS VALUES ('A005', 'Anderson', 'Brisbane', '550', '045-21447739', '');
+INSERT INTO AGENTS VALUES ('A001', 'Subbarao', 'Bangalore', '450', '077-12346674', '');
+INSERT INTO AGENTS VALUES ('A002', 'Mukesh', 'Mumbai', '200', '029-12358964', '');
+INSERT INTO AGENTS VALUES ('A006', 'McDen', 'London', '750', '078-22255588', '');
+INSERT INTO AGENTS VALUES ('A004', 'Ivan', 'Torento', '400', '008-22544166', '');
+INSERT INTO AGENTS VALUES ('A009', 'Benjamin', 'Hampshair', '950', '008-22536178', '');
+```
+
+```{sql, connection=con, output.var="world_dataframe"}
+
+
+```
+
+
 
 # Key Functions
 
