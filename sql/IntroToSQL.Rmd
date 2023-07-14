@@ -94,13 +94,30 @@ After this, you can click 'Finish', and it will test your connection for you.
 5. Run the chunk of code below to load packages in R that can deal with SQL data and code
 
 ```{r, echo = FALSE}
-install.packages(c("DBI", "sqldf", "odbc"))
-library(DBI, sqldf, odbc)
-con <- dbConnect(odbc::odbc(), "Katie_SQL") #make sure to insert the name you just input for your server name here
+install.packages(c("pacman"))
+library(pacman)
+pacman::p_load(DBI, sqldf, odbc, reader)
+con <- dbConnect(
+  odbc::odbc(), 
+  "Katie_SQL"
+  ) #make sure to insert the name you just input for your server name here
 ```
-3. Connect to an SQL server
-```{r sql, connection=con, output.var = "mydataframe"}
 
+6. Connect to the SQL server with a code chunk that looks like this:
+```{\sql, connection=con, output.var="world_dataframe"\}
+
+```
+
+Now, let's take our downloaded data (from the [Intro to SQL GitHub page](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/sql/Sample%20Databases)) and load it into a variable. You will need to use an R chunk in RMarkdown to do this.
+
+```{r}
+
+World <- read_file("C:/Users/KRJ/Documents/COG/cog_summer_workshops_2023/sql/Sample Databases/World/world-schema.sql")
+
+```
+
+```{sql,connection=con, output.var="world_dataframe"\}
+SELECT 
 ```
 
 ### How to use SQL in Jupyter Notebooks
