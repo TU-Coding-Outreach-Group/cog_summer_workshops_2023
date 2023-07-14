@@ -110,14 +110,41 @@ con <- dbConnect(
 
 Now, let's take our downloaded data (from the [Intro to SQL GitHub page](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/sql/Sample%20Databases)) and load it into a variable. You will need to use an R chunk in RMarkdown to do this.
 
-```{r}
 
-World <- read_file("C:/Users/KRJ/Documents/COG/cog_summer_workshops_2023/sql/Sample Databases/World/world-schema.sql")
+```{sql, connection=con}
+
+CREATE TABLE bikes (
+  Company char,
+  Country char,
+  Model char,
+  CC int,
+  Horsepower char,
+  Torque char,
+  Transmission char,
+  Drivetrain char,
+  Seating int,
+  Price char,
+  Year int,
+  Looks char,
+  Nody_Type char,
+  Engine_Type char,
+  Cylinders int
+  
+);
+
+```
+
+```{sql, connection=con}
+BULK INSERT bikes
+FROM 'C:\Users\KRJ\Downloads\bike_data.csv'
+WITH (
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+); 
 
 ```
 
 ```{sql,connection=con, output.var="world_dataframe"\}
-SELECT 
 ```
 
 ### How to use SQL in Jupyter Notebooks
