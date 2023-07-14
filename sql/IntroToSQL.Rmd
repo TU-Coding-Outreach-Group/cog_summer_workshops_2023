@@ -79,18 +79,24 @@ SQL is compatible with R, and we can actually use it within RMarkdown. Follow th
 
 ![](images/sql_server_2022.png)
 
-3. Open SQL Server to configure your connection (follow the in-program instructions) - once you have configured, click **Connect Now** to get the server name and location on your computer
+3. Open SQL Server to configure your connection (follow the in-program instructions) - once you have configured, click **Connect Now** to get the server name and location on your computer. This should invoke a command line window to pop up. Your server name and location should be the second line. Mine in the screenshot is DESKTOP-DAEMONI\/SQLEXPRESS. You will need this in a moment! 
 
 ![](images/sqllcmd.png)
 
-4. Open 
+4. Open your ODBC Data Source program. Under 'System DSN', click the 'Add...' button. 
 
-2. Run the chunk of code below to load packages in R that can deal with SQL data and code
+![](images/odbc_datasource_add.png)
+Highlight 'SQL Server', and then click 'Finish'.A new window will pop up. Under Name, name this something you will remember for later. And under Server, enter your server name and location from the command line window.
+
+![](images/newdatasource.png)
+After this, you can click 'Finish', and it will test your connection for you. 
+
+5. Run the chunk of code below to load packages in R that can deal with SQL data and code
 
 ```{r, echo = FALSE}
 install.packages(c("DBI", "sqldf", "odbc"))
 library(DBI, sqldf, odbc)
-con <- dbConnect(odbc::odbc(), driver ="SQL Server")
+con <- dbConnect(odbc::odbc(), "Katie_SQL") #make sure to insert the name you just input for your server name here
 ```
 3. Connect to an SQL server
 ```{r sql, connection=con, output.var = "mydataframe"}
