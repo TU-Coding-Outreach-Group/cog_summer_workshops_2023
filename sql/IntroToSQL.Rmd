@@ -1,9 +1,10 @@
 ---
 title: "Intro to SQL"
-author: "Katie Jobson & William Mitchell"
+author: "**Katie Jobson & William Mitchell**"
 date: "`r Sys.Date()`"
 output: 
   html_document: 
+    code_folding: show
     number_sections: true
     toc: true
     toc_depth: 2
@@ -28,7 +29,7 @@ knitr::opts_chunk$set(echo = TRUE, error = FALSE)
 
 ## What is SQL?
 
-![](images/logo.png)
+![](images/logo.png){width=25%}
 
 Structured Language Query (SQL) is a programming language commonly used in data science to store large data sets. You use it much like you would use the language git to access Github. Both SQL and git allow data to be stored in a centralized place; often a remote server. Others are able to access and add to this data. You can store and call whole databases on GitHub. 
 
@@ -66,7 +67,7 @@ There are multiple ways to use SQL. While we will not be covering how to use SQL
 
 2. Download an SQL Server to use; this is the one I use, but there are many of them: https://www.microsoft.com/en-us/sql-server/sql-server-downloads - **scroll down and click 'Download now' under 'Express'**
 
-![](images/sql_server_2022.png)
+![](images/sql_server_2022.png){width=50%}
 
 3. Open SQL Server to configure your connection (follow the in-program instructions) - once you have configured, click **Connect Now** to get the server name and location on your computer. This should invoke a command line window to pop up. Your server name and location should be the second line. Mine in the screenshot is DESKTOP-DAEMONI\/SQLEXPRESS. You will need this in a moment! 
 
@@ -84,11 +85,14 @@ After this, you can click 'Finish', and it will test your connection for you.
 
 5. Run the chunk of code below to load packages in R that can deal with SQL data and code
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, error=FALSE, eval=FALSE, warning=FALSE}
 install.packages(c("pacman"))
 library(pacman)
-pacman::p_load(DBI, sqldf, odbc, reader)
-con_r <- dbConnect(
+pacman::p_load(DBI, odbc, reader)
+```
+
+```{r,echo = FALSE, error=FALSE,warning=FALSE}
+con_r <- DBI::dbConnect(
   odbc::odbc(), 
   "Katie_SQL"
   ) #make sure to insert the name you just input for your server name here
@@ -99,11 +103,11 @@ con_r <- dbConnect(
 
 ```
 
-### How to use SQL in Jupyter Notebooks
+## How to use SQL in Jupyter Notebooks
 
 I am running this in RMarkdown so I have to initialize a Python kernel - skip this if you are directly using Jupyter Notebooks!
 
-```{r setup}
+```{r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 install.packages("reticulate") #this is for using Python in R - very useful and neat!
 library(reticulate)
 py_install("pandas")
@@ -111,7 +115,7 @@ py_install("pyodbc")
 ```
 
 Now we have to set the connection in Python with the pyodbc library; there are a few more steps to using SQL in Python code than in R, including setting up a cursor to call the SQL code
-```{python}
+```{python, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 import pyodbc 
 con_py = pyodbc.connect('DRIVER={SQL Server};SERVER=DESKTOP-DAEMONI\SQLEXPRESS01;Trusted_Connection=yes;') #Please note that this is slightly different from how we initialized the connection in R!
 cursor = con_py.cursor()
@@ -120,21 +124,31 @@ cursor.execute("ALTER TABLE associates " +
                "ADD fullName VARCHAR(20)")
 ```
 
-##SQL Database example data
+## SQL Database example data
 
 Loading in data from something like a CSV can be difficult, so we are going to skip that and create our own database using SQL code. Note that SQL syntax is slightly different between the different servers (i.e. MySQL and SQL Server). We are coding in SQL Server, so some of this code may not work if you were to use something like MySQL.
 
 In addition, I find using SQL in R a lot easier, so I am going to stick with that. However, if you want to use Jupyter Notebooks, feel free to follow along and try to run this code within the cursor.execute() function!
 
-```{sql, connection=con_r}
+First, we add a new database and select it to be used for our code:
+
+```{sql, Create Database, connection=con_r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+CREATE DATABASE COG_SQL
+```
+
+
+```{sql, connection=con_r, echo = FALSE, error=FALSE, warning=FALSE}
+USE COG_SQL
+```
+Here, we need to create empty tables to insert data into (think of how you would need to create a dataframe in R to put data into!):
+```{sql, connection=con_r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 CREATE TABLE  AGENTS (	
-  AGENT_CODE CHAR(6) NOT NULL, 
+  AGENT_CODE CHAR(6) NOT NULL PRIMARY KEY, 
 	AGENT_NAME CHAR(40) NOT NULL, 
 	WORKING_AREA CHAR(35) NOT NULL, 
 	COMMISSION INT NOT NULL, 
 	PHONE_NO CHAR(15) NOT NULL, 
 	COUNTRY VARCHAR(25) NOT NULL,
-	PRIMARY KEY (AGENT_CODE)
 	 );
  
 CREATE TABLE  CUSTOMER (	
@@ -164,7 +178,8 @@ CREATE TABLE  ORDERS
    );
 ```
 
-```{sql, connection=con_r}
+Now, we can insert our fake data into the tables:
+```{sql, connection=con_r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 INSERT INTO AGENTS VALUES ('A007', 'Ramasundar', 'Bangalore', 0.15, '077-25814763', '');
 INSERT INTO AGENTS VALUES ('A003', 'Alex ', 'London', 0.13, '075-12458969', '');
 INSERT INTO AGENTS VALUES ('A008', 'Alford', 'New York', 0.12, '044-25874365', '');
@@ -179,7 +194,7 @@ INSERT INTO AGENTS VALUES ('A004', 'Ivan', 'Torento', 0.15, '008-22544166', '');
 INSERT INTO AGENTS VALUES ('A009', 'Benjamin', 'Hampshair', 0.11, '008-22536178', '');
 ```
 
-```{sql, connection=con_r}
+```{sql, connection=con_r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 INSERT INTO CUSTOMER VALUES ('C00013', 'Holmes', 'London', 'London', 'UK', '2', 6000.00, 5000.00, 7000.00, 4000.00, 'BBBBBBB', 'A003');
 INSERT INTO CUSTOMER VALUES ('C00001', 'Micheal', 'New York', 'New York', 'USA', '2', 3000.00, 5000.00, 2000.00, 6000.00, 'CCCCCCC', 'A008');
 INSERT INTO CUSTOMER VALUES ('C00020', 'Albert', 'New York', 'New York', 'USA', '3', 5000.00, 7000.00, 6000.00, 6000.00, 'BBBBSBB', 'A008');
@@ -207,7 +222,7 @@ INSERT INTO CUSTOMER VALUES ('C00016', 'Venkatpati', 'Bangalore', 'Bangalore', '
 INSERT INTO CUSTOMER VALUES ('C00011', 'Sundariya', 'Chennai', 'Chennai', 'India', '3', 7000.00, 11000.00, 7000.00, 11000.00, 'PPHGRTS', 'A010');
 ```
 
-```{sql, connection=con_r}
+```{sql, connection=con_r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 
 INSERT INTO ORDERS VALUES(200100, 1000.00, 600.00, '08/01/2008', 'C00013', 'A003', 'SOD');
 INSERT INTO ORDERS VALUES(200110, 3000.00, 500.00, '04/15/2008', 'C00019', 'A010', 'SOD');
@@ -245,21 +260,44 @@ INSERT INTO ORDERS VALUES(200131, 900.00, 150.00, '08/26/2008', 'C00012', 'A012'
 INSERT INTO ORDERS VALUES(200133, 1200.00, 400.00, '06/29/2008', 'C00009', 'A002', 'SOD');
 ```
 
-# Syntax and Organization of Code
+Now we have our own database with three tables of data inside! The code chunks should run without error, but if you want to check that this worked within RMarkdown, you can look over to where your 'Environment' tab is, and there should now be a 'Connections' tab. Click on this, and it should display all of the databases you have within SQL. As new users, you should only have 'master', 'msdb', 'tempdb' and maybe 'model'. If you click on the dropdown next to our database (COG_SQL), you should be able to see the tables we just added!
+
+![](images/sql_connections.png)
+# Coding in SQL
+
+## Syntax and Organization of Code
 
 There are a few things about the structure of SQL code that we should touch on before moving on to any code. The functions are generally shown as capitalized (see the above creations of our tables). However, this is not necessary and the functions can be written in lowercase if you would prefer.
 
-Semi-colons are used to end commands, as you can also see above. 
+Semi-colons are used to end commands, as you can also see above. When you have a multi-line command you would like to execute, it can either be broken up into those separate lines (like you can see above, when we were setting up the columns for our tables), but they can also be all on one line if you would like.
 
-# Key Functions
+## Key Functions
 
 Functions in SQL are very easy. We have actually provided you all with a cheat sheet for the functions that can be found in SQL. This is because once you see an example of SQL code, it's difficult to do it differently in a way that may help you learn it. However, we think that by supplying this cheat sheet for you, it will mimic real-life SQL coding in a way that will make you more comfortable a) figuring out which functions to use on your own and b) navigating a cheat sheet, which I would highly recommend using in the future if you are trying to use SQL.
 
+If you have not already downloaded the cheat sheet we have provided, you can find it in the COG Summer Workshop GitHub: 'cog_summer_workshop_2023/sql/Cheat Sheet/SQL Cheat Sheet PDF by Kanak Infosystems LLP.pdf'
 
-## SELECT
+
+### How to show only certain data from our tables
+
+For this exercise, we want you to use your cheat sheet to figure out how to only display the cities customers are in, for our ORDERS table. We will give you the general syntax outline, but put your guess at which functions we would use in the chat!
+
+```{sql, connection=con_r, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+
+___ CUST_CODE
+___ ORDERS
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide', connection=con_r, eval=F, warning=F, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+SELECT *
+FROM ORDERS
+```
 
 
-## 
+###
 
 ## Other types of common functions
 
