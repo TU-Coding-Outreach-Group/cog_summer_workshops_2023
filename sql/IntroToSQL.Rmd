@@ -247,9 +247,13 @@ INSERT INTO ORDERS VALUES(200133, 1200.00, 400.00, '06/29/2008', 'C00009', 'A002
 
 # Syntax and Organization of Code
 
+There are a few things about the structure of SQL code that we should touch on before moving on to any code. The functions are generally shown as capitalized (see the above creations of our tables). However, this is not necessary and the functions can be written in lowercase if you would prefer.
+
+Semi-colons are used to end commands, as you can also see above. 
+
 # Key Functions
 
-Functions in SQL are very easy.
+Functions in SQL are very easy. We have actually provided you all with a cheat sheet for the functions that can be found in SQL. This is because once you see an example of SQL code, it's difficult to do it differently in a way that may help you learn it. However, we think that by supplying this cheat sheet for you, it will mimic real-life SQL coding in a way that will make you more comfortable a) figuring out which functions to use on your own and b) navigating a cheat sheet, which I would highly recommend using in the future if you are trying to use SQL.
 
 
 ## SELECT
