@@ -26,7 +26,7 @@ This workshop demands that users:
 
 
 ## Workshop materials:
-- [Notebook Viewer]
+- [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/text_analysis/index.html)
 
 ## What We Won't Cover:
 We will not be covering data wrangling, or how to format the data to in way that facilitates visualization. This will be covered in a preceding workshop designed by Ginny Ulichney. We also will not be covering how to conduct statistical tests of the data that we will be visualizing. Lastly, we will not be reviewing many basic visualizations like bar graphs or regression plots that I had covered in the previous year's workshop.  
