@@ -1,0 +1,417 @@
+---
+title: "COG Text Analysis Workshop"
+author: "Camille Johnston"
+date: "2023-08-03"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Load Packages
+
+```{r}
+
+library(tidyverse) ## Always load tidyverse
+library(tidytext) ## Amazing package for all things text analysis
+library(tidylo) ## Used to calculate log odds
+library(hunspell) ## Used for spellchecking
+library(stringi) ## Used for replacing typos 
+library(ggraph) ## For graphing word clouds
+library(igraph) ## For graphing word clouds
+
+```
+
+
+
+# Load in data
+
+This data set has a subject ID, several text boxes, and a rating of how severe the impact of the lying experience was for the participant. 
+This wide format is more or less how the data is exported from REDCap, with one row per participant, and one column per textbox.
+
+```{r}
+
+setwd("/Users/tuh20985/Desktop/")
+
+lying_wide <- read.csv("text_analysis/lying_wide_COG.csv")
+
+```
+
+
+
+# Restructure text data and clean
+
+## Move all text boxes into one column 
+
+To start exploring our text data, we need to unnest our tokens. In other words, we need to restructure the data by splitting the raw data from the text boxes into individual words.
+In order to unnest tokens from all of the text data at once, I'm going to convert the data into long form, so that all of the text is in one "text" column, and individual text box types are specified by labels in a new "text_box" column.
+Additionally, I'm reformatting a couple instances where people put NAs and removing empty boxes 
+
+```{r}
+
+lying_long <- lying_wide %>% 
+  pivot_longer(cols = starts_with("text_"),  ## Pivot the wide columns starting with "text_"
+               names_to = "text_box",  ## Create a new column called "text_box for the labels"
+               names_pattern = "text_(.*)",  ## Extract the text after "text_ for the labels"
+               values_to = "text") %>%  ## Create a new column called "text" for the values (in this case, the text itself)
+  mutate(across(text, ~ na_if(.,"N/A"))) %>% ## Reformat to NA when the text box just says "N/A"
+  mutate(across(text, ~ na_if(.,"n/a"))) %>% ## Reformat to NA when the text box just says "n/a"
+  filter(!is.na(text)) ## Remove empty text boxes
+
+```
+
+
+
+## Unnest tokens
+
+In this code, we're using the unnest_tokens() function from the tidytext package to break down the text data into individual words. 
+This process, known as tokenization, allows us to analyze text at a more granular level. 
+unnest_tokens() also normalizes the text data by converting all words to lowercase and removing punctuation, which helps ensure consistency in subsequent analyses. 
+Additionally, we can use unnest_tokens() to extract "ngrams," which are consecutive phrases of a specified length. 
+In the example, I use n = 2 to extract bigrams (pairs of words).
+Unnesting tokens provides us with a structured format that facilitates in-depth exploration of the text data.
+
+```{r}
+
+lying_unnested <- lying_long %>%
+  unnest_tokens(word, text) ## Unnest from "text" into new "word"
+
+lying_bigrams <- lying_long %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) ## Unnest bigrams from "text" into new "bigram"
+
+```
+
+
+
+## Generating list of potential typos
+
+It will be hard to count which words are used a lot if many of the uses are misspelled!
+We can use the hunspell package to pull words that seem like typos and suggest likely corrections. 
+The best part is you can save this out as a .csv, tweak the list of typos or their corrections if needed, and reload. 
+Then you also have a record of all words you changed and how!
+
+```{r}
+
+typo_list <- lying_unnested %>%
+  distinct(word) %>%        ## Select unique words
+  pull() %>%                ## Extract as a character vector
+  hunspell() %>%            ## Spell check the words
+  unlist() %>%              ## Unlist the spell check results
+  unique() %>%              ## Keep only one of each unique misspelled word
+  tibble(typo = .) %>%      ## Convert to tibble with column name "bad.words"
+  mutate(typo_correction = map_chr(hunspell_suggest(typo), 1))  ## Pull the first suggestion for each misspelled word
+
+```
+
+
+
+## Save this list and look for other typos
+
+You'll notice that some of these are actually totally fine, so you can remove them from the .csv in Excel. 
+Additionally, we'll look at words that weren't used very often, to see if there are any others we want to add manually. 
+
+```{r}
+
+setwd("/Users/tuh20985/Desktop/")
+
+## Save draft of potential typos and corrected words
+write.csv(typo_list,  
+          "text_analysis/spellcheck_draft.csv",
+          row.names = F)
+
+## Scroll through infrequently used words to look for other typos
+lying_unnested %>% 
+  count(word) %>% ## Count frequency of all tokens
+  arrange(n) ## Sort by n, using default ascending order
+
+```
+
+
+
+## Loading in and correcting list of hand-corrected typos
+
+Assuming you made some tweaks, let's load in our final list of typos and corrections
+
+```{r}
+
+setwd("/Users/tuh20985/Desktop/")
+## Load in final list of typos and corrections
+typo_list <- read.csv("text_analysis/spellcheck_FINAL.csv", 
+                      stringsAsFactors = FALSE)
+
+## Create a character vector of whole word typo matches, specifying word boundaries
+whole_word_typos <- paste0("\\b", typo_list$typo, "\\b")
+
+## Create a character vector of all corrections 
+typo_corrections <- typo_list$typo_correction
+
+## Replace misspelled words in the 'word' column of 'lying_unnested' with corrections
+lying_unnested$word <- stri_replace_all_regex(lying_unnested$word, whole_word_typos, typo_corrections, 
+                                                    vectorize_all = FALSE)
+
+## Replace misspelled words in the 'bigram' column of 'lying_bigrams' with corrections
+lying_bigrams$bigram <- stri_replace_all_regex(lying_bigrams$bigram, whole_word_typos, typo_corrections, 
+                                                     vectorize_all = FALSE)
+
+```
+
+
+
+## Make dataframe of word counts
+
+Now that we have spellchecked our words, we want to prepare to explore most used words, etc. 
+We'll group by words so that we only have one row per word. 
+Additionally, we'll average across severity, so that we can see which words were used by people with more/less impactful experiences.
+
+```{r}
+
+## Single words
+token_counts <- lying_unnested %>%
+  group_by(word) %>% ## Group the data by word
+  summarise(n = n(), ## Count the occurrences of each word
+            rating_impact_severity = mean(rating_impact_severity, na.rm=TRUE)) %>%  ## Calculate the mean of rating_impact_severity for each word
+  arrange(-n) ## Arrange the data in descending order of counts
+
+## Bigrams
+bigram_counts <- lying_bigrams %>%
+  group_by(bigram) %>% ## Group the data by bigram
+  summarise(n = n(), ## Count the occurrences of each bigram
+            rating_impact_severity = mean(rating_impact_severity, na.rm=TRUE)) %>% ## Calculate the mean of rating_impact_severity for each word
+  arrange(-n) ## Arrange the data in descending order of counts
+
+```
+
+
+
+## Make dataframe of word counts per prompt
+
+It make not be super useful to count up all word uses accross the whole project. 
+Instead, it may be more important to you which words were used most per PROMPT (i.e., per text box)
+We can use the same code and just make sure we group by text_box as well 
+
+```{r}
+
+token_counts_grouped <- lying_unnested %>%
+  group_by(text_box, word) %>% ## Group the data by text box and word
+  summarise(n = n(), ## Count the occurrences of each word
+            rating_impact_severity = mean(rating_impact_severity, na.rm=TRUE)) %>%  ## Calculate the mean of rating_impact_severity for each word
+  arrange(-n) ## Arrange the data in descending order of counts
+
+```
+
+
+
+# Let's make some graphs!
+
+## Frequently used words per prompt 
+
+Here we will do some fancy ggplotting to view the most common words for each prompt. 
+Try it first without the anti_join at the beginning, which will give you the raw frequencies.
+As you may have guessed, words like "I", "you", "the", etc. are used the most in almost all text you'll come across. 
+This can provide super useful information, but for the purposes of THIS graph, they are not very informative. 
+There are existing lists of stop words that you can remove with an anti_join() you can also make a custom list!
+Two of the pre-existing ones I've used are `get_stopwords()` which is a relatively shorter list, and `stop_words` which is more comprehensive
+
+```{r}
+
+lying_unnested %>%
+  ## Try with the following line commented out first, and then try with it in. You can also try "anti_join(get_stopwords()) %>%"
+  anti_join(stop_words) %>% ## Remove a lot of common stop words
+  group_by(text_box) %>% ## Group the data by text_box
+  count(word, sort = TRUE) %>% ## Count the occurrences of each word, sorted in descending order
+  slice_max(n, n = 20, with_ties = FALSE) %>% ## Keep only the top 20 words with the highest counts
+  ungroup() %>%  ## Remove grouping
+  ggplot(aes(n, 
+             reorder_within(word, n, text_box), 
+             fill = text_box)) +  ## Create a ggplot object, reordering words and varying the color
+  geom_col(show.legend = FALSE) + ## Add a column plot
+  scale_y_reordered() + ## Reorder y-axis labels based on counts
+  facet_wrap(vars(text_box), scales = "free_y") +  ## Add facet wrap for multiple plots
+  theme_classic() + ## Apply a classic theme
+  theme(plot.title = element_text(hjust = 0.5), axis.text.y = element_text(size = 10)) + ## Adjust plot theme
+  labs(x = "Number of Uses", 
+       y = NULL, 
+       title = "Most Frequently Used Words per Prompt\n(Large Number of Stop Words Removed)") ## Set axis and plot titles
+
+
+```
+
+
+![](/Users/tuh20985/Desktop/text_analysis/images/frequent_used_words_ggsave.png){width=50%}
+
+
+
+## Calculating high importance words
+
+Frequency is one way of seeing what words are important for a given prompt, but it favors stopwords and other frequently used words. 
+Luckily, we have lots of other cool metrics that can index the importance of words to one prompt! 
+One popular one is tf-idf (term frequency-inverse document frequency), which indexes the importance of a word by considering both its frequency within a specific prompt and its rarity across all prompts.
+Unlike term frequency, it adjusts for the overall frequency of a word in the entire dataset, and thus takes care of stopwords (which are commonly used across all prompts) on its own. 
+
+Another metric is using log odds, which calculates the likelihood that a word appears in a specific document (or in this case, prompt) compared to its overall likelihood of appearing in any prompt. 
+It is a little more forgiving than tf-idf if one term shows up in many prompts.
+The tidylo package allows us to calculate log odds using an empirical Bayes Dirichlet prior approach or an uninformative prior. 
+The difference between the two is how prior information is incorporated into the calculation.
+
+In the empirical Bayes Dirichlet prior approach, prior information from the entire dataset is used to adjust the log odds calculation. 
+This approach takes into account the overall distribution of word frequencies across all prompts, providing a more informed estimate of the likelihood of a word in a specific prompt.
+
+On the other hand, the uninformative prior approach does not incorporate prior information. 
+It assumes equal probabilities for all words and treats each prompt independently, without considering the overall distribution of word frequencies. 
+
+In the code block provided, we are binding both tf-idf and log odds metrics to the dataset, resulting in a new dataframe called lying_unnested_info. 
+This dataframe contains columns for tf-idf, weighted log odds with an informative prior (wlo_informative), and weighted log odds with an uninformative prior (wlo_uninformative). 
+
+```{r}
+
+lying_unnested_info <- lying_unnested %>% 
+  count(text_box, word, sort = TRUE) %>%  ## Count occurrences of each word within each text_box
+  bind_tf_idf(word, text_box, n) %>%  ## Calculate tf-idf for each word within each text_box
+  bind_log_odds(text_box, word, n) %>%  ## Calculate log odds for each word within each text_box
+  rename(wlo_informative = log_odds_weighted) %>%  ## Rename column to reflect log odds with informative priors
+  bind_log_odds(text_box, word, n, uninformative = TRUE) %>% ## Calculate log odds with uninformative priors
+  rename(wlo_uninformative = log_odds_weighted)  ## Rename column to reflect log odds with uninformative priors
+
+
+```
+
+
+
+
+## Visualization of most representative words by TF-IDF
+
+After calculating the tf-idf for each word within different each prompt, we can visualize the most representative words. 
+The plot displays the top 20 words with the highest TF-IDF values, which indicate their significance within each prompt category. 
+The plot is grouped by text_box and provides insights into the distinctive words that contribute the most to each category's content.
+
+```{r}
+
+lying_unnested_info %>%
+  group_by(text_box) %>% ## Group by prompt
+  slice_max(tf_idf, n = 20, with_ties = FALSE) %>%  ## Select the top 20 words with the highest TF-IDF values
+  ungroup() %>%
+  ggplot(aes(tf_idf,
+             reorder_within(word, tf_idf, text_box),
+             fill = text_box)) +  ## Map TF-IDF values to x-axis, reorder words within each text_box, and use different colors
+  geom_col(show.legend = FALSE) +  ## Create a column chart
+  scale_y_reordered() +  ## Reorder y-axis based on the ordering of words
+  facet_wrap(vars(text_box), scales = "free_y") +  ## Create multiple facets based on text_box categories
+  theme_classic() +  ## Use a classic theme for the plot
+  theme(plot.title = element_text(hjust = 0.5)) +  ## Center-align the plot title
+  labs(x = "TF-IDF", y = NULL, 
+       title = "Most Representative Words \n(by TF-IDF)")  ## Set x-axis label, remove y-axis label, and set plot title
+
+```
+
+
+![](/Users/tuh20985/Desktop/text_analysis/images/most_representative_tf_idf_ggsave.png){width=50%}
+
+
+
+## Visualization of most representative words by log odds
+
+We'll do the same thing using one of our log odds metrics as well. For now let's use the uninformative prior for now, but maybe try with the informative one as well to explore any differences
+
+```{r}
+
+lying_unnested_info %>%
+  group_by(text_box) %>% ## Group by prompt
+  slice_max(wlo_uninformative, n = 20, with_ties = FALSE) %>% ## Select the top 20 words with the highest weighted log odds (uninformative prior) values
+  ungroup() %>%
+  ggplot(aes(wlo_uninformative,
+             reorder_within(word, wlo_uninformative, text_box),
+             fill = text_box)) +  ## Map weighted log odds to x-axis, reorder words within each text_box, and use different colors
+  geom_col(show.legend = FALSE) +  ## Create a column chart
+  scale_y_reordered() +  ## Reorder y-axis based on the ordering of words
+  facet_wrap(vars(text_box), scales = "free_y") + ## Create multiple facets based on text_box categories
+  theme_classic() +  ## Use a classic theme for the plot
+  theme(plot.title = element_text(hjust = 0.5)) +  ## Center-align the plot title
+  labs(x = "Weighted Log Odds (Uninformative Prior)", y = NULL, 
+       title = "Most Representative Words \n(by Weighted Log Odds with Uninformative Prior)")  ## Set x-axis label, remove y-axis label, and set plot title
+
+
+```
+
+
+![](/Users/tuh20985/Desktop/text_analysis/images/most_representative_log_odds_ggsave.png){width=50%}
+
+
+
+
+## Which words are used more by people with more or less severe outcomes? 
+
+When we grouped our tokens, we averaged severity scores for each word used in each text box. 
+We can use this to see which words are used by people with more/less severe outcomes. 
+
+```{r}
+
+## Finding average severity rating across all participants
+summary(lying_wide$rating_impact_severity)  ## Mean = 2.63
+
+## Make the figure
+frequently_used_words_across_severity <- token_counts_grouped %>%
+  anti_join(get_stopwords()) %>%  ## Remove stopwords from the token counts
+  filter(n > 5) %>%  ## Filter out words that weren't used more than 5 times
+  ggplot(aes(n, rating_impact_severity)) +  ## Map frequency (n) to x-axis and severity rating to y-axis
+  geom_hline(yintercept = 2.63, lty = 2, color = "grey", size = 0.5) +  ## Add a dashed line representing the average severity rating
+  geom_text(aes(label = word, color = text_box), check_overlap = TRUE, show.legend = FALSE, vjust = "top", hjust = "left") +  ## Add labels to the plot for each word, colored by text_box category
+  facet_wrap(vars(text_box)) +  ## Create facets based on text_box categories
+  scale_x_log10() +  ## Use a logarithmic scale for the x-axis
+  scale_y_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), 
+                     labels = c("slight", "mild", "moderate", "somewhat\nserious", "serious", "severe", "very severe\nor traumatic")) +  ## Customize the y-axis labels
+  theme_classic() + ## Use a classic theme for the plot
+  theme(plot.title = element_text(hjust = 0.5)) + ## Center-align the plot title
+  labs(x = "Number of Uses",
+       y = "How severely did the lying experience(s) with this individual impact you?",
+       caption = "Dotted line reflects average severity rating",
+       title = "Frequently Used Words Across Severity")  # Set x-axis label, y-axis label, caption, and plot title
+
+
+```
+
+
+![](/Users/tuh20985/Desktop/text_analysis/images/frequently_used_words_across_severity_ggsave.png){width=50%}
+
+
+
+
+
+
+
+## Visualizing a network of bigrams with ggraph
+
+To start getting a flavor for the kinds of longer phrases people used a lot, let's make a word cloud with our bigrams. 
+This way we can see which words are used next to eachother a lot, and the directionality/order.
+
+```{r}
+
+##################### --- NEED TO DOUBLE CHECK THIS WORD CLOUD --- ###################################
+
+## Prep some formatting for how we want our arrows to look
+arrow_format <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+
+## Make the graph
+bigram_counts %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%   ## Split the bigrams into individual words
+  anti_join(get_stopwords(), by = c("word1" = "word")) %>%  ## Remove rows where the first word is a stopword
+  anti_join(get_stopwords(), by = c("word2" = "word")) %>%  ## Remove rows where the second word is a stopword
+  filter(n > 2, !is.na(word1), !is.na(word2)) %>%   ## Include full bigrams that were used more than twice
+  graph_from_data_frame() %>%   ## Create a graph from the filtered data
+  ggraph(layout = "fr") +   ## Use Fruchterman-Reingold layout algorithm
+  geom_edge_link(color = "lightsteelblue2", arrow = arrow_format) + ## Set edge color and arrow style
+  geom_node_point(color = "#7896BD", size = 1.5) +  ## Set node color and size
+  geom_node_text(aes(label = name), vjust = 1.1, hjust = 1.1) + ## Display node labels
+  theme_void()  ## Use a minimalistic theme
+
+
+```
+
+
+![](/Users/tuh20985/Desktop/text_analysis/images/word_cloud.png){width=60%}
+
+
+
