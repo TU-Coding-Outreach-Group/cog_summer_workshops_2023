@@ -63,23 +63,25 @@ An SQL Server, also known as a relational database management system (RDBMS), is
 There are multiple ways to use SQL. While we will not be covering how to use SQL Server is this workshop, in favor of languages you all might be familiar with, this seems to be one of the most common ways people use SQL. SQL Server is basically just a program specifically for SQL programming. It is also more secure than something like RSudio and Jupyter Notebooks, so if you are in a job where the data needs to be secure, you are more likely to encounter SQL Server. There are several steps to get SQL setup on your local computer.
 
 
-1. Download the ODBC Driver, to be able to initalize other code: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16 - **make sure you download the correct version of this, either 32- or 64-bit for your computer.**
+1. Download and install the ODBC Driver, to be able to initialize other code: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16 - **make sure you download the correct version of this, either 32- or 64-bit, for your computer. ** The 64-bit version has (x64) after it's name and the 32-bit version has (x86) after it's name (which we know is kind of confusing!).
 
 2. Download an SQL Server to use; this is the one I use, but there are many of them: https://www.microsoft.com/en-us/sql-server/sql-server-downloads - **scroll down and click 'Download now' under 'Express'**
 
+3. Open SQL Server to configure your connection (choose the basic option and follow the subsequent in-program instructions) - once you have configured, click **Connect Now** to get the server name and location on your computer. 
+
 ![](images/sql_server_2022.png){width=50%}
 
-3. Open SQL Server to configure your connection (follow the in-program instructions) - once you have configured, click **Connect Now** to get the server name and location on your computer. This should invoke a command line window to pop up. Your server name and location should be the second line. Mine in the screenshot is DESKTOP-DAEMONI\/SQLEXPRESS. You will need this in a moment! 
+This should invoke a command line window to pop up. Your server name and location should be the second line. Mine in the screenshot is DESKTOP-DAEMONI\/SQLEXPRESS. You will need this in a moment! 
 
 ![](images/sqllcmd.png)
 
-4. Open your ODBC Data Source program. Under 'System DSN', click the 'Add...' button. 
+4. Open the ODBC Data Source program that you installed during Step 1. In some cases you may have both so make sure you are opening the correct version of this, either 32- or 64-bit, for your computer. Under the 'System DSN' tab, click the 'Add...' button. 
 
 ![](images/odbc_datasource_add.png)
 Highlight 'SQL Server', and then click 'Finish'.A new window will pop up. Under Name, name this something you will remember for later. And under Server, enter your server name and location from the command line window.
 
 ![](images/newdatasource.png)
-After this, you can click 'Finish', and it will test your connection for you. 
+After this, you can click 'Finish', then select "Test data Source ...". It will ensure that your connection is established and will print a message stating so if it is. If your connection has been established, click "OK".
 
 ## How to Use SQL Server in R
 
@@ -94,7 +96,7 @@ pacman::p_load(DBI, odbc, reader)
 ```{r,echo = FALSE, error=FALSE,warning=FALSE}
 con_r <- DBI::dbConnect(
   odbc::odbc(), 
-  "Katie_SQL"
+  "Billy_SQL"
   ) #make sure to insert the name you just input for your server name here
 ```
 
@@ -117,7 +119,7 @@ py_install("pyodbc")
 Now we have to set the connection in Python with the pyodbc library; there are a few more steps to using SQL in Python code than in R, including setting up a cursor to call the SQL code
 ```{python, echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 import pyodbc 
-con_py = pyodbc.connect('DRIVER={SQL Server};SERVER=DESKTOP-DAEMONI\SQLEXPRESS01;Trusted_Connection=yes;') #Please note that this is slightly different from how we initialized the connection in R!
+con_py = pyodbc.connect('DRIVER={SQL Server};SERVER=WJPMITCHELL3\SQLEXPRESS01;Trusted_Connection=yes;') #Please note that this is slightly different from how we initialized the connection in R!
 cursor = con_py.cursor()
 #for any line of code, you have to filter it through this cursor function, e.g.:
 cursor.execute("ALTER TABLE associates " +
