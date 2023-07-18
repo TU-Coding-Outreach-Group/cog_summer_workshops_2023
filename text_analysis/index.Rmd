@@ -1,15 +1,26 @@
 ---
-title: "COG Text Analysis Workshop"
-author: "Camille Johnston"
-date: "2023-08-03"
-output: html_document
-editor_options: 
-  chunk_output_type: console
+title:    "COG Text Analysis Workshop"
+author:   
+  - name: "**Content Creator: Camille Johnston**"
+  - name: "**Content Editors: Steven Martinez, Katie Jobson, Billy Mitchell, and Helen Schmidt**"
+date: "2023-07-17"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: 
+      collapsed: false
+    toc_depth: 3
+    df_print: paged
+    highlight: kate
+    code_folding: show
+    css: !expr here::here("misc/style_bootcamp.css")
+knit: (function(inputFile, encoding) { 
+      out_dir <- './';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 
 # Load Packages
