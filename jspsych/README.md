@@ -6,6 +6,8 @@ __**Content creator:**__ Steven Martinez
 
 __**Content editors:**__ Billy Mitchell & Katie Jobson
 
+### [Full Workshop Recording](https://youtu.be/4UyaGWv4Y4k)
+
 ## Description
 This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/jspsych/jsPsych/releases/tag/jspsych%407.3.3) to build psychological experiments. jsPsych is a free, open-source software that employs a JavaScript framework for creating behavioral experiments that run in a web browser. It's a popular alternative to PsychoPy and E-Prime for task development, is used primarily in behavioral tasks, and supports online study capabilities.  
 
