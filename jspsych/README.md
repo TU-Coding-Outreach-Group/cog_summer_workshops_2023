@@ -19,13 +19,10 @@ This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/j
 3. Download the 'jsPsych_workshop' folder from the TU COG Github. This is the folder containing the 'stimuli' folder, which has images that we will use as part of the experimental task. We will be working in this "jsPsych_workshop" folder for the purposes of this workshop and we will be saving our experimental task file to this folder.
 
     
-## Workshop objectives:
-
 
 ## Workshop materials:
 - [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/jspsych/index.html)
 
-## What We Won't Cover:
 
 ## Outline
 | Topic | Description | Time |
@@ -36,4 +33,4 @@ This workshop will cover how to use [jsPsych version 7.3.3](https://github.com/j
 | Building a full experiment | Trials, Procedures, and Timelines | 25 mins  |
 | Conclusion & General Notes | Review, Pavlovia compatibility, tutorial suggestions, etc. | 5 mins |
 
-## Additional Resources
+
