@@ -251,8 +251,8 @@ Use these prompts to practice writing and testing functions. Use the [Function S
 
 Click `SHOW` to see the solution! ==>
 
-    ```{r class.source = 'fold-hide', eval=F, warning=F}
-    # description: sum_squares takes a vecotor, sums the data and squares it
+```{r class.source = 'fold-hide', eval=F, warning=F}
+    # description: sum_squares takes a vector, sums the data and squares it
     # input: a vector of numbers
     # output: a single number
     
@@ -264,7 +264,7 @@ Click `SHOW` to see the solution! ==>
     sample_vector <- c(11,34,21,46,48,74,58,33,23,46,93)
     sum_squares(sample_vector)
 
-    ```
+```
 
 2.  Make a function that takes a number, a string, and a separator and combines them.
 
@@ -274,17 +274,17 @@ Click `SHOW` to see the solution! ==>
 
 Click `SHOW` to see a solution! ==>
 
-    ```{r class.source = 'fold-hide', eval=F, warning=F}
+```{r class.source = 'fold-hide', eval=F, warning=F}
     # description: takes various types of input and combines them
     # input: three variables
     # output: a combination of all the input
     
     combine <- function(number, string, separator) {
-      return_combine <- paste(number, string, separator)
+      return_combine <- paste0(number, separator, string)
       return(return_combine)
     }
     combine(1, "hello", ".")
-    ```
+```
 
 3.  Write a function to convert farenheit to centegrade (Celcius = (Farenheit - 32) x 5/9). Get your function to print out your result in the following format: "Farenheit : *value of oF* is equivalent to *value oC* centigrade."
 
@@ -296,7 +296,7 @@ Click `SHOW` to see a solution! ==>
 
 Click `SHOW` to see a solution! ==>
 
-    ```{r class.source = 'fold-hide', eval=F, warning=F}
+```{r class.source = 'fold-hide', eval=F, warning=F}
     # description: take a temperature in Farenheit and calculate that temperature in centigrade
     # input: a number in Fahrenheit 
     # output: a number in Centrigrade
@@ -308,7 +308,7 @@ Click `SHOW` to see a solution! ==>
     }
     temp_conversion(23)
 
-    ```
+```
 
 ## Iteration: Loops
 
@@ -1171,7 +1171,37 @@ library(stringr)
 Click `SHOW` to see a solution! ==>
 
 ```{r class.source = 'fold-hide', eval=F, warning=F}
+# -- part 2. iterate over those dates and use our custom function to load them -- #
 
+all_data<-list() # initiate empty list
+
+#
+
+for (i in 1:length(dates)) { # for every item in 1 thru the number of items in files
+  temp_file<-dates[i] # temporarily name the ith index in files as temp_file
+  day<-import_date(temp_file) #then use my custom function to load the file into "day"
+  all_data[[i]]<-day # stick that data object into our initiated list at the ith index
+}
+
+View(all_data) # need to use View() and not view() to see a list of lists... not sure why but lower cas, tibble::view() returns a weird like cbind version of the data...
+
+# -- option as apply -- #
+
+apply_all_data <- lapply(dates, function(x) {import_date(x)}) # outputs list of lists
+View(apply_all_data)
+
+# -- speed comparison -- #
+
+# loop takes: 0.845 seconds
+
+system.time(for (i in 1:length(dates)) { 
+  temp_file<-dates[i]
+  day<-import_date(temp_file)
+  all_data[[i]]<-day
+})
+
+# apply takes: 0.858 seconds
+system.time(lapply(dates, function(x) {import_date(x)}))
 
 
 ```
