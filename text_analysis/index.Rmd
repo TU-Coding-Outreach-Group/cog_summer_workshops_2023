@@ -45,11 +45,8 @@ This data set has a subject ID, several text boxes, and a rating of how severe t
 This wide format is more or less how the data is exported from REDCap, with one row per participant, and one column per textbox.
 
 ```{r}
-
 setwd("/Users/tuh20985/Desktop/")
-
 lying_wide <- read.csv("text_analysis/lying_wide_COG.csv")
-
 ```
 
 
@@ -250,11 +247,7 @@ lying_unnested %>%
 
 
 ```
-
-
 ![](/Users/tuh20985/Desktop/text_analysis/images/frequent_used_words_ggsave.png){width=50%}
-
-
 
 ## Calculating high importance words
 
@@ -317,12 +310,7 @@ lying_unnested_info %>%
        title = "Most Representative Words \n(by TF-IDF)")  ## Set x-axis label, remove y-axis label, and set plot title
 
 ```
-
-
 ![](/Users/tuh20985/Desktop/text_analysis/images/most_representative_tf_idf_ggsave.png){width=50%}
-
-
-
 ## Visualization of most representative words by log odds
 
 We'll do the same thing using one of our log odds metrics as well. For now let's use the uninformative prior for now, but maybe try with the informative one as well to explore any differences
@@ -346,8 +334,6 @@ lying_unnested_info %>%
 
 
 ```
-
-
 ![](/Users/tuh20985/Desktop/text_analysis/images/most_representative_log_odds_ggsave.png){width=50%}
 
 
@@ -383,16 +369,7 @@ frequently_used_words_across_severity <- token_counts_grouped %>%
 
 
 ```
-
-
 ![](/Users/tuh20985/Desktop/text_analysis/images/frequently_used_words_across_severity_ggsave.png){width=50%}
-
-
-
-
-
-
-
 ## Visualizing a network of bigrams with ggraph
 
 To start getting a flavor for the kinds of longer phrases people used a lot, let's make a word cloud with our bigrams. 
@@ -420,9 +397,4 @@ bigram_counts %>%
 
 
 ```
-
-
 ![](/Users/tuh20985/Desktop/text_analysis/images/word_cloud.png){width=60%}
-
-
-
