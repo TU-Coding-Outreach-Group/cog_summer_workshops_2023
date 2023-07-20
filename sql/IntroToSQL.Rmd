@@ -357,7 +357,7 @@ Note that an example of how to use a wildcard in this situation is included abov
 
 ### Exercise 3: Selecting unique items from a column
 
-
+Sometimes we want to find all of the unique items in a list without all of the duplicates. Trying doing that here for the `CUSTOMER` table!
 
 ```{sql, error=FALSE,eval=FALSE, warning=FALSE}
 
@@ -366,11 +366,10 @@ Note that an example of how to use a wildcard in this situation is included abov
 
 Click `SHOW` to see the solution! ==>
 
-```{sql class.source = 'fold-hide', error=FALSE, eval=FALSE, warning=FALSE}
-
+```{sql class.source = 'fold-hide',connection=con_r, error=FALSE, eval=FALSE, warning=FALSE}
+SELECT DISTINCT CUST_CITY
+FROM CUSTOMER;
 ```
-
-
 
 
 ### Exercise 4: How to change data in an already existing table
@@ -386,14 +385,14 @@ For this example, we would like you to try and rename the WORKING_AREA variable 
 
 Click `SHOW` to see the solution! ==>
 
-```{sql class.source = 'fold-hide',  error=FALSE, eval=FALSE, warning=FALSE}
+```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
 ALTER TABLE AGENTS
 RENAME COLUMN WORKING_AREA to CITY;
 ```
 
 ### Exercise 5: Adding data to a column
 
-Now, we have seen this done before, but this is your opportunity to try and apply what you have already seen in this workshop. The `COUNTRY` variable in the `AGENTS` table is blank. Figure out what country should go into each row for this dataset (hint: )
+Now, we have seen this done before, but this is your opportunity to try and apply what you have already seen in this workshop. The `COUNTRY` variable in the `AGENTS` table is blank. Figure out what country should go into each row for this dataset (hint: one of the other tables might already have the data you need).
 
 ```{sql, error=FALSE,eval=FALSE, warning=FALSE}
 
@@ -402,9 +401,9 @@ Now, we have seen this done before, but this is your opportunity to try and appl
 
 Click `SHOW` to see the solution! ==>
 
-```{sql class.source = 'fold-hide',  error=FALSE, eval=FALSE, warning=FALSE}
-ALTER TABLE AGENTS
-RENAME COLUMN WORKING_AREA to CITY;
+```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+INSERT INTO AGENTS (COUNTRY)
+VALUES('India');
 ```
 
 ### How to select data that shares a similar atribute
@@ -431,4 +430,7 @@ HAVING
 ## Machine Learning with Python
 
 # Advanced Functions
+
+## Stored Procedures
+
 
