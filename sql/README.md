@@ -1,4 +1,3 @@
-# UNDER CONSTRUCTION
 # Coding Outreach Group Summer Workshop 2023
 # Intro to SQL
 08/17/2023
@@ -21,22 +20,23 @@ This workshop demands that users:
 3. Become familiar with some basic SQL functions
 
 ## Workshop materials:
-- [Notebook Viewer]
+- [Notebook Viewer](https://tu-coding-outreach-group.github.io/cog_summer_workshops_2023/sql/index.html)
+
 
 ## What We Won't Cover:
-We won't be covering how to use SQL Servers. We will only be touching briefly on more advanced SQL functions; this will primarily serve as an *introduction* to SQL and how to use it in RStudio. 
+We will not be covering basic coding ideas or basic knowledge of RMarkdwon. We won't be covering how to use SQL Servers on their own. We will only be touching briefly on more advanced SQL functions; this will primarily serve as an *introduction* to SQL and how to use it in RStudio - for more advanced functions, we will refer to some online resources. 
 
-If you would like to use Jupyter Notebooks to run SQL commands, we will be covering how to set it up, but not how to execute commands. If you need a tutorial on how to use Jupyter Notebooks, please see [this](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2021/tree/main/jupyter-notebook) previous workshop by Kim Nguyen. Otherwise, for more information on how to use SQL in Jupyter Notebooks, please see [this]() tutorial. For more information, please see the [MS SQL Website](https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/step-3-proof-of-concept-connecting-to-sql-using-pyodbc?view=sql-server-ver16) on how to utilize this function. 
+If you would like to use Jupyter Notebooks to run SQL commands, we will be covering how to set it up, but not how to execute commands. If you need a tutorial on how to use Jupyter Notebooks, please see [this](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2021/tree/main/jupyter-notebook) previous workshop by Kim Nguyen. Otherwise, for more information on how to use SQL in Jupyter Notebooks, please see [this](https://docs.devart.com/odbc/sqlserver/python.htm) tutorial. For more information, please see the [MS SQL Website](https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/step-3-proof-of-concept-connecting-to-sql-using-pyodbc?view=sql-server-ver16) on how to utilize this function. 
 
 ## Outline
 | Section | Description | Time |
 | --- | --- | --- |
-| Intro | What is SQL and Why Would We Use It? | 15 min |
-| Setup | Setting Up an SQL Server | 25 min |
-| Section 1 | Coding in SQL | 15 min |
-| Section 2 | Integrations & Analyses | 15 min |
-| Section 3 | Advanced Functions | 15 min |
-| Conclusion |  | 5 min |
+| Part 1: Intro | What is SQL and why would we wse it? | 15 min |
+| Part 2: Setup | Setting up an SQL Server | 25 min |
+| Part 3: Code | Coding in SQL | 15 min |
+| Part 4: Integration & Analyses | Taking data from SQl and analyzing it in R | 15 min |
+| Part 5: Advanced Functions | Briefly introduce more advanced functions | 15 min |
+| Part 6: Conclusion |  | 5 min |
 | Q & A | --- | 30 min |
 
 ## Additional Resources
