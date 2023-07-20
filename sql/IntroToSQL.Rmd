@@ -104,17 +104,17 @@ pacman::p_load(DBI, odbc, reader)
 ```{r, error=FALSE,warning=FALSE}
 con_r <- DBI::dbConnect(
   odbc::odbc(), 
-  "Katie_SQL"
-  ) #make sure to insert the name you just input for your server name here
+  "Katie_SQL" #make sure to insert the name you just input your server name here
+  ) 
 ```
 
-Connect to the MS SQL server, include a code chunk that looks like this on your RMarkdown file:
+Connect to the MS SQL server, include a code chunk that has this information on your RMarkdown file:
 
-`{sql, connection=con_r, output.var="world_dataframe"}`
+`{sql, connection=con_r}`
 
 ## How to use SQL in Jupyter Notebooks
 
-Next, let's do the same for those who want to follow along in Jupyter Notebooks.
+Next, let's do the same for those who may want to set up in Jupyter Notebooks. While this is possible, we will not be covering how to use Jupyter Notebooks extensively. This should give you an idea of how to setup, and you can try this on your own later! 
 
 I am running this in RMarkdown so I have to initialize a Python kernel - skip this if you are directly using Jupyter Notebooks!
 
@@ -128,11 +128,17 @@ py_install("pyodbc")
 Now we have to set the connection in Python with the pyodbc library; there are a few more steps to using SQL in Python code than in R, including setting up a cursor to call the SQL code
 ```{python, error=FALSE,eval=FALSE, warning=FALSE}
 import pyodbc 
-con_py = pyodbc.connect('DRIVER={SQL Server};SERVER=WJPMITCHELL3\SQLEXPRESS01;Trusted_Connection=yes;') #Please note that this is slightly different from how we initialized the connection in R!
+con_py = pyodbc.connect('DRIVER={SQL Server};SERVER=DESKTOP-DAEMONI\SQLEXPRESS01;Trusted_Connection=yes;') #Please note that this is slightly different from how we initialized the connection in R!
 cursor = con_py.cursor()
+
 #for any line of code, you have to filter it through this cursor function, e.g.:
-cursor.execute("ALTER TABLE associates " +
-               "ADD fullName VARCHAR(20)")
+#cursor.execute("ALTER TABLE associates
+#               "ADD fullName VARCHAR(20)")
+               
+#you can also put the SQL code into a variable and execute it using that variable
+#sql_insert = ('''
+  #"INSERT INTO TABLE VALUES(1, 2, 'apple');''')
+)
 ```
 
 ## SQL Database example data
@@ -141,7 +147,7 @@ Yay! We are all set up to wrangle data in either RStudio or Python.
 
 Loading in data from something like a CSV can be difficult, so we are going to skip that and create our own database using SQL code. Note that SQL syntax is slightly different between the different servers (i.e. MySQL and MS SQL). We are coding in MS SQL, so some of this code may not work if you were to use something like MySQL.
 
-In addition, I find using SQL in R a lot easier, so I am going to stick with that. However, if you want to use Jupyter Notebooks, feel free to follow along and try to run this code within the cursor.execute() function!
+In addition, I find using SQL in R a lot easier, so we are going to stick with that. However, if you want to use Jupyter Notebooks, feel free to follow along and try to run this code within the cursor.execute() function!
 
 First, we add a new database and select it to be used for our code:
 
@@ -296,9 +302,15 @@ Otherwise, the syntax is very straightforward. You generally have a function you
 
 As we have already demonstrated some SQL code already, let's review it. Recall that we created a database, then created empty tables, and then populated those tables with data. This is generally how things work within SQL; it is difficult to import data any other way, such as Excel (trust us, we tried!). When you want to create something, you use the `CREATE` function. When you want to delete something, you use the ``` DROP``` function. A database has to come before a table, and tables are simply where the data is stored in the database.
 
-We also had to choose our database to work with before being able to access it. This is to prevent users from accidentally editing a database that they did not intend to. We executed the ```USE``` command to do this.
+We used the `CREATE` function to create our database `COG_SQL`. We also had to choose our database to work with before being able to access it. This is to prevent users from accidentally editing a database that they did not intend to. We executed the ```USE``` command to do this.
 
-Finally, initialized all of our tables with their column names and entered in that data. You can think of using ```CREATE TABLE``` like you would create a DataFrame in R. Then, we used ```INSERT INTO``` to add our data to a specific table. The data on each line represents a new row, and needs to match up to the number of columns and the type of data in those columns. The `VALUES` command tells SQL that this is data that we are loading into the table. 
+Finally, initialized all of our tables with their column names and entered in that data. You can think of using ```CREATE TABLE``` like you would create a DataFrame in R. Then, we used ```INSERT INTO``` to add our data to a specific table. The data on each line represents a new row, and needs to match up to the number of columns and the type of data in those columns. The `VALUES` command tells SQL that this is data that we are loading into the table.
+
+If we wanted to view our tables, , we can use the 'SELECT` function:
+```{sql class.source = 'fold-hide', connection=con_r, error=FALSE,eval=FALSE, warning=FALSE}
+SELECT *
+From AGENTS;
+```
 
 ## Data Types
 
@@ -307,6 +319,10 @@ Finally, initialized all of our tables with their column names and entered in th
 As you can see from our database creation, there are different data types in SQL. In addition to the data type, you can also specify the longest number of characters that will be present within a variable (i.e. ` VARCHAR(20)` means that the character string will only have 20 characters at max). These are slightly different between SQL servers, so beware! In addition, the way data types are handled when they are being fed into a table is different, as well; for instance, an `INT` is not surrounded by single quote marks like other `CHAR` or `NCHAR` variables.
 
 It is important to note that data types are important when it comes to SQL. The data needs to be in the correct format as designated by the variable type we assigned it when creating the table (i.e., ```AGENT_CODE``` was assigned as `CHAR`). Otherwise, you will encounter a lot of errors trying to load in your data.
+
+One final point we would like to make is about the `PRIMARY KEY` functions that were showcased in these tables. This function allows you to uniquely identify data across multiple tables. For instance, something like this could be helpful if you had patient data and experimental data for that patient; you would want to keep all of their demographics data together in one place, and their experimental data in another, with their Subject ID being the `PRIMARY KEY` between those two tables. You do have to make sure you tell the table which variable is being referenced from the original table (you can see that in the `CUSTOMER`, where `AGENT_CODE` is referenced from `AGENTS`).
+
+Now that we have walked through what has already been done, let's explore some more functions in SQL!
 
 
 ## Key Functions
@@ -338,7 +354,7 @@ FROM ORDERS
 
 For this exercise, try and write some SQL code that takes data from the `ORDERS` table but only includes orders over $1000 (from the `ORD_AMOUNT` variable).
 
-```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 ____ *
 ____ ORDERS
 ____ ORD_AMOUNT > ____;
@@ -359,7 +375,7 @@ Note that an example of how to use a wildcard in this situation is included abov
 
 Sometimes we want to find all of the unique items in a list without all of the duplicates. Trying doing that here for the `CUSTOMER` table!
 
-```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -378,7 +394,7 @@ For this exercise, we want to modify data that already exists within a table we 
 
 For this example, we would like you to try and rename the WORKING_AREA variable in the AGENTS table to CITY.
 
-```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -392,9 +408,9 @@ RENAME COLUMN WORKING_AREA to CITY;
 
 ### Exercise 5: Adding data to a column
 
-Now, we have seen this done before, but this is your opportunity to try and apply what you have already seen in this workshop. The `COUNTRY` variable in the `AGENTS` table is blank. Figure out what country should go into each row for this dataset (hint: one of the other tables might already have the data you need).
+Now, we have seen this done before, but this is your opportunity to try and apply what you have already seen in this workshop. The `COUNTRY` variable in the `AGENTS` table is blank. Figure out what country should go into each row for this dataset and add them in (hint: you will need to reference another variable to tell SQL which row to enter the data in).
 
-```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -402,35 +418,198 @@ Now, we have seen this done before, but this is your opportunity to try and appl
 Click `SHOW` to see the solution! ==>
 
 ```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
-INSERT INTO AGENTS (COUNTRY)
-VALUES('India');
+UPDATE AGENTS 
+SET COUNTRY = 'India'
+WHERE AGENT_CODE = 'A001';  
+
+UPDATE AGENTS 
+SET COUNTRY = 'India'
+WHERE AGENT_CODE = 'A002';
+
+UPDATE AGENTS 
+SET COUNTRY = 'UK'
+WHERE AGENT_CODE = 'A003';
+
+UPDATE AGENTS 
+SET COUNTRY = 'Canida'
+WHERE AGENT_CODE = 'A004';  
+
+UPDATE AGENTS 
+SET COUNTRY = 'Australia'
+WHERE AGENT_CODE = 'A005';
+
+UPDATE AGENTS 
+SET COUNTRY = 'UK'
+WHERE AGENT_CODE = 'A006';
+
+UPDATE AGENTS 
+SET COUNTRY = 'India'
+WHERE AGENT_CODE = 'A007';  
+
+UPDATE AGENTS 
+SET COUNTRY = 'USA'
+WHERE AGENT_CODE = 'A008';
+
+UPDATE AGENTS 
+SET COUNTRY = 'UK'
+WHERE AGENT_CODE = 'A009';
+
+UPDATE AGENTS 
+SET COUNTRY = 'India'
+WHERE AGENT_CODE = 'A010';  
+
+UPDATE AGENTS 
+SET COUNTRY = 'India'
+WHERE AGENT_CODE = 'A011';
+
+UPDATE AGENTS 
+SET COUNTRY = 'USA'
+WHERE AGENT_CODE = 'A012';
 ```
 
-### How to select data that shares a similar atribute
+### Exercise 6: Adding two tables together
 
-For this exercise, see if you can find all of the
+Remember when we mentioned how our tables are linked by `PRIMARY KEYS`? Well, let's use those primary keys to add two tables together! Add the `AGENTS` and `ORDERS` tables together below. Make sure that all of the records from `ORDERS` are added to the `AGENTS` table!
 
-```{sql class.source = 'fold-hide', connection=con_r, eval=F, warning=F, error=FALSE,eval=FALSE, warning=FALSE}
-SELECT CUST_CODE, AGENT_CODE, ORD_AMOUNT
-FROM ORDERS
-GROUP BY CUST_CODE
-HAVING 
+(hint: there is a function like this in R, where you will have to choose between a few different options to add these tables together correctly!)
+
+```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+
+
 ```
 
-## Other types of common functions
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+SELECT *
+FROM AGENTS
+LEFT JOIN ORDERS
+ON AGENTS.AGENT_CODE = ORDERS.AGENT_CODE
+```
 
 
 
-# Integrations & Analyses
+### Exercise 7: Removing columns
+
+Once you load in a table, it can actually be annoying to modify it if there are multiple mistakes. There is a function which allows you to get rid of a table completely from your database so you can start anew. You can also get rid of specific columns.
+
+For this exercise, try getting rid of the `COUNTRY` column in the `AGENTS` table! We will avoid getting rid of the whole table in case you use the `AGENTS` table in the next exercises.
+
+```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+ALTER TABLE AGENTS
+DROP COLUMN COUNTRY;
+```
+
+# Integration & Analyses
 
 ## Using SQL in R
 
-## Regression with Python
+Once we have our data in R, we might want to do some analyses with it. Here is how you import the data into R to be used:
 
-## Machine Learning with Python
+```{r}
+agents <- DBI::dbReadTable(con_r, "AGENTS")
+cust <- DBI::dbReadTable(con_r, "CUSTOMER")
+orders <- DBI::dbReadTable(con_r, "ORDERS")
+```
+
+It is easier to import the entire table in this case. Now we have our tables inside R, we can run whatever stats/visualizations that we need! You can also view the data in the 'Environment' tab in RStudio, which is much better than having to `SELECT` the data repeatedly!
+
+Here is a boxplot of opening payment amount by country:
+
+```{r}
+boxplot(cust$OPENING_AMT ~ cust$CUST_COUNTRY, data = cust)
+```
+
+And here is a one-way ANOVA with that same data:
+
+```{r}
+oneway.test(cust$OPENING_AMT ~ cust$CUST_COUNTRY, data = cust, var = FALSE)
+```
+
+You could see how this would be helpful when dealing with very large datasets.
+
+### Exercise 8: Try your own analysis in R!
+
+Using the data we have here in our three tables, try out one more analysis all on your own. Maybe... a regression??
+
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
+
+
+```
+
 
 # Advanced Functions
 
+Now, going through this workshop, you are probably thinking to yourself, "This is *too* easy." And that's because... it kind of is. SQL is generally an easy language to learn and execute. If you were to use SQL at a job for something like Data Science, a lot of the hard parts of the workshop today would already be set up for you (such as the server you would use, the database you would be working in, and what type of program you would use to execute SQL commands). However, we are going to touch briefly on one advanced function that might make working in a large database a little easier.
+
+As we are not providing a more in-depth look at functions that would help you with a more intense data job, you can utilize a few resources below if you want to dive deeper into SQL:
+
+[FreeCodeCamp](https://www.freecodecamp.org/news/advanced-sql-techniques/)
+
+[Kaggle](https://www.kaggle.com/learn/advanced-sql)
+
 ## Stored Procedures
+
+A stored procedure is basically like a function in R. You often have to do the same thing in SQL over and over again (like viewing certain types of data). This is a good opportunity to take advantage of stored procedures to do the heavy lifting for you!
+
+The general syntax looks like this:
+```{sql,connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+CREATE PROCEDURE procedure_name 
+AS
+sql_statment
+GO;
+```
+
+```{sql, connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+EXEC procedure_name;
+```
+
+You can also pass variables into this function. If you want to be able to include a variable in your stored procedure, you can use something like `@ADVANCE_AMOUNT` to give a placeholder to where that variable would go. For instance:
+
+```{sql,connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+CREATE PROCEDURE CitySelect @City nvarchar(25)
+AS
+SELECT * FROM CUSTOMER WHERE CUST_CITY = @City;
+```
+
+```{sql,connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+EXEC CitySelect @City = 'LONDON';
+```
+
+### Exercise 9: Create your own stored procedure!
+
+For this exercise, we want you to create a store procedure where `CUST_COUNTRY` is USA and the `RECEIVE_AMT` is less than 8000!
+
+(hint: this would be a good time to take advantage of SQL operators!)
+
+
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
+
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+CREATE PROCEDURE Country_Amount @City nvarchar(25), @Amount int
+AS
+SELECT * FROM CUSTOMER WHERE CUST_COUNTRY = @City AND RECEIVE_AMT < @Amount;
+```
+
+```{sql class.source = 'fold-hide',  connection=con_r,error=FALSE, eval=FALSE, warning=FALSE}
+EXEC Country_Amount @City = 'USA', @Amount = 8000
+```
+
+# Conclusion
+
+That concludes our workshop on SQL! Hopefully we have provided you with the building blocks to be successful in using SQL in your future industry jobs.
+
 
 

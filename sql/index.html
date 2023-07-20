@@ -3154,17 +3154,19 @@ library(pacman)
 pacman::p_load(DBI, odbc, reader)</code></pre>
 <pre class="r"><code>con_r &lt;- DBI::dbConnect(
   odbc::odbc(), 
-  &quot;Katie_SQL&quot;
-  ) #make sure to insert the name you just input for your server name here</code></pre>
-<p>Connect to the MS SQL server, include a code chunk that looks like
-this on your RMarkdown file:</p>
-<p><code>{sql, connection=con_r, output.var=&quot;world_dataframe&quot;}</code></p>
+  &quot;Katie_SQL&quot; #make sure to insert the name you just input your server name here
+  ) </code></pre>
+<p>Connect to the MS SQL server, include a code chunk that has this
+information on your RMarkdown file:</p>
+<p><code>{sql, connection=con_r}</code></p>
 </div>
 <div id="how-to-use-sql-in-jupyter-notebooks" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> How to use SQL in
 Jupyter Notebooks</h2>
-<p>Next, let’s do the same for those who want to follow along in Jupyter
-Notebooks.</p>
+<p>Next, let’s do the same for those who may want to set up in Jupyter
+Notebooks. While this is possible, we will not be covering how to use
+Jupyter Notebooks extensively. This should give you an idea of how to
+setup, and you can try this on your own later!</p>
 <p>I am running this in RMarkdown so I have to initialize a Python
 kernel - skip this if you are directly using Jupyter Notebooks!</p>
 <pre class="r"><code>install.packages(&quot;reticulate&quot;) #this is for using Python in R - very useful and neat!
@@ -3175,11 +3177,17 @@ py_install(&quot;pyodbc&quot;) </code></pre>
 there are a few more steps to using SQL in Python code than in R,
 including setting up a cursor to call the SQL code</p>
 <pre class="python"><code>import pyodbc 
-con_py = pyodbc.connect(&#39;DRIVER={SQL Server};SERVER=WJPMITCHELL3\SQLEXPRESS01;Trusted_Connection=yes;&#39;) #Please note that this is slightly different from how we initialized the connection in R!
+con_py = pyodbc.connect(&#39;DRIVER={SQL Server};SERVER=DESKTOP-DAEMONI\SQLEXPRESS01;Trusted_Connection=yes;&#39;) #Please note that this is slightly different from how we initialized the connection in R!
 cursor = con_py.cursor()
+
 #for any line of code, you have to filter it through this cursor function, e.g.:
-cursor.execute(&quot;ALTER TABLE associates &quot; +
-               &quot;ADD fullName VARCHAR(20)&quot;)</code></pre>
+#cursor.execute(&quot;ALTER TABLE associates
+#               &quot;ADD fullName VARCHAR(20)&quot;)
+               
+#you can also put the SQL code into a variable and execute it using that variable
+#sql_insert = (&#39;&#39;&#39;
+  #&quot;INSERT INTO TABLE VALUES(1, 2, &#39;apple&#39;);&#39;&#39;&#39;)
+)</code></pre>
 </div>
 <div id="sql-database-example-data" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> SQL Database example
@@ -3191,7 +3199,7 @@ going to skip that and create our own database using SQL code. Note that
 SQL syntax is slightly different between the different servers
 (i.e. MySQL and MS SQL). We are coding in MS SQL, so some of this code
 may not work if you were to use something like MySQL.</p>
-<p>In addition, I find using SQL in R a lot easier, so I am going to
+<p>In addition, I find using SQL in R a lot easier, so we are going to
 stick with that. However, if you want to use Jupyter Notebooks, feel
 free to follow along and try to run this code within the
 cursor.execute() function!</p>
@@ -3352,10 +3360,11 @@ within SQL; it is difficult to import data any other way, such as Excel
 <code>CREATE</code> function. When you want to delete something, you use
 the <code>DROP</code> function. A database has to come before a table,
 and tables are simply where the data is stored in the database.</p>
-<p>We also had to choose our database to work with before being able to
-access it. This is to prevent users from accidentally editing a database
-that they did not intend to. We executed the <code>USE</code> command to
-do this.</p>
+<p>We used the <code>CREATE</code> function to create our database
+<code>COG_SQL</code>. We also had to choose our database to work with
+before being able to access it. This is to prevent users from
+accidentally editing a database that they did not intend to. We executed
+the <code>USE</code> command to do this.</p>
 <p>Finally, initialized all of our tables with their column names and
 entered in that data. You can think of using <code>CREATE TABLE</code>
 like you would create a DataFrame in R. Then, we used
@@ -3364,6 +3373,10 @@ on each line represents a new row, and needs to match up to the number
 of columns and the type of data in those columns. The
 <code>VALUES</code> command tells SQL that this is data that we are
 loading into the table.</p>
+<p>If we wanted to view our tables, , we can use the ’SELECT`
+function:</p>
+<pre class="sql fold-hide"><code>SELECT *
+From AGENTS;</code></pre>
 </div>
 <div id="data-types" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Data Types</h2>
@@ -3382,6 +3395,19 @@ to SQL. The data needs to be in the correct format as designated by the
 variable type we assigned it when creating the table (i.e.,
 <code>AGENT_CODE</code> was assigned as <code>CHAR</code>). Otherwise,
 you will encounter a lot of errors trying to load in your data.</p>
+<p>One final point we would like to make is about the
+<code>PRIMARY KEY</code> functions that were showcased in these tables.
+This function allows you to uniquely identify data across multiple
+tables. For instance, something like this could be helpful if you had
+patient data and experimental data for that patient; you would want to
+keep all of their demographics data together in one place, and their
+experimental data in another, with their Subject ID being the
+<code>PRIMARY KEY</code> between those two tables. You do have to make
+sure you tell the table which variable is being referenced from the
+original table (you can see that in the <code>CUSTOMER</code>, where
+<code>AGENT_CODE</code> is referenced from <code>AGENTS</code>).</p>
+<p>Now that we have walked through what has already been done, let’s
+explore some more functions in SQL!</p>
 </div>
 <div id="key-functions" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Key Functions</h2>
@@ -3415,10 +3441,6 @@ data by a criteria</h3>
 <p>For this exercise, try and write some SQL code that takes data from
 the <code>ORDERS</code> table but only includes orders over $1000 (from
 the <code>ORD_AMOUNT</code> variable).</p>
-<pre class="sql"><code>____ *
-____ ORDERS
-____ ORD_AMOUNT &gt; ____;
-</code></pre>
 <p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
 <pre class="sql fold-hide"><code>SELECT *
 FROM ORDERS
@@ -3430,9 +3452,15 @@ wildcard operator is the way to go!</p>
 <div id="exercise-3-selecting-unique-items-from-a-column" class="section level3" number="3.4.3">
 <h3><span class="header-section-number">3.4.3</span> Exercise 3:
 Selecting unique items from a column</h3>
+<p>Sometimes we want to find all of the unique items in a list without
+all of the duplicates. Trying doing that here for the
+<code>CUSTOMER</code> table!</p>
+<p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
+<pre class="sql fold-hide"><code>SELECT DISTINCT CUST_CITY
+FROM CUSTOMER;</code></pre>
 </div>
-<div id="exercise-3-how-to-change-data-in-an-already-existing-table" class="section level3" number="3.4.4">
-<h3><span class="header-section-number">3.4.4</span> Exercise 3: How to
+<div id="exercise-4-how-to-change-data-in-an-already-existing-table" class="section level3" number="3.4.4">
+<h3><span class="header-section-number">3.4.4</span> Exercise 4: How to
 change data in an already existing table</h3>
 <p>For this exercise, we want to modify data that already exists within
 a table we have created. We are skipping how to create a table, because
@@ -3440,43 +3468,194 @@ we saw how to create and populate one above. However, sometimes you need
 to change the information of the data that is in the table.</p>
 <p>For this example, we would like you to try and rename the
 WORKING_AREA variable in the AGENTS table to CITY.</p>
-<pre class="sql"><code></code></pre>
 <p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
 <pre class="sql fold-hide"><code>ALTER TABLE AGENTS
 RENAME COLUMN WORKING_AREA to CITY;</code></pre>
 </div>
-<div id="how-to-select-data-that-shares-a-similar-atribute" class="section level3" number="3.4.5">
-<h3><span class="header-section-number">3.4.5</span> How to select data
-that shares a similar atribute</h3>
-<p>For this exercise, see if you can find all of the</p>
-<pre class="sql fold-hide"><code>SELECT CUST_CODE, AGENT_CODE, ORD_AMOUNT
-FROM ORDERS
-GROUP BY CUST_CODE
-HAVING </code></pre>
+<div id="exercise-5-adding-data-to-a-column" class="section level3" number="3.4.5">
+<h3><span class="header-section-number">3.4.5</span> Exercise 5: Adding
+data to a column</h3>
+<p>Now, we have seen this done before, but this is your opportunity to
+try and apply what you have already seen in this workshop. The
+<code>COUNTRY</code> variable in the <code>AGENTS</code> table is blank.
+Figure out what country should go into each row for this dataset and add
+them in (hint: you will need to reference another variable to tell SQL
+which row to enter the data in).</p>
+<p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
+<pre class="sql fold-hide"><code>UPDATE AGENTS 
+SET COUNTRY = &#39;India&#39;
+WHERE AGENT_CODE = &#39;A001&#39;;  
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;India&#39;
+WHERE AGENT_CODE = &#39;A002&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;UK&#39;
+WHERE AGENT_CODE = &#39;A003&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;Canida&#39;
+WHERE AGENT_CODE = &#39;A004&#39;;  
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;Australia&#39;
+WHERE AGENT_CODE = &#39;A005&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;UK&#39;
+WHERE AGENT_CODE = &#39;A006&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;India&#39;
+WHERE AGENT_CODE = &#39;A007&#39;;  
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;USA&#39;
+WHERE AGENT_CODE = &#39;A008&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;UK&#39;
+WHERE AGENT_CODE = &#39;A009&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;India&#39;
+WHERE AGENT_CODE = &#39;A010&#39;;  
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;India&#39;
+WHERE AGENT_CODE = &#39;A011&#39;;
+
+UPDATE AGENTS 
+SET COUNTRY = &#39;USA&#39;
+WHERE AGENT_CODE = &#39;A012&#39;;</code></pre>
+</div>
+<div id="exercise-6-adding-two-tables-together" class="section level3" number="3.4.6">
+<h3><span class="header-section-number">3.4.6</span> Exercise 6: Adding
+two tables together</h3>
+<p>Remember when we mentioned how our tables are linked by
+<code>PRIMARY KEYS</code>? Well, let’s use those primary keys to add two
+tables together! Add the <code>AGENTS</code> and <code>ORDERS</code>
+tables together below. Make sure that all of the records from
+<code>ORDERS</code> are added to the <code>AGENTS</code> table!</p>
+<p>(hint: there is a function like this in R, where you will have to
+choose between a few different options to add these tables together
+correctly!)</p>
+<p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
+<pre class="sql fold-hide"><code>SELECT *
+FROM AGENTS
+LEFT JOIN ORDERS
+ON AGENTS.AGENT_CODE = ORDERS.AGENT_CODE</code></pre>
+</div>
+<div id="exercise-7-removing-columns" class="section level3" number="3.4.7">
+<h3><span class="header-section-number">3.4.7</span> Exercise 7:
+Removing columns</h3>
+<p>Once you load in a table, it can actually be annoying to modify it if
+there are multiple mistakes. There is a function which allows you to get
+rid of a table completely from your database so you can start anew. You
+can also get rid of specific columns.</p>
+<p>For this exercise, try getting rid of the <code>COUNTRY</code> column
+in the <code>AGENTS</code> table! We will avoid getting rid of the whole
+table in case you use the <code>AGENTS</code> table in the next
+exercises.</p>
+<p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
+<pre class="sql fold-hide"><code>ALTER TABLE AGENTS
+DROP COLUMN COUNTRY;</code></pre>
 </div>
 </div>
-<div id="other-types-of-common-functions" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> Other types of common
-functions</h2>
 </div>
-</div>
-<div id="integrations-analyses" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Integrations &amp;
+<div id="integration-analyses" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Integration &amp;
 Analyses</h1>
 <div id="using-sql-in-r" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Using SQL in R</h2>
+<p>Once we have our data in R, we might want to do some analyses with
+it. Here is how you import the data into R to be used:</p>
+<pre class="r"><code>agents &lt;- DBI::dbReadTable(con_r, &quot;AGENTS&quot;)
+cust &lt;- DBI::dbReadTable(con_r, &quot;CUSTOMER&quot;)
+orders &lt;- DBI::dbReadTable(con_r, &quot;ORDERS&quot;)</code></pre>
+<p>It is easier to import the entire table in this case. Now we have our
+tables inside R, we can run whatever stats/visualizations that we need!
+You can also view the data in the ‘Environment’ tab in RStudio, which is
+much better than having to <code>SELECT</code> the data repeatedly!</p>
+<p>Here is a boxplot of opening payment amount by country:</p>
+<pre class="r"><code>boxplot(cust$OPENING_AMT ~ cust$CUST_COUNTRY, data = cust)</code></pre>
+<p><img src="data:image/png;base64,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52Wev26f/vs954EyNBk0R0BLA2yydOUaq2+e/v7T06dPv3vRZC6R6buXT+5tAloUtebhrICSugyaI6ClATZZunKNsVe4Y17RVUDvvr7157cIKKnLoDkCWhpgk6Ur1xh7hQdN/61mPgWU9GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0ouwwhgAABg5SURBVJVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ0pVrjL3CmASU1GXQHAEtDbDJ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" width="672" /></p>
+<p>And here is a one-way ANOVA with that same data:</p>
+<pre class="r"><code>oneway.test(cust$OPENING_AMT ~ cust$CUST_COUNTRY, data = cust, var = FALSE)</code></pre>
+<pre style="max-height: 100px;"><code>## 
+##  One-way analysis of means (not assuming equal variances)
+## 
+## data:  cust$OPENING_AMT and cust$CUST_COUNTRY
+## F = 6.4941, num df = 4.0000, denom df = 6.2774, p-value = 0.02073</code></pre>
+<p>You could see how this would be helpful when dealing with very large
+datasets.</p>
+<div id="exercise-8-try-your-own-analysis-in-r" class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Exercise 8: Try
+your own analysis in R!</h3>
+<p>Using the data we have here in our three tables, try out one more
+analysis all on your own. Maybe… a regression??</p>
 </div>
-<div id="regression-with-python" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Regression with
-Python</h2>
-</div>
-<div id="machine-learning-with-python" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Machine Learning with
-Python</h2>
 </div>
 </div>
 <div id="advanced-functions" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Advanced Functions</h1>
+<p>Now, going through this workshop, you are probably thinking to
+yourself, “This is <em>too</em> easy.” And that’s because… it kind of
+is. SQL is generally an easy language to learn and execute. If you were
+to use SQL at a job for something like Data Science, a lot of the hard
+parts of the workshop today would already be set up for you (such as the
+server you would use, the database you would be working in, and what
+type of program you would use to execute SQL commands). However, we are
+going to touch briefly on one advanced function that might make working
+in a large database a little easier.</p>
+<p>As we are not providing a more in-depth look at functions that would
+help you with a more intense data job, you can utilize a few resources
+below if you want to dive deeper into SQL:</p>
+<p><a href="https://www.freecodecamp.org/news/advanced-sql-techniques/">FreeCodeCamp</a></p>
+<p><a href="https://www.kaggle.com/learn/advanced-sql">Kaggle</a></p>
+<div id="stored-procedures" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Stored
+Procedures</h2>
+<p>A stored procedure is basically like a function in R. You often have
+to do the same thing in SQL over and over again (like viewing certain
+types of data). This is a good opportunity to take advantage of stored
+procedures to do the heavy lifting for you!</p>
+<p>The general syntax looks like this:</p>
+<pre class="sql"><code>CREATE PROCEDURE procedure_name 
+AS
+sql_statment
+GO;</code></pre>
+<pre class="sql"><code>EXEC procedure_name;</code></pre>
+<p>You can also pass variables into this function. If you want to be
+able to include a variable in your stored procedure, you can use
+something like <code>@ADVANCE_AMOUNT</code> to give a placeholder to
+where that variable would go. For instance:</p>
+<pre class="sql"><code>CREATE PROCEDURE CitySelect @City nvarchar(25)
+AS
+SELECT * FROM CUSTOMER WHERE CUST_CITY = @City;</code></pre>
+<pre class="sql"><code>EXEC CitySelect @City = &#39;LONDON&#39;;</code></pre>
+<div id="exercise-9-create-your-own-stored-procedure" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Exercise 9: Create
+your own stored procedure!</h3>
+<p>For this exercise, we want you to create a store procedure where
+<code>CUST_COUNTRY</code> is USA and the <code>RECEIVE_AMT</code> is
+less than 8000!</p>
+<p>(hint: this would be a good time to take advantage of SQL
+operators!)</p>
+<p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
+<pre class="sql fold-hide"><code>CREATE PROCEDURE Country_Amount @City nvarchar(25), @Amount int
+AS
+SELECT * FROM CUSTOMER WHERE CUST_COUNTRY = @City AND RECEIVE_AMT &lt; @Amount;</code></pre>
+<pre class="sql fold-hide"><code>EXEC Country_Amount @City = &#39;USA&#39;, @Amount = 8000</code></pre>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Conclusion</h1>
+<p>That concludes our workshop on SQL! Hopefully we have provided you
+with the building blocks to be successful in using SQL in your future
+industry jobs.</p>
 </div>
 
 

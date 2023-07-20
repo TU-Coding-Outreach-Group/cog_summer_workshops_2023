@@ -10,7 +10,7 @@ SQL is a common language used in data science jobs, designed to manage data held
 
 ## Prerequisites
 This workshop demands that users:
-1. Have either [RStudio](https://posit.co/download/rstudio-desktop/) or [Jupyter Notebooks](https://jupyter.org/) available on your computer
+1. Have either [RStudio](https://posit.co/download/rstudio-desktop/) 
 2. Have the example dataset downloaded
 3. Have a general knowledge of data structures in languages like Python and R
 
@@ -24,7 +24,9 @@ This workshop demands that users:
 - [Notebook Viewer]
 
 ## What We Won't Cover:
-We won't be covering more advanced functions of SQL. This is meant to be an introduction to SQL in more familiar platforms like RStudio and Jupyter Notebooks. If you need a tutorial on how to use Jupyter Notebooks, please see [this](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2021/tree/main/jupyter-notebook) previous workshop by Kim Nguyen.
+We won't be covering how to use SQL Servers. We will only be touching briefly on more advanced SQL functions; this will primarily serve as an *introduction* to SQL and how to use it in RStudio. 
+
+If you would like to use Jupyter Notebooks to run SQL commands, we will be covering how to set it up, but not how to execute commands. If you need a tutorial on how to use Jupyter Notebooks, please see [this](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2021/tree/main/jupyter-notebook) previous workshop by Kim Nguyen. Otherwise, for more information on how to use SQL in Jupyter Notebooks, please see [this]() tutorial. For more information, please see the [MS SQL Website](https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/step-3-proof-of-concept-connecting-to-sql-using-pyodbc?view=sql-server-ver16) on how to utilize this function. 
 
 ## Outline
 | Section | Description | Time |
