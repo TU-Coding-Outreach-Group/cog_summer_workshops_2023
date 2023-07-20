@@ -29,14 +29,13 @@ We won't be covering more advanced functions of SQL. This is meant to be an intr
 ## Outline
 | Section | Description | Time |
 | --- | --- | --- |
-| Intro | | |
-| Setup |  |  |
-| Section 1 |  |  |
-| Section 2 |  |  |
-| Section 3 |  |  |
-| Section 4 |  |  |
-| Conclusion |  |  |
-| Q & A | --- |  |
+| Intro | What is SQL and Why Would We Use It? | 15 min |
+| Setup | Setting Up an SQL Server | 25 min |
+| Section 1 | Coding in SQL | 15 min |
+| Section 2 | Integrations & Analyses | 15 min |
+| Section 3 | Advanced Functions | 15 min |
+| Conclusion |  | 5 min |
+| Q & A | --- | 30 min |
 
 ## Additional Resources
 W3schools tutorial on SQL: https://www.w3schools.com/sql/    
