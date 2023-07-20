@@ -22,7 +22,13 @@ knit: (function(inputFile, encoding) {
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, error = FALSE)
+knitr::opts_chunk$set(attr.output = "style=\"max-height: 100px;\"", echo = TRUE, error = FALSE)
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+#remotes::install_github("rlesur/klippy")
+#library(klippy)
+klippy::klippy(c('r', 'python'))
 ```
 
 # Introduction
@@ -89,7 +95,7 @@ Now, let's use our newly downloaded MS SQL server to set up in R!
 
 Run the chunk of code below to load packages in R that can deal with SQL data and code:
 
-```{r, error=FALSE, eval=FALSE, warning=FALSE}
+```{r, error=FALSE, eval=FALSE, warning=FALSE,class.source='klippy'}
 install.packages(c("pacman"))
 library(pacman)
 pacman::p_load(DBI, odbc, reader)
@@ -104,7 +110,7 @@ con_r <- DBI::dbConnect(
 
 Connect to the MS SQL server, include a code chunk that looks like this on your RMarkdown file:
 
-`{\sql, connection=con_r, output.var="world_dataframe"\}`
+`{sql, connection=con_r, output.var="world_dataframe"}`
 
 ## How to use SQL in Jupyter Notebooks
 
@@ -157,7 +163,9 @@ CREATE TABLE  AGENTS (
 	PHONE_NO CHAR(15) NOT NULL, 
 	COUNTRY VARCHAR(25) NOT NULL,
 	 );
- 
+```
+
+```{sql, connection=con_r, error=FALSE,eval=FALSE, warning=FALSE}
 CREATE TABLE  CUSTOMER (	
   CUST_CODE VARCHAR(6) NOT NULL PRIMARY KEY, 
 	CUST_NAME VARCHAR(40) NOT NULL, 
@@ -172,7 +180,9 @@ CREATE TABLE  CUSTOMER (
 	PHONE_NO VARCHAR(17) NOT NULL, 
 	AGENT_CODE CHAR(6) NOT NULL REFERENCES AGENTS
 );   
+```
 
+```{sql, connection=con_r, error=FALSE,eval=FALSE, warning=FALSE}
 CREATE TABLE  ORDERS
    (
   ORD_NUM INT NOT NULL PRIMARY KEY, 
@@ -201,7 +211,7 @@ INSERT INTO AGENTS VALUES ('A004', 'Ivan', 'Torento', 0.15, '008-22544166', '');
 INSERT INTO AGENTS VALUES ('A009', 'Benjamin', 'Hampshair', 0.11, '008-22536178', '');
 ```
 
-```{sql, connection=con_r, error=FALSE,eval=FALSE, warning=FALSE}
+```{sql, connection=con_r, error=FALSE,eval=FALSE, warning=FALSE,attr.output = "style=\"max-height: 150px;\""}
 INSERT INTO CUSTOMER VALUES ('C00013', 'Holmes', 'London', 'London', 'UK', '2', 6000.00, 5000.00, 7000.00, 4000.00, 'BBBBBBB', 'A003');
 INSERT INTO CUSTOMER VALUES ('C00001', 'Micheal', 'New York', 'New York', 'USA', '2', 3000.00, 5000.00, 2000.00, 6000.00, 'CCCCCCC', 'A008');
 INSERT INTO CUSTOMER VALUES ('C00020', 'Albert', 'New York', 'New York', 'USA', '3', 5000.00, 7000.00, 6000.00, 6000.00, 'BBBBSBB', 'A008');
@@ -294,8 +304,9 @@ Finally, initialized all of our tables with their column names and entered in th
 
 ![](images/sql_data_types.png)
 
-As you can see from our databse creation, there are different data types in SQL. In addition to the data type, you can also specify 
-The data needs to be in the correct order and the correct format as designated by the variable type we assinged it when creating the table (i.e., ```AGENT_CODE``` was assigned the data)
+As you can see from our database creation, there are different data types in SQL. In addition to the data type, you can also specify the longest number of characters that will be present within a variable (i.e. ` VARCHAR(20)` means that the character string will only have 20 characters at max). These are slightly different between SQL servers, so beware! In addition, the way data types are handled when they are being fed into a table is different, as well; for instance, an `INT` is not surrounded by single quote marks like other `CHAR` or `NCHAR` variables.
+
+It is important to note that data types are important when it comes to SQL. The data needs to be in the correct format as designated by the variable type we assigned it when creating the table (i.e., ```AGENT_CODE``` was assigned as `CHAR`). Otherwise, you will encounter a lot of errors trying to load in your data.
 
 
 ## Key Functions
@@ -323,7 +334,46 @@ SELECT CUST_CODE
 FROM ORDERS
 ```
 
-### Exercise 2: How to change data in an already existing table
+### Exercise 2: Filter data by a criteria
+
+For this exercise, try and write some SQL code that takes data from the `ORDERS` table but only includes orders over $1000 (from the `ORD_AMOUNT` variable).
+
+```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+____ *
+____ ORDERS
+____ ORD_AMOUNT > ____;
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide', connection=con_r, error=FALSE, eval=FALSE, warning=FALSE}
+SELECT *
+FROM ORDERS
+WHERE ORD_AMOUNT > 1000;
+```
+
+Note that an example of how to use a wildcard in this situation is included above; when you want to select all columns from a table, the wildcard operator is the way to go!
+
+### Exercise 3: Selecting unique items from a column
+
+
+
+```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide', error=FALSE, eval=FALSE, warning=FALSE}
+
+```
+
+
+
+
+### Exercise 4: How to change data in an already existing table
 
 For this exercise, we want to modify data that already exists within a table we have created. We are skipping how to create a table, because we saw how to create and populate one above. However, sometimes you need to change the information of the data that is in the table. 
 
@@ -336,12 +386,26 @@ For this example, we would like you to try and rename the WORKING_AREA variable 
 
 Click `SHOW` to see the solution! ==>
 
-```{sql class.source = 'fold-hide', eval=F, warning=F, error=FALSE, eval=FALSE, warning=FALSE}
+```{sql class.source = 'fold-hide',  error=FALSE, eval=FALSE, warning=FALSE}
 ALTER TABLE AGENTS
 RENAME COLUMN WORKING_AREA to CITY;
 ```
 
+### Exercise 5: Adding data to a column
 
+Now, we have seen this done before, but this is your opportunity to try and apply what you have already seen in this workshop. The `COUNTRY` variable in the `AGENTS` table is blank. Figure out what country should go into each row for this dataset (hint: )
+
+```{sql, error=FALSE,eval=FALSE, warning=FALSE}
+
+
+```
+
+Click `SHOW` to see the solution! ==>
+
+```{sql class.source = 'fold-hide',  error=FALSE, eval=FALSE, warning=FALSE}
+ALTER TABLE AGENTS
+RENAME COLUMN WORKING_AREA to CITY;
+```
 
 ### How to select data that shares a similar atribute
 
