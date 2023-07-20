@@ -91,7 +91,12 @@ body{
   }
   
   .r code {
-      white-space: pre;
+    white-space: pre;
+  }
+
+  code {
+    color: #9D2235;
+    ;
   }
   
   
