@@ -21,6 +21,10 @@ knit: (function(inputFile, encoding) {
                         output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 ---
 
+```{r include=FALSE}
+  library(vembedr)
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(attr.output = "style=\"max-height: 100px;\"", echo = TRUE, error = FALSE)
 ```
@@ -32,6 +36,10 @@ klippy::klippy(c('r', 'python'))
 ```
 
 # Introduction
+
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/cyX9b_V3wls")
+```
 
 ## What is SQL?
 
@@ -608,6 +616,10 @@ EXEC Country_Amount @City = 'USA', @Amount = 8000
 ```
 
 # Conclusion
+
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/EHcpy0o1Fzw")
+```
 
 That concludes our workshop on SQL! Hopefully we have provided you with the building blocks to be successful in using SQL in your future industry jobs.
 
