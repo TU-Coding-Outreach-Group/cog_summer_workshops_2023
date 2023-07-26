@@ -10,8 +10,7 @@ SQL is a common language used in data science jobs, designed to manage data held
 ## Prerequisites
 This workshop demands that users:
 1. Have [RStudio](https://posit.co/download/rstudio-desktop/) downloaded
-2. If you will be using a Mac, have [Docker](https://www.docker.com/) downloaded 
-3. Have a general knowledge of data structures in languages like Python and R
+2. Have a general knowledge of data structures in languages like Python and R
 
     
 ## Workshop objectives:
