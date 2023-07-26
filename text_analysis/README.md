@@ -38,7 +38,7 @@ We will not be covering data wrangling, or how to format the data to in way that
 | Setup | Load packages and data | 5 minutes |
 | Section 1 | Text cleanup | 10 minutes |
 | Section 2 | Plotting text metrics| 10 minutes |
-| Section 4 | Calculate high-importance words | 5 minutes |
+| Section 4 | Calculating high-importance words | 5 minutes |
 | Section 5 | Plotting text associated with numeric ratings | 10 minutes |
 | Conclusion |  Q & A | 10 minutes |
 
