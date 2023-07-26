@@ -7,7 +7,9 @@ __**Content creator:**__ Ginny Ulichney
 __**Content editor:**__ Katie Jobson, Billy Mitchell, Steven Martinez & Helen Schmidt
 
 ## Description
-  
+Dyadic analysis refers to a type of statistical analysis that focuses on relationships and interactions between two individuals or entities, often referred to as dyads. Dyadic methods allow us to go beyond focus on individual-level processes and examine how each entity in an interaction influences the other. These methods have been utilized in across social sciences; in psychology, for example, dyadic methods have been used to examine interpersonal linkage and influence at multiple levels of analysis (e.g., physiological, self-report, behavioral). 
+
+In this workshop, we will walk through a brief introduction to dyadic analysis and visualization in R. Statistical concepts (e.g., Actor-Partner Interdependence Models) will be introduced, but the workshop focus will be on application of these methods rather than their statistical underpinnings. Recommended readings for further statistical depth will be provided. This workshop will cover a basic introduction to dyadic data analysis, both Multilevel Modeling for dyads and Actor Partner Interdependence Modeling, and their visualization, in R.  
 
 ## Prerequisites
 This workshop demands that users:
