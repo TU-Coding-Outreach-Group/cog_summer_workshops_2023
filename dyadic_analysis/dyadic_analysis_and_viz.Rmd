@@ -3,7 +3,7 @@ title: "Coding Outreach Group Summer Workshop - Dyadic Data Analysis and Visuali
 date: "`r Sys.Date()`"
 author: 
   - name: "**Content creator: Ginny Ulichney**"
-  - name: "**Content editors: Katie Jobson & Billy Mitchell**"
+  - name: "**Content editors: Katie Jobson, Billy Mitchell, Steven Martinez & Helen Schmidt**"
 output:
   html_document:
     toc: true
