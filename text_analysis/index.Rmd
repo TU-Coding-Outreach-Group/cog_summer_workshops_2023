@@ -21,11 +21,17 @@ knit: (function(inputFile, encoding) {
                         encoding=encoding, 
                         output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 ---
+```{r include=FALSE}
+  library(vembedr)
+```
 
+```{r, echo = FALSE,warning=FALSE, message=FALSE}
+vembedr::embed_url("https://youtu.be/tbjbGDF5PNw")
+```
 
 # Load Packages
 
-```{r}
+```{r, results=FALSE, warning=FALSE, message=FALSE}
 
 library(tidyverse) ## Always load tidyverse
 library(tidytext) ## Amazing package for all things text analysis
@@ -41,11 +47,15 @@ library(igraph) ## For graphing word clouds
 
 # Load in data
 
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/y6RN9q3br5o")
+```
+
 This data set has a subject ID, several text boxes, and a rating of how severe the impact of the lying experience was for the participant. 
 This wide format is more or less how the data is exported from REDCap, with one row per participant, and one column per textbox.
 
 ```{r}
-lying_wide <- read.csv("text_analysis/lying_wide_COG.csv")
+lying_wide <- read.csv("lying_wide_COG.csv")
 ```
 
 
@@ -96,6 +106,10 @@ lying_bigrams <- lying_long %>%
 
 ## Generating list of potential typos
 
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/RLGUzr0wxao")
+```
+
 It will be hard to count which words are used a lot if many of the uses are misspelled!
 We can use the hunspell package to pull words that seem like typos and suggest likely corrections. 
 The best part is you can save this out as a .csv, tweak the list of typos or their corrections if needed, and reload. 
@@ -124,7 +138,7 @@ Additionally, we'll look at words that weren't used very often, to see if there 
 ```{r}
 ## Save draft of potential typos and corrected words
 write.csv(typo_list,  
-          "text_analysis/spellcheck_draft.csv",
+          "spellcheck_draft.csv",
           row.names = F)
 
 ## Scroll through infrequently used words to look for other typos
@@ -142,7 +156,7 @@ Assuming you made some tweaks, let's load in our final list of typos and correct
 
 ```{r}
 ## Load in final list of typos and corrections
-typo_list <- read.csv("text_analysis/spellcheck_FINAL.csv", 
+typo_list <- read.csv("spellcheck_FINAL.csv", 
                       stringsAsFactors = FALSE)
 
 ## Create a character vector of whole word typo matches, specifying word boundaries
@@ -165,11 +179,15 @@ lying_bigrams$bigram <- stri_replace_all_regex(lying_bigrams$bigram, whole_word_
 
 ## Make dataframe of word counts
 
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/nC8UxJsNjDA")
+```
+
 Now that we have spellchecked our words, we want to prepare to explore most used words, etc. 
 We'll group by words so that we only have one row per word. 
 Additionally, we'll average across severity, so that we can see which words were used by people with more/less impactful experiences.
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 ## Single words
 token_counts <- lying_unnested %>%
@@ -195,7 +213,7 @@ It make not be super useful to count up all word uses accross the whole project.
 Instead, it may be more important to you which words were used most per PROMPT (i.e., per text box)
 We can use the same code and just make sure we group by text_box as well 
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 token_counts_grouped <- lying_unnested %>%
   group_by(text_box, word) %>% ## Group the data by text box and word
@@ -209,6 +227,10 @@ token_counts_grouped <- lying_unnested %>%
 
 # Let's make some graphs!
 
+```{r, echo = FALSE}
+vembedr::embed_url("https://youtu.be/DIpHyBXJKtU")
+```
+
 ## Frequently used words per prompt 
 
 Here we will do some fancy ggplotting to view the most common words for each prompt. 
@@ -218,7 +240,7 @@ This can provide super useful information, but for the purposes of THIS graph, t
 There are existing lists of stop words that you can remove with an anti_join() you can also make a custom list!
 Two of the pre-existing ones I've used are `get_stopwords()` which is a relatively shorter list, and `stop_words` which is more comprehensive
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 lying_unnested %>%
   ## Try with the following line commented out first, and then try with it in. You can also try "anti_join(get_stopwords()) %>%"
@@ -264,7 +286,7 @@ It assumes equal probabilities for all words and treats each prompt independentl
 In the code block provided, we are binding both tf-idf and log odds metrics to the dataset, resulting in a new dataframe called lying_unnested_info. 
 This dataframe contains columns for tf-idf, weighted log odds with an informative prior (wlo_informative), and weighted log odds with an uninformative prior (wlo_uninformative). 
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 lying_unnested_info <- lying_unnested %>% 
   count(text_box, word, sort = TRUE) %>%  ## Count occurrences of each word within each text_box
@@ -286,7 +308,7 @@ After calculating the tf-idf for each word within different each prompt, we can 
 The plot displays the top 20 words with the highest TF-IDF values, which indicate their significance within each prompt category. 
 The plot is grouped by text_box and provides insights into the distinctive words that contribute the most to each category's content.
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 lying_unnested_info %>%
   group_by(text_box) %>% ## Group by prompt
@@ -310,7 +332,7 @@ lying_unnested_info %>%
 
 We'll do the same thing using one of our log odds metrics as well. For now let's use the uninformative prior for now, but maybe try with the informative one as well to explore any differences
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 lying_unnested_info %>%
   group_by(text_box) %>% ## Group by prompt
@@ -338,7 +360,7 @@ lying_unnested_info %>%
 When we grouped our tokens, we averaged severity scores for each word used in each text box. 
 We can use this to see which words are used by people with more/less severe outcomes. 
 
-```{r}
+```{r,warning=FALSE, message=FALSE}
 
 ## Finding average severity rating across all participants
 summary(lying_wide$rating_impact_severity)  ## Mean = 2.63
@@ -370,9 +392,7 @@ frequently_used_words_across_severity <- token_counts_grouped %>%
 To start getting a flavor for the kinds of longer phrases people used a lot, let's make a word cloud with our bigrams. 
 This way we can see which words are used next to eachother a lot, and the directionality/order.
 
-```{r}
-
-##################### --- NEED TO DOUBLE CHECK THIS WORD CLOUD --- ###################################
+```{r,warning=FALSE, message=FALSE}
 
 ## Prep some formatting for how we want our arrows to look
 arrow_format <- grid::arrow(type = "closed", length = unit(.15, "inches"))
