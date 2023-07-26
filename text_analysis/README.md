@@ -2,7 +2,7 @@
 # Text Analysis in R
 08/03/2023
 
-__**Content creator:**__ Camille Johnston
+__**Content creator:**__ Camille Johnston \
 __**Content editors:**__ Steven Martinez, Katie Jobson, Billy Mitchell & Helen Schmidt
 
 ## Description
