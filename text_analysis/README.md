@@ -34,14 +34,13 @@ We will not be covering data wrangling, or how to format the data to in way that
 ## Outline
 | Section | Description | Time |
 | --- | --- | --- |
-| Intro | | |
-| Setup |  |  |
-| Section 1 |  |  |
-| Section 2 |  |  |
-| Section 3 |  |  |
-| Section 4 |  |  |
-| Conclusion |  |  |
-| Q & A | --- |  |
+| Intro | Video | 10 minutes |
+| Setup | Load packages and data | 5 minutes |
+| Section 1 | Text cleanup | 10 minutes |
+| Section 2 | Plotting text metrics| 10 minutes |
+| Section 4 | Calculate high-importance words | 5 minutes |
+| Section 5 | Plotting text associated with numeric ratings | 10 minutes |
+| Conclusion |  Q & A | 10 minutes |
 
 ## Additional Resources
 Supplemental information can be found within the [supplements folder]
