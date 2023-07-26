@@ -1,4 +1,3 @@
-# UNDER CONSTRUCTION
 # Coding Outreach Group Summer Workshop 2023
 # Dyadic Analysis in R
 08/10/2023
@@ -40,7 +39,5 @@ We will not be covering data wrangling in depth, or how to format the data to in
 | Part 5: Conclusion | --- | 5 min |
 | Q & A | --- | 25 min |
 
-## Additional Resources
-Supplemental information can be found within the [supplements folder]
-
-### Packages
+## Supplemental Information
+Please see the `References and recommended resources` section of the Notebook Viewer
