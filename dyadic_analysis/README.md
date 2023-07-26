@@ -4,7 +4,7 @@
 08/10/2023
 
 __**Content creator:**__ Ginny Ulichney
-__**Content editor:**__ 
+__**Content editor:**__ Katie Jobson, Billy Mitchell, Steven Martinez & Helen Schmidt
 
 ## Description
   
@@ -31,14 +31,12 @@ We will not be covering data wrangling, or how to format the data to in way that
 ## Outline
 | Section | Description | Time |
 | --- | --- | --- |
-| Intro | | |
-| Setup |  |  |
-| Section 1 |  |  |
-| Section 2 |  |  |
-| Section 3 |  |  |
-| Section 4 |  |  |
-| Conclusion |  |  |
-| Q & A | --- |  |
+| Part 1: Intro | What is dyadic analysis and how could you use it? | 15 min |
+| Part 2: Setup | Import & wrangle data | 20 min |
+| Part 3: MLM for dyads | Dyadic multilevel modeling & vizualization | 25 min |
+| Part 4: APIM | Actor-partner interdependence models | 25 min |
+| Part 5: Conclusion | --- | 5 min |
+| Q & A | --- | 25 min |
 
 ## Additional Resources
 Supplemental information can be found within the [supplements folder]
