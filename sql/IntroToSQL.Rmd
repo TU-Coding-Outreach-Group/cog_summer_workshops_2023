@@ -314,8 +314,8 @@ We used the `CREATE` function to create our database `COG_SQL`. We also had to c
 
 Finally, initialized all of our tables with their column names and entered in that data. You can think of using ```CREATE TABLE``` like you would create a DataFrame in R. Then, we used ```INSERT INTO``` to add our data to a specific table. The data on each line represents a new row, and needs to match up to the number of columns and the type of data in those columns. The `VALUES` command tells SQL that this is data that we are loading into the table.
 
-If we wanted to view our tables, , we can use the 'SELECT` function:
-```{sql class.source = 'fold-hide', connection=con_r, error=FALSE,eval=FALSE, warning=FALSE}
+If we wanted to view our tables, we can use the `SELECT` function:
+```{sql, connection=con_r, error=FALSE,eval=FALSE, warning=FALSE}
 SELECT *
 From AGENTS;
 ```
@@ -344,7 +344,7 @@ If you have not already downloaded the cheat sheet we have provided, you can fin
 
 For this exercise, we want you to use your cheat sheet to figure out how to only display the customer codes for our ORDERS table. We will give you the general syntax outline, but put your guess at which functions we would use in the chat!
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 
 ___ CUST_CODE
 ___ ORDERS
@@ -362,7 +362,7 @@ FROM ORDERS
 
 For this exercise, try and write some SQL code that takes data from the `ORDERS` table but only includes orders over $1000 (from the `ORD_AMOUNT` variable).
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 ____ *
 ____ ORDERS
 ____ ORD_AMOUNT > ____;
@@ -383,7 +383,7 @@ Note that an example of how to use a wildcard in this situation is included abov
 
 Sometimes we want to find all of the unique items in a list without all of the duplicates. Trying doing that here for the `CUSTOMER` table!
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -402,7 +402,7 @@ For this exercise, we want to modify data that already exists within a table we 
 
 For this example, we would like you to try and rename the WORKING_AREA variable in the AGENTS table to CITY.
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -418,7 +418,7 @@ RENAME COLUMN WORKING_AREA to CITY;
 
 Now, we have seen this done before, but this is your opportunity to try and apply what you have already seen in this workshop. The `COUNTRY` variable in the `AGENTS` table is blank. Figure out what country should go into each row for this dataset and add them in (hint: you will need to reference another variable to tell SQL which row to enter the data in).
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -481,7 +481,7 @@ Remember when we mentioned how our tables are linked by `PRIMARY KEYS`? Well, le
 
 (hint: there is a function like this in R, where you will have to choose between a few different options to add these tables together correctly!)
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```
@@ -503,7 +503,7 @@ Once you load in a table, it can actually be annoying to modify it if there are 
 
 For this exercise, try getting rid of the `COUNTRY` column in the `AGENTS` table! We will avoid getting rid of the whole table in case you use the `AGENTS` table in the next exercises.
 
-```{r echo = FALSE, error=FALSE,eval=FALSE, warning=FALSE}
+```{r, error=FALSE,eval=FALSE, warning=FALSE}
 
 
 ```

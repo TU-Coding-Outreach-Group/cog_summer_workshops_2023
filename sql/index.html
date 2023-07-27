@@ -11,7 +11,7 @@
 
 <meta name="author" content="Katie Jobson &amp; William Mitchell" />
 
-<meta name="date" content="2023-07-24" />
+<meta name="date" content="2023-07-27" />
 
 <title>Intro to SQL</title>
 
@@ -3021,7 +3021,7 @@ font-size: 0.95em;
 <h1 class="title toc-ignore">Intro to SQL</h1>
 <h4 class="author"><strong>Katie Jobson &amp; William
 Mitchell</strong></h4>
-<h4 class="date">2023-07-24</h4>
+<h4 class="date">2023-07-27</h4>
 
 </div>
 
@@ -3391,9 +3391,9 @@ on each line represents a new row, and needs to match up to the number
 of columns and the type of data in those columns. The
 <code>VALUES</code> command tells SQL that this is data that we are
 loading into the table.</p>
-<p>If we wanted to view our tables, , we can use the ’SELECT`
+<p>If we wanted to view our tables, we can use the <code>SELECT</code>
 function:</p>
-<pre class="sql fold-hide"><code>SELECT *
+<pre class="sql"><code>SELECT *
 From AGENTS;</code></pre>
 </div>
 <div id="data-types" class="section level2" number="3.3">
@@ -3449,6 +3449,8 @@ call only certain data from our tables</h3>
 how to only display the customer codes for our ORDERS table. We will
 give you the general syntax outline, but put your guess at which
 functions we would use in the chat!</p>
+<pre class="r"><code>___ CUST_CODE
+___ ORDERS</code></pre>
 <p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
 <pre class="sql fold-hide"><code>SELECT CUST_CODE
 FROM ORDERS</code></pre>
@@ -3459,6 +3461,9 @@ data by a criteria</h3>
 <p>For this exercise, try and write some SQL code that takes data from
 the <code>ORDERS</code> table but only includes orders over $1000 (from
 the <code>ORD_AMOUNT</code> variable).</p>
+<pre class="r"><code>____ *
+____ ORDERS
+____ ORD_AMOUNT &gt; ____;</code></pre>
 <p>Click <code>SHOW</code> to see the solution! ==&gt;</p>
 <pre class="sql fold-hide"><code>SELECT *
 FROM ORDERS
