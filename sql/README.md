@@ -2,10 +2,10 @@
 # Intro to SQL
 07/27/2023
 
-__**Content creator:**__ Billy Mitchell & Katie Jobson
+__**Content creators:**__ Billy Mitchell & Katie Jobson
 
 ## Description
-SQL is a common language used in data science jobs, designed to manage data held in a relational database management system. This workshop will aim to detail the uses of SQL in industry, and give a brief introduction in how to use it. 
+SQL is a common language used in data science jobs, designed to manage data held in a relational database management system. This workshop will aim to detail the uses of SQL in industry and give a brief introduction to how to use it. 
 
 ## Prerequisites
 This workshop demands that users:
@@ -45,10 +45,5 @@ Kaggle **advanced** tutorial on SQL: https://www.kaggle.com/learn/advanced-sql
 
 ### Packages and Dependencies
 R:   
-```sqldf``` - package that allows R to interfact with mySQL, PostgreSQL, H2 and SQLite   
+```pacman``` - package that unpacks multiple packages at a time in R \
 ```DBI``` - package that allows users to access SQL databases     
-
-Python/Jupyter Notebooks:     
-```pip install ipython-sql```    
-```pip install sqlalchemy```    
-```pip install pandas```    
