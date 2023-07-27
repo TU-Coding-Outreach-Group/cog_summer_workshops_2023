@@ -5,7 +5,7 @@
 __**Content creators:**__ Billy Mitchell & Katie Jobson
 
 ## Description
-SQL is a common language used in data science jobs, designed to manage data held in a relational database management system. This workshop will aim to detail the uses of SQL in industry, and give a brief introduction in how to use it. 
+SQL is a common language used in data science jobs, designed to manage data held in a relational database management system. This workshop will aim to detail the uses of SQL in industry and give a brief introduction to how to use it. 
 
 ## Prerequisites
 This workshop demands that users:
@@ -45,5 +45,5 @@ Kaggle **advanced** tutorial on SQL: https://www.kaggle.com/learn/advanced-sql
 
 ### Packages and Dependencies
 R:   
-```pacman``` - package that unpacks multiple packages at a time in R
+```pacman``` - package that unpacks multiple packages at a time in R \
 ```DBI``` - package that allows users to access SQL databases     
