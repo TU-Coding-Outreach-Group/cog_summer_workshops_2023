@@ -209,7 +209,7 @@ bigram_counts <- lying_bigrams %>%
 
 ## Make dataframe of word counts per prompt
 
-It make not be super useful to count up all word uses accross the whole project. 
+It might not be super useful to count up all word uses accross the whole project. 
 Instead, it may be more important to you which words were used most per PROMPT (i.e., per text box)
 We can use the same code and just make sure we group by text_box as well 
 
@@ -240,14 +240,14 @@ This can provide super useful information, but for the purposes of THIS graph, t
 There are existing lists of stop words that you can remove with an anti_join() you can also make a custom list!
 Two of the pre-existing ones I've used are `get_stopwords()` which is a relatively shorter list, and `stop_words` which is more comprehensive
 
-```{r,warning=FALSE, message=FALSE}
+```{r,warning=FALSE, message=FALSE, out.width="100%"}
 
 lying_unnested %>%
   ## Try with the following line commented out first, and then try with it in. You can also try "anti_join(get_stopwords()) %>%"
   anti_join(stop_words) %>% ## Remove a lot of common stop words
   group_by(text_box) %>% ## Group the data by text_box
   count(word, sort = TRUE) %>% ## Count the occurrences of each word, sorted in descending order
-  slice_max(n, n = 20, with_ties = FALSE) %>% ## Keep only the top 20 words with the highest counts
+  slice_max(n, n = 10, with_ties = FALSE) %>% ## Keep only the top 20 words with the highest counts
   ungroup() %>%  ## Remove grouping
   ggplot(aes(n, 
              reorder_within(word, n, text_box), 
@@ -308,11 +308,11 @@ After calculating the tf-idf for each word within different each prompt, we can 
 The plot displays the top 20 words with the highest TF-IDF values, which indicate their significance within each prompt category. 
 The plot is grouped by text_box and provides insights into the distinctive words that contribute the most to each category's content.
 
-```{r,warning=FALSE, message=FALSE}
+```{r,warning=FALSE, message=FALSE, out.width="100%"}
 
 lying_unnested_info %>%
   group_by(text_box) %>% ## Group by prompt
-  slice_max(tf_idf, n = 20, with_ties = FALSE) %>%  ## Select the top 20 words with the highest TF-IDF values
+  slice_max(tf_idf, n = 10, with_ties = FALSE) %>%  ## Select the top 20 words with the highest TF-IDF values
   ungroup() %>%
   ggplot(aes(tf_idf,
              reorder_within(word, tf_idf, text_box),
@@ -332,11 +332,11 @@ lying_unnested_info %>%
 
 We'll do the same thing using one of our log odds metrics as well. For now let's use the uninformative prior for now, but maybe try with the informative one as well to explore any differences
 
-```{r,warning=FALSE, message=FALSE}
+```{r,warning=FALSE, message=FALSE, out.width="100%"}
 
 lying_unnested_info %>%
   group_by(text_box) %>% ## Group by prompt
-  slice_max(wlo_uninformative, n = 20, with_ties = FALSE) %>% ## Select the top 20 words with the highest weighted log odds (uninformative prior) values
+  slice_max(wlo_uninformative, n = 10, with_ties = FALSE) %>% ## Select the top 20 words with the highest weighted log odds (uninformative prior) values
   ungroup() %>%
   ggplot(aes(wlo_uninformative,
              reorder_within(word, wlo_uninformative, text_box),
@@ -392,7 +392,7 @@ frequently_used_words_across_severity <- token_counts_grouped %>%
 To start getting a flavor for the kinds of longer phrases people used a lot, let's make a word cloud with our bigrams. 
 This way we can see which words are used next to eachother a lot, and the directionality/order.
 
-```{r,warning=FALSE, message=FALSE}
+```{r,warning=FALSE, message=FALSE, out.width="100%"}
 
 ## Prep some formatting for how we want our arrows to look
 arrow_format <- grid::arrow(type = "closed", length = unit(.15, "inches"))
@@ -402,7 +402,7 @@ bigram_counts %>%
   separate(bigram, c("word1", "word2"), sep = " ") %>%   ## Split the bigrams into individual words
   anti_join(get_stopwords(), by = c("word1" = "word")) %>%  ## Remove rows where the first word is a stopword
   anti_join(get_stopwords(), by = c("word2" = "word")) %>%  ## Remove rows where the second word is a stopword
-  filter(n > 2, !is.na(word1), !is.na(word2)) %>%   ## Include full bigrams that were used more than twice
+  filter(n > 10, !is.na(word1), !is.na(word2)) %>%   ## Include full bigrams that were used more than twice
   graph_from_data_frame() %>%   ## Create a graph from the filtered data
   ggraph(layout = "fr") +   ## Use Fruchterman-Reingold layout algorithm
   geom_edge_link(color = "lightsteelblue2", arrow = arrow_format) + ## Set edge color and arrow style
