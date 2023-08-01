@@ -4,6 +4,8 @@
 
 __**Content creators:**__ Billy Mitchell & Katie Jobson
 
+https://youtu.be/Ro6DcvNoyXE
+
 ## Description
 SQL is a common language used in data science jobs, designed to manage data held in a relational database management system. This workshop will aim to detail the uses of SQL in industry and give a brief introduction to how to use it. 
 
