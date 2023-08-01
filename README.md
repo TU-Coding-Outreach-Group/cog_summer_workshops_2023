@@ -15,4 +15,4 @@ Workshops are on Thursdays in June, July and August from 1:00pm to 3:00pm
 | 7/27    | [Intro to SQL](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/sql) | [Katie Jobson](https://kjobson-neuro.github.io/) & [Billy Mitchell](https://wj-mitchell.github.io/) |y
 | 8/3    | [Text Analysis in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/text_analysis)              | [Camille Johnston](https://www.linkedin.com/in/camille-johnston-489365162/) |
 | 8/10    | [Dyadic Analysis in R](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/dyadic_analysis)                 | [Ginny Ulichney](https://www.linkedin.com/in/ginny-ulichney/) |
-| 8/17    | [Intro to Item Response Theory](https://github.com/TU-Coding-Outreach-Group/cog_summer_workshops_2023/tree/master/irt)                     | [Rebekah Banerjee](https://twitter.com/interperceptual) & [Merve Tansan](https://twitter.com/Merve_Tansan) |
+| 8/17    | Pizza Party in Weiss Hall | n/a |
