@@ -40,6 +40,7 @@ library(hunspell) ## Used for spellchecking
 library(stringi) ## Used for replacing typos 
 library(ggraph) ## For graphing word clouds
 library(igraph) ## For graphing word clouds
+library(stopwords) ## for stopwords
 
 ```
 
@@ -52,7 +53,7 @@ vembedr::embed_url("https://youtu.be/y6RN9q3br5o")
 ```
 
 This data set has a subject ID, several text boxes, and a rating of how severe the impact of the lying experience was for the participant. 
-This wide format is more or less how the data is exported from REDCap, with one row per participant, and one column per textbox.
+This wide format is more or less how the data is exported from REDCap, with one row per participant, and one column per text box.
 
 ```{r}
 lying_wide <- read.csv("lying_wide_COG.csv")
@@ -85,11 +86,11 @@ lying_long <- lying_wide %>%
 
 ## Unnest tokens
 
-In this code, we're using the unnest_tokens() function from the tidytext package to break down the text data into individual words. 
-This process, known as tokenization, allows us to analyze text at a more granular level. 
-unnest_tokens() also normalizes the text data by converting all words to lowercase and removing punctuation, which helps ensure consistency in subsequent analyses. 
-Additionally, we can use unnest_tokens() to extract "ngrams," which are consecutive phrases of a specified length. 
-In the example, I use n = 2 to extract bigrams (pairs of words).
+In this code, we're using the unnest_tokens() function from the `tidytext` package to break down the text data into individual words. 
+This process, known as ***tokenization***, allows us to analyze text at a more granular level. 
+`unnest_tokens()` also normalizes the text data by converting all words to lowercase and removing punctuation, which helps ensure consistency in subsequent analyses. 
+Additionally, we can use `unnest_tokens()` to extract ***ngrams***, which are consecutive phrases of a specified length. 
+In the example, I use `n = 2` to extract bigrams (pairs of words).
 Unnesting tokens provides us with a structured format that facilitates in-depth exploration of the text data.
 
 ```{r}
@@ -111,8 +112,8 @@ vembedr::embed_url("https://youtu.be/RLGUzr0wxao")
 ```
 
 It will be hard to count which words are used a lot if many of the uses are misspelled!
-We can use the hunspell package to pull words that seem like typos and suggest likely corrections. 
-The best part is you can save this out as a .csv, tweak the list of typos or their corrections if needed, and reload. 
+We can use the `hunspell` package to pull words that seem like typos and suggest likely corrections. 
+The best part is you can export this as a .csv, tweak the list of typos or their corrections if needed, and reload. 
 Then you also have a record of all words you changed and how!
 
 ```{r}
@@ -209,9 +210,9 @@ bigram_counts <- lying_bigrams %>%
 
 ## Make dataframe of word counts per prompt
 
-It might not be super useful to count up all word uses accross the whole project. 
-Instead, it may be more important to you which words were used most per PROMPT (i.e., per text box)
-We can use the same code and just make sure we group by text_box as well 
+It might not be super useful to count up all word uses across the whole project. 
+Instead, what may be more important to you is which words were used most per **PROMPT** (i.e., per text box)
+We can use the same code and just make sure we group by `text_box` as well 
 
 ```{r,warning=FALSE, message=FALSE}
 
@@ -234,11 +235,11 @@ vembedr::embed_url("https://youtu.be/DIpHyBXJKtU")
 ## Frequently used words per prompt 
 
 Here we will do some fancy ggplotting to view the most common words for each prompt. 
-Try it first without the anti_join at the beginning, which will give you the raw frequencies.
+Try it first without the `anti_join()` at the beginning, which will give you the raw frequencies.
 As you may have guessed, words like "I", "you", "the", etc. are used the most in almost all text you'll come across. 
-This can provide super useful information, but for the purposes of THIS graph, they are not very informative. 
-There are existing lists of stop words that you can remove with an anti_join() you can also make a custom list!
-Two of the pre-existing ones I've used are `get_stopwords()` which is a relatively shorter list, and `stop_words` which is more comprehensive
+This can provide super useful information, but for the purposes of *THIS* graph, they are not very informative. 
+There are existing lists of stop words that you can remove with an `anti_join()` you can also make a custom list!
+Two of the pre-existing ones I've used are `get_stopwords()`, which is a relatively shorter list, and `stop_words`, which is more comprehensive
 
 ```{r,warning=FALSE, message=FALSE, out.width="100%"}
 
@@ -269,12 +270,12 @@ lying_unnested %>%
 
 Frequency is one way of seeing what words are important for a given prompt, but it favors stopwords and other frequently used words. 
 Luckily, we have lots of other cool metrics that can index the importance of words to one prompt! 
-One popular one is tf-idf (term frequency-inverse document frequency), which indexes the importance of a word by considering both its frequency within a specific prompt and its rarity across all prompts.
+One popular one is ***tf-idf*** (term frequency-inverse document frequency), which indexes the importance of a word by considering both its frequency within a specific prompt and its rarity across all prompts.
 Unlike term frequency, it adjusts for the overall frequency of a word in the entire dataset, and thus takes care of stopwords (which are commonly used across all prompts) on its own. 
 
-Another metric is using log odds, which calculates the likelihood that a word appears in a specific document (or in this case, prompt) compared to its overall likelihood of appearing in any prompt. 
+Another metric is using ***log odds***, which calculates the likelihood that a word appears in a specific document (or in this case, prompt) compared to its overall likelihood of appearing in any prompt. 
 It is a little more forgiving than tf-idf if one term shows up in many prompts.
-The tidylo package allows us to calculate log odds using an empirical Bayes Dirichlet prior approach or an uninformative prior. 
+The `tidylo` package allows us to calculate log odds using an empirical Bayes Dirichlet prior approach or an uninformative prior. 
 The difference between the two is how prior information is incorporated into the calculation.
 
 In the empirical Bayes Dirichlet prior approach, prior information from the entire dataset is used to adjust the log odds calculation. 
@@ -283,8 +284,8 @@ This approach takes into account the overall distribution of word frequencies ac
 On the other hand, the uninformative prior approach does not incorporate prior information. 
 It assumes equal probabilities for all words and treats each prompt independently, without considering the overall distribution of word frequencies. 
 
-In the code block provided, we are binding both tf-idf and log odds metrics to the dataset, resulting in a new dataframe called lying_unnested_info. 
-This dataframe contains columns for tf-idf, weighted log odds with an informative prior (wlo_informative), and weighted log odds with an uninformative prior (wlo_uninformative). 
+In the code block provided, we are binding both tf-idf and log odds metrics to the dataset, resulting in a new dataframe called `lying_unnested_info`. 
+This dataframe contains columns for tf-idf, weighted log odds with an informative prior (`wlo_informative`), and weighted log odds with an uninformative prior (`wlo_uninformative`). 
 
 ```{r,warning=FALSE, message=FALSE}
 
