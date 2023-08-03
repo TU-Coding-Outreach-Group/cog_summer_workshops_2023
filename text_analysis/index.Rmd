@@ -366,11 +366,13 @@ We can use this to see which words are used by people with more/less severe outc
 ## Finding average severity rating across all participants
 summary(lying_wide$rating_impact_severity)  ## Mean = 2.63
 
-## Make the figure
+## Make the dataframe
 frequently_used_words_across_severity <- token_counts_grouped %>%
   anti_join(get_stopwords()) %>%  ## Remove stopwords from the token counts
-  filter(n > 5) %>%  ## Filter out words that weren't used more than 5 times
-  ggplot(aes(n, rating_impact_severity)) +  ## Map frequency (n) to x-axis and severity rating to y-axis
+  filter(n > 5)  ## Filter out words that weren't used more than 5 times
+  
+## Make the figure
+ggplot(data = frequently_used_words_across_severity, aes(n, rating_impact_severity)) +  ## Map frequency (n) to x-axis and severity rating to y-axis
   geom_hline(yintercept = 2.63, lty = 2, color = "grey", size = 0.5) +  ## Add a dashed line representing the average severity rating
   geom_text(aes(label = word, color = text_box), check_overlap = TRUE, show.legend = FALSE, vjust = "top", hjust = "left") +  ## Add labels to the plot for each word, colored by text_box category
   facet_wrap(vars(text_box)) +  ## Create facets based on text_box categories
