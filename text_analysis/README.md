@@ -5,6 +5,8 @@
 __**Content creator:**__ Camille Johnston \
 __**Content editors:**__ Steven Martinez, Katie Jobson, Billy Mitchell & Helen Schmidt
 
+https://youtu.be/BJ1Wys_wJ8M
+
 ## Description
 This weeks coding workshop features text analysis in R! Text analysis can be an important skill for those of us who work with more qualitative data. Qualitative data such as free recall can be difficult to utilize in quantitative analysis; in this workshop, attendees will learn how to load text data into R, clean it for things such as typos, and then create visualizations. This workshop will also cover some different types of analyses that can be done on word-based data to better conceptualize outcomes.  
 
