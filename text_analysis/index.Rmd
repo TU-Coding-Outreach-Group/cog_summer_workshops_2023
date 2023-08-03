@@ -361,7 +361,7 @@ lying_unnested_info %>%
 When we grouped our tokens, we averaged severity scores for each word used in each text box. 
 We can use this to see which words are used by people with more/less severe outcomes. 
 
-```{r,warning=FALSE, message=FALSE}
+```{r,warning=FALSE, message=FALSE, out.width="100%"}
 
 ## Finding average severity rating across all participants
 summary(lying_wide$rating_impact_severity)  ## Mean = 2.63
